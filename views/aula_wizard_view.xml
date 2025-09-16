@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Wizard para Agregar -->
+        <record id="view_aula_wizard_agregar" model="ir.ui.view">
+            <field name="name">aula.wizard.agregar</field>
+            <field name="model">aula.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Agregar Nueva Aula">
+                    <group>
+                        <field name="name"/>
+                        <field name="capacidad"/>
+                    </group>
+                    <footer>
+                        <button name="execute_action" string="Agregar" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard para Actualizar -->
+        <record id="view_aula_wizard_actualizar" model="ir.ui.view">
+            <field name="name">aula.wizard.actualizar</field>
+            <field name="model">aula.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Actualizar Aula">
+                    <group>
+                        <field name="name"/>
+                        <field name="capacidad"/>
+                    </group>
+                    <footer>
+                        <button name="execute_action" string="Actualizar" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard para Eliminar -->
+        <record id="view_aula_wizard_eliminar" model="ir.ui.view">
+            <field name="name">aula.wizard.eliminar</field>
+            <field name="model">aula.wizard</field>
+            <field name="arch" type="xml">
+                <form string="¿Eliminar Aula?">
+                    <group>
+                        <label string="¿Está seguro que desea eliminar la siguiente aula?"/>
+                        <field name="name" readonly="1"/>
+                        <field name="capacidad" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="execute_action" string="Eliminar" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Acciones para los wizards -->
+        <record id="action_aula_wizard_agregar" model="ir.actions.act_window">
+            <field name="name">Agregar Aula</field>
+            <field name="res_model">aula.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_aula_wizard_agregar"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_aula_wizard_actualizar" model="ir.actions.act_window">
+            <field name="name">Actualizar Aula</field>
+            <field name="res_model">aula.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_aula_wizard_actualizar"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_aula_wizard_eliminar" model="ir.actions.act_window">
+            <field name="name">Eliminar Aula</field>
+            <field name="res_model">aula.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_aula_wizard_eliminar"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</openerp>

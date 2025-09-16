@@ -1,0 +1,12 @@
+<openerp>
+    <data>
+        <record id="aula_demo_1" model="school.aula">
+            <field name="name">Aula 101</field>
+            <field name="capacidad">30</field>
+        </record>
+        <record id="aula_demo_2" model="school.aula">
+            <field name="name">Aula 102</field>
+            <field name="capacidad">25</field>
+        </record>
+    </data>
+</openerp>

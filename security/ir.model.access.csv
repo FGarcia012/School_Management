@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_curso_user,access.curso.user,model_school_curso,base.group_user,1,1,1,0
+access_curso_manager,access.curso.manager,model_school_curso,base.group_system,1,1,1,1
+access_alumno_user,access.alumno.user,model_school_alumno,base.group_user,1,1,1,0
+access_alumno_manager,access.alumno.manager,model_school_alumno,base.group_system,1,1,1,1
+access_aula_user,access.aula.user,model_school_aula,base.group_user,1,1,1,0
+access_aula_manager,access.aula.manager,model_school_aula,base.group_system,1,1,1,1
+access_examen_user,access.examen.user,model_school_examen,base.group_user,1,1,1,0
+access_examen_manager,access.examen.manager,model_school_examen,base.group_system,1,1,1,1
+access_curso_wizard,access.curso.wizard,model_curso_wizard,base.group_user,1,1,1,1
+access_alumno_wizard,access.alumno.wizard,model_alumno_wizard,base.group_user,1,1,1,1
+access_aula_wizard,access.aula.wizard,model_aula_wizard,base.group_user,1,1,1,1
+access_examen_wizard,access.examen.wizard,model_examen_wizard,base.group_user,1,1,1,1

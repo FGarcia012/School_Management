@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Tree View con botones -->
+        <record id="view_curso_tree" model="ir.ui.view">
+            <field name="name">school.curso.tree</field>
+            <field name="model">school.curso</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
+                    <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_curso_form" model="ir.ui.view">
+            <field name="name">school.curso.form</field>
+            <field name="model">school.curso</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Curso" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_curso_search" model="ir.ui.view">
+            <field name="name">school.curso.search</field>
+            <field name="model">school.curso</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <filter string="Matemáticas" domain="[('name','=','Matemáticas')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action para Cursos -->
+        <record id="action_cursos" model="ir.actions.act_window">
+            <field name="name">Cursos</field>
+            <field name="res_model">school.curso</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="limit">80</field>
+        </record>
+    </data>
+</openerp>

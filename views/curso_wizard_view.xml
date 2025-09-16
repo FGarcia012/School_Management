@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Wizard para Agregar -->
+        <record id="view_curso_wizard_agregar" model="ir.ui.view">
+            <field name="name">curso.wizard.agregar</field>
+            <field name="model">curso.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Agregar Nuevo Curso">
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                    <footer>
+                        <button name="execute_action" string="Agregar" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard para Actualizar -->
+        <record id="view_curso_wizard_actualizar" model="ir.ui.view">
+            <field name="name">curso.wizard.actualizar</field>
+            <field name="model">curso.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Actualizar Curso">
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                    <footer>
+                        <button name="execute_action" string="Actualizar" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard para Eliminar -->
+        <record id="view_curso_wizard_eliminar" model="ir.ui.view">
+            <field name="name">curso.wizard.eliminar</field>
+            <field name="model">curso.wizard</field>
+            <field name="arch" type="xml">
+                <form string="¿Eliminar Curso?">
+                    <group>
+                        <label string="¿Está seguro que desea eliminar el siguiente curso?"/>
+                        <field name="name" readonly="1"/>
+                        <field name="description" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="execute_action" string="Eliminar" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Acciones para los wizards -->
+        <record id="action_curso_wizard_agregar" model="ir.actions.act_window">
+            <field name="name">Agregar Curso</field>
+            <field name="res_model">curso.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_curso_wizard_agregar"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_curso_wizard_actualizar" model="ir.actions.act_window">
+            <field name="name">Actualizar Curso</field>
+            <field name="res_model">curso.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_curso_wizard_actualizar"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_curso_wizard_eliminar" model="ir.actions.act_window">
+            <field name="name">Eliminar Curso</field>
+            <field name="res_model">curso.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_curso_wizard_eliminar"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</openerp>

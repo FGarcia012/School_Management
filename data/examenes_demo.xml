@@ -1,0 +1,11 @@
+<openerp>
+    <data>
+        <record id="examen_demo_1" model="school.examen">
+            <field name="name">Examen Matemáticas 1</field>
+            <field name="curso_id" ref="curso_demo_1"/>
+            <field name="pregunta">¿Cuánto es 2+2?</field>
+            <field name="respuesta">4</field>
+            <field name="punteo">10</field>
+        </record>
+    </data>
+</openerp>

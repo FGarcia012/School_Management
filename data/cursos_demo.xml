@@ -1,0 +1,12 @@
+<openerp>
+    <data>
+        <record id="curso_demo_1" model="school.curso">
+            <field name="name">Matemáticas</field>
+            <field name="description">Curso básico de matemáticas</field>
+        </record>
+        <record id="curso_demo_2" model="school.curso">
+            <field name="name">Física</field>
+            <field name="description">Curso básico de física</field>
+        </record>
+    </data>
+</openerp>

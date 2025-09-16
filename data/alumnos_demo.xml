@@ -1,0 +1,14 @@
+<openerp>
+    <data>
+        <record id="alumno_demo_1" model="school.alumno">
+            <field name="name">Juan Pérez</field>
+            <field name="numero">001</field>
+            <field name="curso_id" ref="curso_demo_1"/>
+        </record>
+        <record id="alumno_demo_2" model="school.alumno">
+            <field name="name">Ana López</field>
+            <field name="numero">002</field>
+            <field name="curso_id" ref="curso_demo_2"/>
+        </record>
+    </data>
+</openerp>

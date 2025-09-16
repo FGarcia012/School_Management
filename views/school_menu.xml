@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Menús en la BARRA SUPERIOR -->
+        <menuitem id="menu_cursos" name="Cursos" action="action_cursos" sequence="15"/>
+        <menuitem id="menu_alumnos" name="Alumnos" action="action_alumnos" sequence="25"/>
+        <menuitem id="menu_aulas" name="Aulas" action="action_aulas" sequence="35"/>
+        <menuitem id="menu_examenes" name="Exámenes" action="action_examenes" sequence="45"/>
+    </data>
+</openerp>
