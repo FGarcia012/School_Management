@@ -58,17 +58,16 @@
             </field>
         </record>
 
-        <!-- Pivot View -->
-        <record id="view_examen_pivot" model="ir.ui.view">
-            <field name="name">school.examen.pivot</field>
+        <!-- Graph View -->
+        <record id="view_examen_graph" model="ir.ui.view">
+            <field name="name">school.examen.graph</field>
             <field name="model">school.examen</field>
+            <field name="type">graph</field>
             <field name="arch" type="xml">
-                <pivot string="Análisis de Exámenes">
-                    <field name="curso_id" type="row"/>
-                    <field name="create_date" type="col" interval="month"/>
-                    <field name="punteo" type="measure"/>
-                    <field name="id" type="measure"/>
-                </pivot>
+                <graph string="Análisis de Exámenes" type="bar">
+                    <field name="curso_id"/>
+                    <field name="punteo"/>
+                </graph>
             </field>
         </record>
 
@@ -102,9 +101,9 @@
                     <separator/>
                     
                     <!-- Filtros por fecha -->
-                    <filter string="Creados Hoy" domain="[('create_date','&gt;=',datetime.datetime.combine(context_today(),datetime.time(0,0,0)))]"/>
-                    <filter string="Creados Esta Semana" domain="[('create_date','&gt;=', (context_today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
-                    <filter string="Creados Este Mes" domain="[('create_date','&gt;=', (context_today().replace(day=1)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creados Hoy" domain="[('create_date','&gt;=',time.strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creados Esta Semana" domain="[('create_date','&gt;=', (datetime.date.today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creados Este Mes" domain="[('create_date','&gt;=', datetime.date.today().strftime('%%Y-%%m-01'))]"/>
                     
                     <separator/>
                     
@@ -124,7 +123,7 @@
             <field name="name">Exámenes</field>
             <field name="res_model">school.examen</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_mode">tree,form,graph</field>
             <field name="search_view_id" ref="view_examen_search"/>
             <field name="domain">[]</field>
             <field name="context">{}</field>

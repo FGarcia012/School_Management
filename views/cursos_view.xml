@@ -48,16 +48,16 @@
             </field>
         </record>
 
-        <!-- Pivot View -->
-        <record id="view_curso_pivot" model="ir.ui.view">
-            <field name="name">school.curso.pivot</field>
+        <!-- Graph View -->
+        <record id="view_curso_graph" model="ir.ui.view">
+            <field name="name">school.curso.graph</field>
             <field name="model">school.curso</field>
+            <field name="type">graph</field>
             <field name="arch" type="xml">
-                <pivot string="Análisis de Cursos">
-                    <field name="name" type="row"/>
-                    <field name="create_date" type="col" interval="month"/>
-                    <field name="id" type="measure"/>
-                </pivot>
+                <graph string="Análisis de Cursos" type="bar">
+                    <field name="name"/>
+                    <field name="create_date" interval="month"/>
+                </graph>
             </field>
         </record>
 
@@ -81,9 +81,9 @@
                     <separator/>
                     
                     <!-- Filtros por fecha -->
-                    <filter string="Creados Hoy" domain="[('create_date','&gt;=',datetime.datetime.combine(context_today(),datetime.time(0,0,0)))]"/>
-                    <filter string="Creados Esta Semana" domain="[('create_date','&gt;=', (context_today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
-                    <filter string="Creados Este Mes" domain="[('create_date','&gt;=', (context_today().replace(day=1)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creados Hoy" domain="[('create_date','&gt;=',time.strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creados Esta Semana" domain="[('create_date','&gt;=', (datetime.date.today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creados Este Mes" domain="[('create_date','&gt;=', datetime.date.today().strftime('%%Y-%%m-01'))]"/>
                     
                     <separator/>
                     
@@ -102,7 +102,7 @@
             <field name="name">Cursos</field>
             <field name="res_model">school.curso</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_mode">tree,form,graph</field>
             <field name="search_view_id" ref="view_curso_search"/>
             <field name="domain">[]</field>
             <field name="context">{}</field>
