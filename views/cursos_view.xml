@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Tree View con botones -->
+        <!-- Tree View -->
         <record id="view_curso_tree" model="ir.ui.view">
             <field name="name">school.curso.tree</field>
             <field name="model">school.curso</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree colors="blue:name=='Matemáticas';green:name=='Física'">
                     <field name="name"/>
                     <field name="description"/>
+                    <field name="create_date"/>
+                    <field name="write_date"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
                 </tree>
@@ -20,39 +22,88 @@
             <field name="name">school.curso.form</field>
             <field name="model">school.curso</field>
             <field name="arch" type="xml">
-                <form>
+                <form string="Curso">
+                    <header>
+                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Curso" type="object" class="oe_highlight"/>
+                    </header>
                     <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre del Curso"/>
+                            </h1>
+                        </div>
                         <group>
-                            <field name="name"/>
-                            <field name="description"/>
+                            <group>
+                                <field name="description"/>
+                                <field name="create_date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="write_date" readonly="1"/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="write_uid" readonly="1"/>
+                            </group>
                         </group>
                     </sheet>
-                    <footer>
-                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Curso" type="object" class="oe_highlight"/>
-                        <button string="Cancelar" special="cancel" class="oe_link"/>
-                    </footer>
                 </form>
             </field>
         </record>
 
-        <!-- Search View -->
+        <!-- Pivot View -->
+        <record id="view_curso_pivot" model="ir.ui.view">
+            <field name="name">school.curso.pivot</field>
+            <field name="model">school.curso</field>
+            <field name="arch" type="xml">
+                <pivot string="Análisis de Cursos">
+                    <field name="name" type="row"/>
+                    <field name="create_date" type="col" interval="month"/>
+                    <field name="id" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Search View con filtros avanzados -->
         <record id="view_curso_search" model="ir.ui.view">
             <field name="name">school.curso.search</field>
             <field name="model">school.curso</field>
             <field name="arch" type="xml">
-                <search>
-                    <field name="name"/>
+                <search string="Buscar Cursos">
+                    <!-- Campos de búsqueda -->
+                    <field name="name" string="Nombre del Curso" filter_domain="[('name','ilike',self)]"/>
+                    <field name="description" string="Descripción" filter_domain="[('description','ilike',self)]"/>
+                    
+                    <!-- Filtros predefinidos -->
                     <filter string="Matemáticas" domain="[('name','=','Matemáticas')]"/>
+                    <filter string="Física" domain="[('name','=','Física')]"/>
+                    <filter string="Computación" domain="[('name','=','Computación')]"/>
+                    <filter string="Inglés" domain="[('name','=','Inglés')]"/>
+                    <filter string="Religión" domain="[('name','=','Religión')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtros por fecha -->
+                    <filter string="Creados Hoy" domain="[('create_date','&gt;=',datetime.datetime.combine(context_today(),datetime.time(0,0,0)))]"/>
+                    <filter string="Creados Esta Semana" domain="[('create_date','&gt;=', (context_today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creados Este Mes" domain="[('create_date','&gt;=', (context_today().replace(day=1)).strftime('%%Y-%%m-%%d'))]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Agrupaciones -->
+                    <group expand="0" string="Agrupar Por">
+                        <filter string="Nombre del Curso" context="{'group_by':'name'}"/>
+                        <filter string="Fecha de Creación" context="{'group_by':'create_date:month'}"/>
+                        <filter string="Usuario Creador" context="{'group_by':'create_uid'}"/>
+                    </group>
                 </search>
             </field>
         </record>
 
-        <!-- Action para Cursos -->
+        <!-- Action para Cursos con todas las vistas -->
         <record id="action_cursos" model="ir.actions.act_window">
             <field name="name">Cursos</field>
             <field name="res_model">school.curso</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="search_view_id" ref="view_curso_search"/>
             <field name="domain">[]</field>
             <field name="context">{}</field>
             <field name="limit">80</field>

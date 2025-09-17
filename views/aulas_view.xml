@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Tree View con botones -->
+        <!-- Tree View -->
         <record id="view_aula_tree" model="ir.ui.view">
             <field name="name">school.aula.tree</field>
             <field name="model">school.aula</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree colors="red:capacidad&lt;20;orange:capacidad&lt;30;green:capacidad&gt;=30">
                     <field name="name"/>
                     <field name="capacidad"/>
+                    <field name="create_date"/>
+                    <field name="write_date"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
                 </tree>
@@ -20,40 +22,94 @@
             <field name="name">school.aula.form</field>
             <field name="model">school.aula</field>
             <field name="arch" type="xml">
-                <form>
+                <form string="Aula">
+                    <header>
+                        <button name="abrir_wizard_agregar" string="Añadir Nueva Aula" type="object" class="oe_highlight"/>
+                    </header>
                     <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre del Aula"/>
+                            </h1>
+                        </div>
                         <group>
-                            <field name="name"/>
-                            <field name="capacidad"/>
+                            <group>
+                                <field name="capacidad"/>
+                                <field name="create_date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="write_date" readonly="1"/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="write_uid" readonly="1"/>
+                            </group>
                         </group>
                     </sheet>
-                    <footer>
-                        <button name="abrir_wizard_agregar" string="Añadir Nueva Aula" type="object" class="oe_highlight"/>
-                        <button string="Cancelar" special="cancel" class="oe_link"/>
-                    </footer>
                 </form>
             </field>
         </record>
 
-        <!-- Search View -->
+        <!-- Pivot View -->
+        <record id="view_aula_pivot" model="ir.ui.view">
+            <field name="name">school.aula.pivot</field>
+            <field name="model">school.aula</field>
+            <field name="arch" type="xml">
+                <pivot string="Análisis de Aulas">
+                    <field name="name" type="row"/>
+                    <field name="create_date" type="col" interval="month"/>
+                    <field name="capacidad" type="measure"/>
+                    <field name="id" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Search View con filtros avanzados -->
         <record id="view_aula_search" model="ir.ui.view">
             <field name="name">school.aula.search</field>
             <field name="model">school.aula</field>
             <field name="arch" type="xml">
-                <search>
-                    <field name="name"/>
-                    <field name="capacidad"/>
-                    <filter string="Capacidad > 25" domain="[('capacidad','>',25)]"/>
+                <search string="Buscar Aulas">
+                    <!-- Campos de búsqueda -->
+                    <field name="name" string="Nombre del Aula" filter_domain="[('name','ilike',self)]"/>
+                    <field name="capacidad" string="Capacidad"/>
+                    
+                    <!-- Filtros por capacidad -->
+                    <filter string="Capacidad Pequeña (&lt; 20)" domain="[('capacidad','&lt;',20)]"/>
+                    <filter string="Capacidad Media (20-29)" domain="[('capacidad','&gt;=',20),('capacidad','&lt;',30)]"/>
+                    <filter string="Capacidad Grande (&gt;= 30)" domain="[('capacidad','&gt;=',30)]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtros específicos -->
+                    <filter string="Aula A1" domain="[('name','=','Aula A1')]"/>
+                    <filter string="Aula A2" domain="[('name','=','Aula A2')]"/>
+                    <filter string="Laboratorio" domain="[('name','ilike','Laboratorio')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtros por fecha -->
+                    <filter string="Creadas Hoy" domain="[('create_date','&gt;=',datetime.datetime.combine(context_today(),datetime.time(0,0,0)))]"/>
+                    <filter string="Creadas Esta Semana" domain="[('create_date','&gt;=', (context_today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creadas Este Mes" domain="[('create_date','&gt;=', (context_today().replace(day=1)).strftime('%%Y-%%m-%%d'))]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Agrupaciones -->
+                    <group expand="0" string="Agrupar Por">
+                        <filter string="Rango de Capacidad" context="{'group_by':'capacidad'}"/>
+                        <filter string="Fecha de Creación" context="{'group_by':'create_date:month'}"/>
+                        <filter string="Usuario Creador" context="{'group_by':'create_uid'}"/>
+                    </group>
                 </search>
             </field>
         </record>
 
-        <!-- Action para Aulas -->
+        <!-- Action para Aulas con todas las vistas -->
         <record id="action_aulas" model="ir.actions.act_window">
             <field name="name">Aulas</field>
             <field name="res_model">school.aula</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="search_view_id" ref="view_aula_search"/>
             <field name="domain">[]</field>
             <field name="context">{}</field>
             <field name="limit">80</field>

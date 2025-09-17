@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Tree View con botones -->
+        <!-- Tree View -->
         <record id="view_alumno_tree" model="ir.ui.view">
             <field name="name">school.alumno.tree</field>
             <field name="model">school.alumno</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree colors="red:not curso_id;blue:curso_id">
                     <field name="name"/>
                     <field name="numero"/>
                     <field name="curso_id"/>
+                    <field name="create_date"/>
+                    <field name="write_date"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
                 </tree>
@@ -21,42 +23,96 @@
             <field name="name">school.alumno.form</field>
             <field name="model">school.alumno</field>
             <field name="arch" type="xml">
-                <form>
+                <form string="Alumno">
+                    <header>
+                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Alumno" type="object" class="oe_highlight"/>
+                    </header>
                     <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre del Alumno"/>
+                            </h1>
+                        </div>
                         <group>
-                            <field name="name"/>
-                            <field name="numero"/>
-                            <field name="curso_id"/>
+                            <group>
+                                <field name="numero"/>
+                                <field name="curso_id"/>
+                                <field name="create_date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="write_date" readonly="1"/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="write_uid" readonly="1"/>
+                            </group>
                         </group>
                     </sheet>
-                    <footer>
-                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Alumno" type="object" class="oe_highlight"/>
-                        <button string="Cancelar" special="cancel" class="oe_link"/>
-                    </footer>
                 </form>
             </field>
         </record>
 
-        <!-- Search View -->
+        <!-- Pivot View -->
+        <record id="view_alumno_pivot" model="ir.ui.view">
+            <field name="name">school.alumno.pivot</field>
+            <field name="model">school.alumno</field>
+            <field name="arch" type="xml">
+                <pivot string="Análisis de Alumnos">
+                    <field name="curso_id" type="row"/>
+                    <field name="create_date" type="col" interval="month"/>
+                    <field name="id" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Search View con filtros avanzados -->
         <record id="view_alumno_search" model="ir.ui.view">
             <field name="name">school.alumno.search</field>
             <field name="model">school.alumno</field>
             <field name="arch" type="xml">
-                <search>
-                    <field name="name"/>
-                    <field name="numero"/>
-                    <field name="curso_id"/>
-                    <filter string="Curso Matemáticas" domain="[('curso_id.name','=','Matemáticas')]"/>
+                <search string="Buscar Alumnos">
+                    <!-- Campos de búsqueda -->
+                    <field name="name" string="Nombre del Alumno" filter_domain="[('name','ilike',self)]"/>
+                    <field name="numero" string="Número de Estudiante" filter_domain="[('numero','ilike',self)]"/>
+                    <field name="curso_id" string="Curso"/>
+                    
+                    <!-- Filtros predefinidos -->
+                    <filter string="Sin Curso Asignado" domain="[('curso_id','=',False)]"/>
+                    <filter string="Con Curso Asignado" domain="[('curso_id','!=',False)]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtros por curso -->
+                    <filter string="Matemáticas" domain="[('curso_id.name','=','Matemáticas')]"/>
+                    <filter string="Física" domain="[('curso_id.name','=','Física')]"/>
+                    <filter string="Computación" domain="[('curso_id.name','=','Computación')]"/>
+                    <filter string="Inglés" domain="[('curso_id.name','=','Inglés')]"/>
+                    <filter string="Religión" domain="[('curso_id.name','=','Religión')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtros por fecha -->
+                    <filter string="Registrados Hoy" domain="[('create_date','&gt;=',datetime.datetime.combine(context_today(),datetime.time(0,0,0)))]"/>
+                    <filter string="Registrados Esta Semana" domain="[('create_date','&gt;=', (context_today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Registrados Este Mes" domain="[('create_date','&gt;=', (context_today().replace(day=1)).strftime('%%Y-%%m-%%d'))]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Agrupaciones -->
+                    <group expand="0" string="Agrupar Por">
+                        <filter string="Curso" context="{'group_by':'curso_id'}"/>
+                        <filter string="Fecha de Registro" context="{'group_by':'create_date:month'}"/>
+                        <filter string="Usuario Creador" context="{'group_by':'create_uid'}"/>
+                    </group>
                 </search>
             </field>
         </record>
 
-        <!-- Action para Alumnos -->
+        <!-- Action para Alumnos con todas las vistas -->
         <record id="action_alumnos" model="ir.actions.act_window">
             <field name="name">Alumnos</field>
             <field name="res_model">school.alumno</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="search_view_id" ref="view_alumno_search"/>
             <field name="domain">[]</field>
             <field name="context">{}</field>
             <field name="limit">80</field>
