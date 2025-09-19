@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!-- Asignar rol de super admin al usuario admin después de la instalación -->
+        <function model="res.users" name="assign_super_admin_role"/>
+    </data>
+</openerp>

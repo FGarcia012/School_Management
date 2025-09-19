@@ -1,10 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Menús en la BARRA SUPERIOR -->
-        <menuitem id="menu_cursos" name="Cursos" action="action_cursos" sequence="15"/>
-        <menuitem id="menu_alumnos" name="Alumnos" action="action_alumnos" sequence="25"/>
-        <menuitem id="menu_aulas" name="Aulas" action="action_aulas" sequence="35"/>
-        <menuitem id="menu_examenes" name="Exámenes" action="action_examenes" sequence="45"/>
+        
+        <!-- === MENÚ PRINCIPAL DEL SISTEMA ESCOLAR === -->
+        <menuitem id="menu_school_management_root" 
+                  name="Sistema Escolar" 
+                  sequence="10"/>
+
+        <!-- === MENÚS PARA SUPER ADMIN === -->
+        <menuitem id="menu_school_admin" 
+                  name="Administración" 
+                  parent="menu_school_management_root" 
+                  groups="group_school_super_admin"
+                  sequence="10"/>
+        
+        <menuitem id="menu_school_users_admin" 
+                  name="Gestión de Usuarios" 
+                  parent="menu_school_admin" 
+                  action="action_school_users"
+                  groups="group_school_super_admin"
+                  sequence="10"/>
+        
+        <menuitem id="menu_user_registration_admin" 
+                  name="Registrar Nuevo Usuario" 
+                  parent="menu_school_admin" 
+                  action="action_school_user_registration"
+                  groups="group_school_super_admin"
+                  sequence="20"/>
+
+        <!-- === MENÚS ACADÉMICOS (SUPER ADMIN Y MAESTROS) === -->
+        <menuitem id="menu_school_academic" 
+                  name="Gestión Académica" 
+                  parent="menu_school_management_root" 
+                  groups="group_school_super_admin,group_school_teacher"
+                  sequence="20"/>
+
+        <menuitem id="menu_cursos_academic" 
+                  name="Cursos" 
+                  parent="menu_school_academic" 
+                  action="action_cursos" 
+                  groups="group_school_super_admin,group_school_teacher"
+                  sequence="10"/>
+        
+        <menuitem id="menu_alumnos_academic" 
+                  name="Alumnos" 
+                  parent="menu_school_academic" 
+                  action="action_alumnos" 
+                  groups="group_school_super_admin,group_school_teacher"
+                  sequence="20"/>
+        
+        <menuitem id="menu_aulas_academic" 
+                  name="Aulas" 
+                  parent="menu_school_academic" 
+                  action="action_aulas" 
+                  groups="group_school_super_admin,group_school_teacher"
+                  sequence="30"/>
+        
+        <menuitem id="menu_examenes_academic" 
+                  name="Exámenes" 
+                  parent="menu_school_academic" 
+                  action="action_examenes" 
+                  groups="group_school_super_admin,group_school_teacher"
+                  sequence="40"/>
+
+        <!-- === MENÚS PARA ESTUDIANTES === -->
+        <menuitem id="menu_school_student" 
+                  name="Mi Información" 
+                  parent="menu_school_management_root" 
+                  groups="group_school_student"
+                  sequence="30"/>
+
+        <menuitem id="menu_my_courses_student" 
+                  name="Mis Cursos" 
+                  parent="menu_school_student" 
+                  action="action_cursos" 
+                  groups="group_school_student"
+                  sequence="10"/>
+        
+        <menuitem id="menu_my_exams_student" 
+                  name="Mis Exámenes" 
+                  parent="menu_school_student" 
+                  action="action_examenes" 
+                  groups="group_school_student"
+                  sequence="20"/>
+
+        <!-- === REGISTRO DE NUEVOS USUARIOS (ACCESO PÚBLICO) === -->
+        <menuitem id="menu_school_public" 
+                  name="Registro" 
+                  parent="menu_school_management_root" 
+                  groups="group_school_public,base.group_portal"
+                  sequence="40"/>
+
+        <menuitem id="menu_user_registration_public" 
+                  name="Registrarse" 
+                  parent="menu_school_public" 
+                  action="action_school_user_registration"
+                  groups="group_school_public,base.group_portal"
+                  sequence="10"/>
+
+        <!-- === MENÚS COMPATIBLES CON VERSIÓN ANTERIOR (BARRA SUPERIOR) === -->
+        <!-- Para usuarios que no estén en grupos específicos -->
+        <menuitem id="menu_cursos" 
+                  name="Cursos" 
+                  action="action_cursos" 
+                  groups="base.group_user"
+                  sequence="15"/>
+        
+        <menuitem id="menu_alumnos" 
+                  name="Alumnos" 
+                  action="action_alumnos" 
+                  groups="base.group_user"
+                  sequence="25"/>
+        
+        <menuitem id="menu_aulas" 
+                  name="Aulas" 
+                  action="action_aulas" 
+                  groups="base.group_user"
+                  sequence="35"/>
+        
+        <menuitem id="menu_examenes" 
+                  name="Exámenes" 
+                  action="action_examenes" 
+                  groups="base.group_user"
+                  sequence="45"/>
+
     </data>
 </openerp>

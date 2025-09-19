@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- Vista Form del Usuario Extendido -->
+        <record id="view_users_form_school" model="ir.ui.view">
+            <field name="name">res.users.form.school</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <group string="Información Escolar">
+                        <group string="Rol en el Sistema">
+                            <field name="school_role"/>
+                            <field name="registration_date" readonly="1"/>
+                            <field name="is_active_student" attrs="{'invisible': [('school_role', '!=', 'student')]}"/>
+                        </group>
+                        <group string="Códigos y Números">
+                            <field name="student_number" attrs="{'invisible': [('school_role', '!=', 'student')]}"/>
+                            <field name="teacher_code" attrs="{'invisible': [('school_role', '!=', 'teacher')]}"/>
+                            <field name="grade_level"/>
+                        </group>
+                    </group>
+                    <group string="Información de Contacto">
+                        <group>
+                            <field name="phone_number"/>
+                            <field name="emergency_contact"/>
+                        </group>
+                        <group>
+                            <field name="parent_email"/>
+                            <field name="alumno_id" attrs="{'invisible': [('school_role', '!=', 'student')]}"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Vista Tree de Usuarios con información escolar -->
+        <record id="view_users_tree_school" model="ir.ui.view">
+            <field name="name">res.users.tree.school</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:school_role=='super_admin';green:school_role=='teacher';orange:school_role=='student'">
+                    <field name="name"/>
+                    <field name="login"/>
+                    <field name="school_role"/>
+                    <field name="student_number"/>
+                    <field name="teacher_code"/>
+                    <field name="is_active_student"/>
+                    <field name="registration_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista de búsqueda para usuarios escolares -->
+        <record id="view_users_search_school" model="ir.ui.view">
+            <field name="name">res.users.search.school</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <search string="Usuarios Escolares">
+                    <field name="name" string="Nombre"/>
+                    <field name="login" string="Usuario"/>
+                    <field name="school_role" string="Rol Escolar"/>
+                    <field name="student_number" string="Número de Estudiante"/>
+                    <field name="teacher_code" string="Código de Maestro"/>
+                    <separator/>
+                    <filter string="Super Administradores" domain="[('school_role','=','super_admin')]"/>
+                    <filter string="Maestros" domain="[('school_role','=','teacher')]"/>
+                    <filter string="Alumnos" domain="[('school_role','=','student')]"/>
+                    <filter string="Estudiantes Activos" domain="[('school_role','=','student'),('is_active_student','=',True)]"/>
+                    <separator/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Rol Escolar" context="{'group_by':'school_role'}"/>
+                        <filter string="Estado de Estudiante" context="{'group_by':'is_active_student'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción para gestión de usuarios escolares -->
+        <record id="action_school_users" model="ir.actions.act_window">
+            <field name="name">Usuarios del Sistema Escolar</field>
+            <field name="res_model">res.users</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_users_tree_school"/>
+            <field name="search_view_id" ref="view_users_search_school"/>
+            <field name="domain">[('school_role', 'in', ['super_admin', 'teacher', 'student'])]</field>
+            <field name="context">{'default_school_role': 'student'}</field>
+        </record>
+
+        <!-- === WIZARD DE REGISTRO === -->
+        
+        <!-- Vista Form del Wizard de Registro -->
+        <record id="view_school_user_registration_form" model="ir.ui.view">
+            <field name="name">school.user.registration.form</field>
+            <field name="model">school.user.registration</field>
+            <field name="arch" type="xml">
+                <form string="Registro de Nuevo Usuario">
+                    <header>
+                        <h1>Registro en el Sistema Escolar</h1>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Información Básica">
+                                <field name="name" placeholder="Nombre completo del usuario"/>
+                                <field name="login" placeholder="usuario@email.com"/>
+                                <field name="school_role"/>
+                            </group>
+                            <group string="Contraseña">
+                                <field name="password" password="True"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Información Específica del Rol" attrs="{'invisible': [('school_role', '=', False)]}">
+                            <group attrs="{'invisible': [('school_role', '!=', 'student')]}">
+                                <field name="student_number" attrs="{'required': [('school_role', '=', 'student')]}"/>
+                                <field name="curso_id"/>
+                            </group>
+                            <group attrs="{'invisible': [('school_role', '!=', 'teacher')]}">
+                                <field name="teacher_code" attrs="{'required': [('school_role', '=', 'teacher')]}"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Información de Contacto">
+                            <field name="phone_number"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="register_user" string="Registrar Usuario" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Acción para abrir el wizard de registro -->
+        <record id="action_school_user_registration" model="ir.actions.act_window">
+            <field name="name">Registrar Nuevo Usuario</field>
+            <field name="res_model">school.user.registration</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Vista de login personalizada (hereda de la base) -->
+        <record id="view_login_form_school" model="ir.ui.view">
+            <field name="name">Login School Management</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <form string="Login Sistema Escolar">
+                    <div class="oe_login_form">
+                        <h2>Sistema de Gestión Escolar</h2>
+                        <div class="oe_login_buttons">
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='/web/signup'">
+                                Registrarse como Nuevo Usuario
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>
