@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Datos demo para horarios escolares -->
+        
+        <!-- Horarios Matutinos - Lunes -->
+        <record id="horario_demo_1" model="school.horario">
+            <field name="curso_id" ref="curso_demo_1"/>  <!-- Matemáticas -->
+            <field name="aula_id" ref="aula_demo_1"/>    <!-- Aula A1 -->
+            <field name="dia_semana">lunes</field>
+            <field name="hora_inicio">8.0</field>        <!-- 8:00 AM -->
+            <field name="hora_fin">9.0</field>          <!-- 9:00 AM -->
+            <field name="turno">matutino</field>
+            <field name="profesor">Prof. García</field>
+        </record>
+
+        <record id="horario_demo_2" model="school.horario">
+            <field name="curso_id" ref="curso_demo_2"/>  <!-- Física -->
+            <field name="aula_id" ref="aula_demo_1"/>    <!-- Aula A1 -->
+            <field name="dia_semana">lunes</field>
+            <field name="hora_inicio">9.0</field>        <!-- 9:00 AM -->
+            <field name="hora_fin">10.0</field>         <!-- 10:00 AM -->
+            <field name="turno">matutino</field>
+            <field name="profesor">Prof. Rodríguez</field>
+        </record>
+
+        <!-- Horarios Matutinos - Martes -->
+        <record id="horario_demo_3" model="school.horario">
+            <field name="curso_id" ref="curso_demo_2"/>  <!-- Física -->
+            <field name="aula_id" ref="aula_demo_1"/>    <!-- Aula A1 -->
+            <field name="dia_semana">martes</field>
+            <field name="hora_inicio">8.0</field>        <!-- 8:00 AM -->
+            <field name="hora_fin">9.0</field>          <!-- 9:00 AM -->
+            <field name="turno">matutino</field>
+            <field name="profesor">Prof. Rodríguez</field>
+        </record>
+
+        <record id="horario_demo_4" model="school.horario">
+            <field name="curso_id" ref="curso_demo_1"/>  <!-- Matemáticas -->
+            <field name="aula_id" ref="aula_demo_1"/>    <!-- Aula A1 -->
+            <field name="dia_semana">martes</field>
+            <field name="hora_inicio">9.0</field>        <!-- 9:00 AM -->
+            <field name="hora_fin">10.0</field>         <!-- 10:00 AM -->
+            <field name="turno">matutino</field>
+            <field name="profesor">Prof. García</field>
+        </record>
+
+        <!-- Horarios Vespertinos - Lunes -->
+        <record id="horario_demo_5" model="school.horario">
+            <field name="curso_id" ref="curso_demo_1"/>  <!-- Matemáticas -->
+            <field name="aula_id" ref="aula_demo_2"/>    <!-- Aula B1 -->
+            <field name="dia_semana">lunes</field>
+            <field name="hora_inicio">14.0</field>       <!-- 2:00 PM -->
+            <field name="hora_fin">15.0</field>         <!-- 3:00 PM -->
+            <field name="turno">vespertino</field>
+            <field name="profesor">Prof. Martínez</field>
+        </record>
+
+        <record id="horario_demo_6" model="school.horario">
+            <field name="curso_id" ref="curso_demo_2"/>  <!-- Física -->
+            <field name="aula_id" ref="aula_demo_2"/>    <!-- Aula B1 -->
+            <field name="dia_semana">lunes</field>
+            <field name="hora_inicio">15.0</field>       <!-- 3:00 PM -->
+            <field name="hora_fin">16.0</field>         <!-- 4:00 PM -->
+            <field name="turno">vespertino</field>
+            <field name="profesor">Prof. López</field>
+        </record>
+
+        <!-- Horarios con receso incluido -->
+        <record id="horario_demo_7" model="school.horario">
+            <field name="curso_id" ref="curso_demo_1"/>  <!-- Matemáticas -->
+            <field name="aula_id" ref="aula_demo_1"/>    <!-- Aula A1 -->
+            <field name="dia_semana">miercoles</field>
+            <field name="hora_inicio">10.5</field>       <!-- 10:30 AM (después del receso) -->
+            <field name="hora_fin">11.5</field>         <!-- 11:30 AM -->
+            <field name="turno">matutino</field>
+            <field name="profesor">Prof. García</field>
+        </record>
+
+        <record id="horario_demo_8" model="school.horario">
+            <field name="curso_id" ref="curso_demo_2"/>  <!-- Física -->
+            <field name="aula_id" ref="aula_demo_2"/>    <!-- Aula B1 -->
+            <field name="dia_semana">miercoles</field>
+            <field name="hora_inicio">16.5</field>       <!-- 4:30 PM (después del receso) -->
+            <field name="hora_fin">17.5</field>         <!-- 5:30 PM -->
+            <field name="turno">vespertino</field>
+            <field name="profesor">Prof. López</field>
+        </record>
+
+        <!-- Horarios de Jueves -->
+        <record id="horario_demo_9" model="school.horario">
+            <field name="curso_id" ref="curso_demo_1"/>  <!-- Matemáticas -->
+            <field name="aula_id" ref="aula_demo_1"/>    <!-- Aula A1 -->
+            <field name="dia_semana">jueves</field>
+            <field name="hora_inicio">8.0</field>        <!-- 8:00 AM -->
+            <field name="hora_fin">9.0</field>          <!-- 9:00 AM -->
+            <field name="turno">matutino</field>
+            <field name="profesor">Prof. García</field>
+        </record>
+
+        <!-- Horarios de Viernes -->
+        <record id="horario_demo_10" model="school.horario">
+            <field name="curso_id" ref="curso_demo_2"/>  <!-- Física -->
+            <field name="aula_id" ref="aula_demo_1"/>    <!-- Aula A1 -->
+            <field name="dia_semana">viernes</field>
+            <field name="hora_inicio">8.0</field>        <!-- 8:00 AM -->
+            <field name="hora_fin">9.0</field>          <!-- 9:00 AM -->
+            <field name="turno">matutino</field>
+            <field name="profesor">Prof. Rodríguez</field>
+        </record>
+
+    </data>
+</openerp>
