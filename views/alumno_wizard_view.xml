@@ -10,7 +10,8 @@
                     <group>
                         <field name="name"/>
                         <field name="numero"/>
-                        <field name="curso_id"/>
+                        <field name="aula_id"/>
+                        <field name="curso_ids"/>
                     </group>
                     <footer>
                         <button name="execute_action" string="Agregar" type="object" class="oe_highlight"/>
@@ -29,7 +30,8 @@
                     <group>
                         <field name="name"/>
                         <field name="numero"/>
-                        <field name="curso_id"/>
+                        <field name="aula_id"/>
+                        <field name="curso_ids"/>
                     </group>
                     <footer>
                         <button name="execute_action" string="Actualizar" type="object" class="oe_highlight"/>
@@ -49,7 +51,7 @@
                         <label string="¿Está seguro que desea eliminar el siguiente alumno?"/>
                         <field name="name" readonly="1"/>
                         <field name="numero" readonly="1"/>
-                        <field name="curso_id" readonly="1"/>
+                        <field name="aula_id" readonly="1"/>
                     </group>
                     <footer>
                         <button name="execute_action" string="Eliminar" type="object" class="oe_highlight"/>
