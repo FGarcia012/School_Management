@@ -6,11 +6,13 @@
             <field name="name">school.aula.tree</field>
             <field name="model">school.aula</field>
             <field name="arch" type="xml">
-                <tree colors="red:capacidad&lt;20;orange:capacidad&lt;30;green:capacidad&gt;=30">
+                <tree colors="red:porcentaje_ocupacion&gt;90;orange:porcentaje_ocupacion&gt;75;green:porcentaje_ocupacion&lt;=75">
                     <field name="name"/>
                     <field name="capacidad"/>
+                    <field name="total_alumnos"/>
+                    <field name="capacidad_disponible"/>
+                    <field name="porcentaje_ocupacion"/>
                     <field name="create_date"/>
-                    <field name="write_date"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
                 </tree>
@@ -33,16 +35,55 @@
                             </h1>
                         </div>
                         <group>
-                            <group>
+                            <group string="Información Básica">
                                 <field name="capacidad"/>
-                                <field name="create_date" readonly="1"/>
+                                <field name="total_alumnos" readonly="1"/>
+                                <field name="capacidad_disponible" readonly="1"/>
+                                <field name="porcentaje_ocupacion" readonly="1" widget="progressbar"/>
                             </group>
-                            <group>
+                            <group string="Fechas">
+                                <field name="create_date" readonly="1"/>
                                 <field name="write_date" readonly="1"/>
                                 <field name="create_uid" readonly="1"/>
                                 <field name="write_uid" readonly="1"/>
                             </group>
                         </group>
+                        
+                        <notebook>
+                            <page string="Estudiantes Asignados">
+                                <field name="alumno_ids">
+                                    <tree string="Estudiantes">
+                                        <field name="numero"/>
+                                        <field name="name"/>
+                                        <field name="total_cursos"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Cursos que se Imparten">
+                                <field name="curso_ids">
+                                    <tree string="Cursos">
+                                        <field name="codigo"/>
+                                        <field name="name"/>
+                                        <field name="total_estudiantes"/>
+                                        <field name="total_examenes"/>
+                                        <field name="profesor_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Horarios Programados">
+                                <field name="horario_ids">
+                                    <tree string="Horarios">
+                                        <field name="dia_semana"/>
+                                        <field name="turno"/>
+                                        <field name="hora_inicio_display"/>
+                                        <field name="hora_fin_display"/>
+                                        <field name="curso_id"/>
+                                        <field name="profesor"/>
+                                        <field name="activo"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

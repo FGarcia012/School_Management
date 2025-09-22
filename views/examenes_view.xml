@@ -6,12 +6,17 @@
             <field name="name">school.examen.tree</field>
             <field name="model">school.examen</field>
             <field name="arch" type="xml">
-                <tree colors="red:punteo&lt;60;orange:punteo&lt;80;green:punteo&gt;=80">
+                <tree colors="red:not aprobado and estado=='calificado';orange:porcentaje_obtenido&lt;80 and aprobado;green:aprobado;blue:estado!='calificado'">
                     <field name="name"/>
                     <field name="curso_id"/>
+                    <field name="alumno_id"/>
+                    <field name="tipo_examen"/>
+                    <field name="fecha_examen"/>
                     <field name="punteo"/>
-                    <field name="create_date"/>
-                    <field name="write_date"/>
+                    <field name="punteo_maximo"/>
+                    <field name="porcentaje_obtenido"/>
+                    <field name="aprobado"/>
+                    <field name="estado"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
                 </tree>
@@ -26,6 +31,7 @@
                 <form string="Examen">
                     <header>
                         <button name="abrir_wizard_agregar" string="Añadir Nuevo Examen" type="object" class="oe_highlight"/>
+                        <field name="estado" widget="statusbar" statusbar_visible="programado,en_curso,completado,calificado"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -34,23 +40,25 @@
                             </h1>
                         </div>
                         <group>
-                            <group>
+                            <group string="Información del Examen">
                                 <field name="curso_id"/>
-                                <field name="punteo"/>
-                                <field name="create_date" readonly="1"/>
+                                <field name="alumno_id"/>
+                                <field name="tipo_examen"/>
+                                <field name="fecha_examen"/>
                             </group>
-                            <group>
-                                <field name="write_date" readonly="1"/>
-                                <field name="create_uid" readonly="1"/>
-                                <field name="write_uid" readonly="1"/>
+                            <group string="Calificación">
+                                <field name="punteo"/>
+                                <field name="punteo_maximo"/>
+                                <field name="porcentaje_obtenido" readonly="1"/>
+                                <field name="aprobado" readonly="1"/>
                             </group>
                         </group>
                         <notebook>
-                            <page string="Pregunta">
-                                <field name="pregunta" placeholder="Escriba la pregunta del examen..."/>
+                            <page string="Pregunta/Descripción">
+                                <field name="pregunta" placeholder="Escriba la pregunta del examen o descripción de la evaluación..."/>
                             </page>
-                            <page string="Respuesta">
-                                <field name="respuesta" placeholder="Escriba la respuesta del examen..."/>
+                            <page string="Respuesta Esperada">
+                                <field name="respuesta" placeholder="Escriba la respuesta esperada o criterios de evaluación..."/>
                             </page>
                         </notebook>
                     </sheet>

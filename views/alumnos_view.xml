@@ -6,12 +6,12 @@
             <field name="name">school.alumno.tree</field>
             <field name="model">school.alumno</field>
             <field name="arch" type="xml">
-                <tree colors="red:not curso_id;blue:curso_id">
+                <tree colors="red:not aula_id;blue:aula_id and total_cursos&gt;0;orange:total_cursos==0">
                     <field name="name"/>
                     <field name="numero"/>
-                    <field name="curso_id"/>
+                    <field name="aula_id"/>
+                    <field name="total_cursos"/>
                     <field name="create_date"/>
-                    <field name="write_date"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
                 </tree>
@@ -34,17 +34,48 @@
                             </h1>
                         </div>
                         <group>
-                            <group>
+                            <group string="Información Personal">
                                 <field name="numero"/>
-                                <field name="curso_id"/>
-                                <field name="create_date" readonly="1"/>
+                                <field name="aula_id"/>
+                                <field name="total_cursos" readonly="1"/>
                             </group>
-                            <group>
+                            <group string="Fechas">
+                                <field name="create_date" readonly="1"/>
                                 <field name="write_date" readonly="1"/>
                                 <field name="create_uid" readonly="1"/>
                                 <field name="write_uid" readonly="1"/>
                             </group>
                         </group>
+                        
+                        <notebook>
+                            <page string="Cursos Inscritos">
+                                <field name="curso_ids">
+                                    <tree string="Cursos">
+                                        <field name="codigo"/>
+                                        <field name="name"/>
+                                        <field name="aula_id"/>
+                                        <field name="profesor_id"/>
+                                        <field name="total_estudiantes"/>
+                                        <field name="total_examenes"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Exámenes a Presentar">
+                                <field name="examen_ids">
+                                    <tree string="Exámenes" colors="red:not aprobado;green:aprobado">
+                                        <field name="name"/>
+                                        <field name="curso_id"/>
+                                        <field name="tipo_examen"/>
+                                        <field name="fecha_examen"/>
+                                        <field name="punteo"/>
+                                        <field name="punteo_maximo"/>
+                                        <field name="porcentaje_obtenido"/>
+                                        <field name="aprobado"/>
+                                        <field name="estado"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -57,7 +88,7 @@
             <field name="type">graph</field>
             <field name="arch" type="xml">
                 <graph string="Análisis de Alumnos" type="bar">
-                    <field name="curso_id"/>
+                    <field name="aula_id"/>
                     <field name="create_date" interval="month"/>
                 </graph>
             </field>
@@ -72,20 +103,27 @@
                     <!-- Campos de búsqueda -->
                     <field name="name" string="Nombre del Alumno" filter_domain="[('name','ilike',self)]"/>
                     <field name="numero" string="Número de Estudiante" filter_domain="[('numero','ilike',self)]"/>
-                    <field name="curso_id" string="Curso"/>
+                    <field name="aula_id" string="Aula"/>
+                    <field name="curso_ids" string="Cursos"/>
                     
                     <!-- Filtros predefinidos -->
-                    <filter string="Sin Curso Asignado" domain="[('curso_id','=',False)]"/>
-                    <filter string="Con Curso Asignado" domain="[('curso_id','!=',False)]"/>
+                    <filter string="Sin Aula Asignada" domain="[('aula_id','=',False)]"/>
+                    <filter string="Con Aula Asignada" domain="[('aula_id','!=',False)]"/>
+                    <filter string="Sin Cursos" domain="[('total_cursos','=',0)]"/>
+                    <filter string="Con Cursos" domain="[('total_cursos','>',0)]"/>
                     
                     <separator/>
                     
-                    <!-- Filtros por curso -->
-                    <filter string="Matemáticas" domain="[('curso_id.name','=','Matemáticas')]"/>
-                    <filter string="Física" domain="[('curso_id.name','=','Física')]"/>
-                    <filter string="Computación" domain="[('curso_id.name','=','Computación')]"/>
-                    <filter string="Inglés" domain="[('curso_id.name','=','Inglés')]"/>
-                    <filter string="Religión" domain="[('curso_id.name','=','Religión')]"/>
+                    <!-- Filtros por aula -->
+                    <filter string="Aula 101" domain="[('aula_id.name','=','Aula 101')]"/>
+                    <filter string="Aula 102" domain="[('aula_id.name','=','Aula 102')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtros por cursos -->
+                    <filter string="Matemáticas" domain="[('curso_ids.name','ilike','Matemáticas')]"/>
+                    <filter string="Física" domain="[('curso_ids.name','ilike','Física')]"/>
+                    <filter string="Computación" domain="[('curso_ids.name','ilike','Computación')]"/>
                     
                     <separator/>
                     
@@ -98,7 +136,8 @@
                     
                     <!-- Agrupaciones -->
                     <group expand="0" string="Agrupar Por">
-                        <filter string="Curso" context="{'group_by':'curso_id'}"/>
+                        <filter string="Aula" context="{'group_by':'aula_id'}"/>
+                        <filter string="Total de Cursos" context="{'group_by':'total_cursos'}"/>
                         <filter string="Fecha de Registro" context="{'group_by':'create_date:month'}"/>
                         <filter string="Usuario Creador" context="{'group_by':'create_uid'}"/>
                     </group>

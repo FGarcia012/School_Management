@@ -6,11 +6,14 @@
             <field name="name">school.curso.tree</field>
             <field name="model">school.curso</field>
             <field name="arch" type="xml">
-                <tree colors="blue:name=='Matemáticas';green:name=='Física'">
+                <tree colors="red:total_examenes==0;orange:total_estudiantes==0;green:total_examenes&gt;0 and total_estudiantes&gt;0">
+                    <field name="codigo"/>
                     <field name="name"/>
-                    <field name="description"/>
-                    <field name="create_date"/>
-                    <field name="write_date"/>
+                    <field name="aula_id"/>
+                    <field name="profesor_id"/>
+                    <field name="total_estudiantes"/>
+                    <field name="total_examenes"/>
+                    <field name="promedio_examenes"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
                 </tree>
@@ -33,16 +36,60 @@
                             </h1>
                         </div>
                         <group>
-                            <group>
+                            <group string="Información del Curso">
+                                <field name="codigo"/>
                                 <field name="description"/>
-                                <field name="create_date" readonly="1"/>
+                                <field name="aula_id"/>
+                                <field name="profesor_id"/>
                             </group>
-                            <group>
+                            <group string="Estadísticas">
+                                <field name="total_estudiantes" readonly="1"/>
+                                <field name="total_examenes" readonly="1"/>
+                                <field name="promedio_examenes" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
                                 <field name="write_date" readonly="1"/>
-                                <field name="create_uid" readonly="1"/>
-                                <field name="write_uid" readonly="1"/>
                             </group>
                         </group>
+                        
+                        <notebook>
+                            <page string="Estudiantes Inscritos">
+                                <field name="alumno_ids">
+                                    <tree string="Estudiantes">
+                                        <field name="numero"/>
+                                        <field name="name"/>
+                                        <field name="aula_id"/>
+                                        <field name="total_cursos"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Exámenes del Curso">
+                                <field name="examen_ids">
+                                    <tree string="Exámenes" colors="red:estado=='programado';blue:estado=='en_curso';green:estado=='calificado'">
+                                        <field name="name"/>
+                                        <field name="tipo_examen"/>
+                                        <field name="fecha_examen"/>
+                                        <field name="alumno_id"/>
+                                        <field name="punteo"/>
+                                        <field name="punteo_maximo"/>
+                                        <field name="porcentaje_obtenido"/>
+                                        <field name="estado"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Horarios Programados">
+                                <field name="horario_ids">
+                                    <tree string="Horarios">
+                                        <field name="dia_semana"/>
+                                        <field name="turno"/>
+                                        <field name="hora_inicio_display"/>
+                                        <field name="hora_fin_display"/>
+                                        <field name="aula_id"/>
+                                        <field name="profesor"/>
+                                        <field name="activo"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
