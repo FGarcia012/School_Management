@@ -53,7 +53,6 @@ class AlumnoWizard(models.TransientModel):
         self.ensure_one()
         self.env['school.alumno'].create({
             'name': self.name,
-            'numero': self.numero,
             'aula_id': self.aula_id.id if self.aula_id else False,
             'curso_ids': [(6, 0, self.curso_ids.ids)],
         })
@@ -66,7 +65,6 @@ class AlumnoWizard(models.TransientModel):
         if alumno_id:
             self.env['school.alumno'].browse(alumno_id).write({
                 'name': self.name,
-                'numero': self.numero,
                 'aula_id': self.aula_id.id if self.aula_id else False,
                 'curso_ids': [(6, 0, self.curso_ids.ids)],
             })

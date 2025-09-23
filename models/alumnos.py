@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
+import datetime
 
 class Alumno(models.Model):
     _name = 'school.alumno'
     _description = 'Alumno'
 
     name = fields.Char('Nombre', required=True)
-    numero = fields.Char('Número de estudiante', required=True)
+    numero = fields.Char('Número de estudiante', readonly=True, copy=False)
     
     # Relaciones principales
     aula_id = fields.Many2one('school.aula', 'Aula Asignada', required=True)
     curso_ids = fields.Many2many('school.curso', 'alumno_curso_rel', 'alumno_id', 'curso_id', 'Cursos Inscritos')
     
-    # Relaciones computadas para información
-    examen_ids = fields.One2many('school.examen', 'alumno_id', 'Exámenes a Presentar')
+    calificacion_ids = fields.One2many('school.calificacion', 'alumno_id', 'Calificaciones')
     
     # Campos informativos
     total_cursos = fields.Integer('Total de Cursos', compute='_compute_total_cursos', store=True)
@@ -44,6 +44,37 @@ class Alumno(models.Model):
                         "La capacidad máxima es de %d estudiantes." % 
                         (alumno.aula_id.name, alumno.aula_id.capacidad)
                     )
+
+    # Generación automática del carnet
+    @api.model
+    def create(self, vals):
+        if 'numero' not in vals or not vals['numero']:
+            vals['numero'] = self._generar_numero_carnet()
+        return super(Alumno, self).create(vals)
+    
+    @api.model
+    def _generar_numero_carnet(self):
+        """Genera el número de carnet automáticamente con formato año + secuencial de 3 dígitos"""
+        current_year = datetime.datetime.now().year
+        
+        # Buscar el último número de carnet del año actual
+        prefix = str(current_year)
+        last_alumno = self.search([
+            ('numero', 'like', prefix + '%')
+        ], order='numero desc', limit=1)
+        
+        if last_alumno:
+            # Extraer el número secuencial del último carnet
+            last_number = last_alumno.numero
+            try:
+                sequence = int(last_number.replace(prefix, ''))
+                next_sequence = sequence + 1
+            except ValueError:
+                next_sequence = 1
+        else:
+            next_sequence = 1
+        # Formatear como año + 3 dígitos
+        return '%s%03d' % (current_year, next_sequence)
 
     # Métodos para los botones de acción
     @api.multi

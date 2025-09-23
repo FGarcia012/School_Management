@@ -9,7 +9,7 @@
                 <form string="Agregar Nuevo Alumno">
                     <group>
                         <field name="name"/>
-                        <field name="numero"/>
+                        <label string="El número de carnet se generará automáticamente"/>
                         <field name="aula_id"/>
                         <field name="curso_ids"/>
                     </group>
@@ -29,7 +29,7 @@
                 <form string="Actualizar Alumno">
                     <group>
                         <field name="name"/>
-                        <field name="numero"/>
+                        <field name="numero" readonly="1"/>
                         <field name="aula_id"/>
                         <field name="curso_ids"/>
                     </group>

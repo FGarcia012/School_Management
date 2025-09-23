@@ -19,6 +19,7 @@ Sistema de horarios híbrido con validaciones automáticas y generación de plan
         'views/alumnos_view.xml',
         'views/aulas_view.xml',
         'views/examenes_view.xml',
+        'views/calificaciones_view.xml',
         'views/horarios_view.xml',
         'views/school_users_view.xml',
         'views/curso_wizard_view.xml',

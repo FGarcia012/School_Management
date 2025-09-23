@@ -64,15 +64,16 @@
                             </page>
                             <page string="Exámenes del Curso">
                                 <field name="examen_ids">
-                                    <tree string="Exámenes" colors="red:estado=='programado';blue:estado=='en_curso';green:estado=='calificado'">
+                                    <tree string="Exámenes">
                                         <field name="name"/>
                                         <field name="tipo_examen"/>
                                         <field name="fecha_examen"/>
-                                        <field name="alumno_id"/>
-                                        <field name="punteo"/>
                                         <field name="punteo_maximo"/>
-                                        <field name="porcentaje_obtenido"/>
-                                        <field name="estado"/>
+                                        <field name="total_estudiantes"/>
+                                        <field name="promedio_examen"/>
+                                        <field name="aprobados"/>
+                                        <field name="reprobados"/>
+                                        <button name="generar_calificaciones" string="Generar Calificaciones" type="object" class="oe_highlight"/>
                                     </tree>
                                 </field>
                             </page>

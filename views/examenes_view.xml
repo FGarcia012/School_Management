@@ -6,17 +6,17 @@
             <field name="name">school.examen.tree</field>
             <field name="model">school.examen</field>
             <field name="arch" type="xml">
-                <tree colors="red:not aprobado and estado=='calificado';orange:porcentaje_obtenido&lt;80 and aprobado;green:aprobado;blue:estado!='calificado'">
+                <tree colors="green:total_estudiantes>0;orange:total_estudiantes==0;blue:promedio_examen>=80">
                     <field name="name"/>
                     <field name="curso_id"/>
-                    <field name="alumno_id"/>
                     <field name="tipo_examen"/>
                     <field name="fecha_examen"/>
-                    <field name="punteo"/>
                     <field name="punteo_maximo"/>
-                    <field name="porcentaje_obtenido"/>
-                    <field name="aprobado"/>
-                    <field name="estado"/>
+                    <field name="total_estudiantes"/>
+                    <field name="promedio_examen"/>
+                    <field name="aprobados"/>
+                    <field name="reprobados"/>
+                    <button name="generar_calificaciones" string="Generar Calificaciones" type="object" class="oe_highlight" attrs="{'invisible': [('total_estudiantes', '>', 0)]}"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
                 </tree>
@@ -31,7 +31,7 @@
                 <form string="Examen">
                     <header>
                         <button name="abrir_wizard_agregar" string="Añadir Nuevo Examen" type="object" class="oe_highlight"/>
-                        <field name="estado" widget="statusbar" statusbar_visible="programado,en_curso,completado,calificado"/>
+                        <button name="generar_calificaciones" string="Generar Calificaciones" type="object" class="oe_highlight" attrs="{'invisible': [('total_estudiantes', '>', 0)]}"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -42,15 +42,15 @@
                         <group>
                             <group string="Información del Examen">
                                 <field name="curso_id"/>
-                                <field name="alumno_id"/>
                                 <field name="tipo_examen"/>
                                 <field name="fecha_examen"/>
-                            </group>
-                            <group string="Calificación">
-                                <field name="punteo"/>
                                 <field name="punteo_maximo"/>
-                                <field name="porcentaje_obtenido" readonly="1"/>
-                                <field name="aprobado" readonly="1"/>
+                            </group>
+                            <group string="Estadísticas">
+                                <field name="total_estudiantes" readonly="1"/>
+                                <field name="promedio_examen" readonly="1"/>
+                                <field name="aprobados" readonly="1"/>
+                                <field name="reprobados" readonly="1"/>
                             </group>
                         </group>
                         <notebook>
@@ -59,6 +59,21 @@
                             </page>
                             <page string="Respuesta Esperada">
                                 <field name="respuesta" placeholder="Escriba la respuesta esperada o criterios de evaluación..."/>
+                            </page>
+                            <page string="Calificaciones de Estudiantes">
+                                <button name="generar_calificaciones" string="Generar Calificaciones para Todos los Estudiantes" type="object" class="oe_highlight"/>
+                                <field name="calificacion_ids">
+                                    <tree string="Calificaciones" colors="red:not aprobado;green:aprobado;blue:estado=='pendiente'">
+                                        <field name="alumno_id"/>
+                                        <field name="punteo"/>
+                                        <field name="punteo_maximo"/>
+                                        <field name="porcentaje_obtenido"/>
+                                        <field name="aprobado"/>
+                                        <field name="estado"/>
+                                        <field name="fecha_entrega"/>
+                                        <field name="comentarios"/>
+                                    </tree>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>
@@ -74,7 +89,7 @@
             <field name="arch" type="xml">
                 <graph string="Análisis de Exámenes" type="bar">
                     <field name="curso_id"/>
-                    <field name="punteo"/>
+                    <field name="promedio_examen"/>
                 </graph>
             </field>
         </record>
@@ -88,14 +103,14 @@
                     <!-- Campos de búsqueda -->
                     <field name="name" string="Nombre del Examen" filter_domain="[('name','ilike',self)]"/>
                     <field name="curso_id" string="Curso"/>
-                    <field name="punteo" string="Punteo"/>
+                    <field name="promedio_examen" string="Promedio"/>
                     <field name="pregunta" string="Pregunta" filter_domain="[('pregunta','ilike',self)]"/>
                     <field name="respuesta" string="Respuesta" filter_domain="[('respuesta','ilike',self)]"/>
                     
-                    <!-- Filtros por punteo -->
-                    <filter string="Reprobado (&lt; 60)" domain="[('punteo','&lt;',60)]"/>
-                    <filter string="Aprobado (60-79)" domain="[('punteo','&gt;=',60),('punteo','&lt;',80)]"/>
-                    <filter string="Excelente (&gt;= 80)" domain="[('punteo','&gt;=',80)]"/>
+                    <!-- Filtros por promedio -->
+                    <filter string="Bajo Promedio (&lt; 60)" domain="[('promedio_examen','&lt;',60)]"/>
+                    <filter string="Promedio Regular (60-79)" domain="[('promedio_examen','&gt;=',60),('promedio_examen','&lt;',80)]"/>
+                    <filter string="Excelente Promedio (&gt;= 80)" domain="[('promedio_examen','&gt;=',80)]"/>
                     
                     <separator/>
                     

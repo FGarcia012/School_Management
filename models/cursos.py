@@ -34,12 +34,12 @@ class Curso(models.Model):
         for curso in self:
             curso.total_examenes = len(curso.examen_ids)
     
-    @api.depends('examen_ids.punteo')
+    @api.depends('examen_ids.promedio_examen')
     def _compute_promedio_examenes(self):
         for curso in self:
             if curso.examen_ids:
-                total_punteo = sum(examen.punteo for examen in curso.examen_ids if examen.punteo)
-                curso.promedio_examenes = total_punteo / len(curso.examen_ids) if curso.examen_ids else 0.0
+                promedios = [examen.promedio_examen for examen in curso.examen_ids if examen.promedio_examen > 0]
+                curso.promedio_examenes = sum(promedios) / len(promedios) if promedios else 0.0
             else:
                 curso.promedio_examenes = 0.0
     
@@ -51,12 +51,13 @@ class Curso(models.Model):
                 if existing:
                     raise ValidationError("El código de curso '%s' ya está asignado a otro curso." % curso.codigo)
     
-    @api.constrains('examen_ids')
+    @api.constrains('examen_ids', 'alumno_ids')
     def _check_minimo_examenes(self):
         for curso in self:
-            if curso.total_examenes < 1:
+            # Solo validar si el curso tiene estudiantes inscritos
+            if curso.alumno_ids and curso.total_examenes < 1:
                 raise ValidationError(
-                    "El curso '%s' debe tener al menos un examen asignado." % curso.name
+                    "El curso '%s' debe tener al menos un examen asignado antes de inscribir estudiantes." % curso.name
                 )
     
     @api.constrains('alumno_ids', 'aula_id')

@@ -45,3 +45,6 @@ access_horario_manager,access.horario.manager,model_school_horario,base.group_sy
 access_horario_wizard_super_admin,access.horario.wizard.super.admin,model_horario_wizard,school_management.group_school_super_admin,1,1,1,1
 access_horario_wizard_teacher,access.horario.wizard.teacher,model_horario_wizard,school_management.group_school_teacher,1,0,0,0
 access_horario_wizard,access.horario.wizard,model_horario_wizard,base.group_user,1,0,0,0
+access_calificacion_super_admin,access.calificacion.super.admin,model_school_calificacion,school_management.group_school_super_admin,1,1,1,1
+access_calificacion_teacher,access.calificacion.teacher,model_school_calificacion,school_management.group_school_teacher,1,1,1,1
+access_calificacion_student,access.calificacion.student,model_school_calificacion,school_management.group_school_student,1,0,0,0

@@ -35,7 +35,7 @@
                         </div>
                         <group>
                             <group string="Información Personal">
-                                <field name="numero"/>
+                                <field name="numero" readonly="1"/>
                                 <field name="aula_id"/>
                                 <field name="total_cursos" readonly="1"/>
                             </group>
@@ -60,13 +60,10 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Exámenes a Presentar">
-                                <field name="examen_ids">
-                                    <tree string="Exámenes" colors="red:not aprobado;green:aprobado">
-                                        <field name="name"/>
-                                        <field name="curso_id"/>
-                                        <field name="tipo_examen"/>
-                                        <field name="fecha_examen"/>
+                            <page string="Calificaciones">
+                                <field name="calificacion_ids">
+                                    <tree string="Calificaciones" colors="red:not aprobado;green:aprobado">
+                                        <field name="examen_id"/>
                                         <field name="punteo"/>
                                         <field name="punteo_maximo"/>
                                         <field name="porcentaje_obtenido"/>
