@@ -15,6 +15,11 @@
                     <field name="create_date"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
+                    <button name="%(school_management.reporte_aulas_pdf)d" 
+                            string="📄 Reporte PDF" 
+                            type="action" 
+                            class="oe_highlight"
+                            help="Generar reporte completo de aulas en formato PDF"/>
                 </tree>
             </field>
         </record>

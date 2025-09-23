@@ -15,6 +15,11 @@ Sistema de horarios híbrido con validaciones automáticas y generación de plan
     'data': [
         'security/groups.xml',
         'security/ir.model.access.csv',
+        'reports/reporte_cursos.xml',
+        'reports/reporte_alumnos.xml',
+        'reports/reporte_examenes.xml',
+        'reports/reporte_horarios.xml',
+        'reports/reporte_aulas.xml',
         'views/cursos_view.xml',
         'views/alumnos_view.xml',
         'views/aulas_view.xml',

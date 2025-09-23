@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Definición del reporte de Horarios -->
+        <report 
+            id="reporte_horarios_pdf"
+            model="school.horario"
+            string="Reporte de Horarios"
+            report_type="qweb-pdf"
+            name="school_management.reporte_horarios_template"
+            file="school_management.reporte_horarios_template"
+            attachment_use="False"
+        />
+
+        <!-- Template del reporte de Horarios -->
+        <template id="reporte_horarios_template">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            
+                            <!-- Encabezado del reporte -->
+                            <div class="text-center" style="margin-bottom: 30px;">
+                                <h2>REPORTE DE HORARIOS</h2>
+                                <p><strong>Fecha del Reporte:</strong> <span t-esc="fecha_reporte.strftime('%d/%m/%Y %H:%M')"/></p>
+                                <p><strong>Total de Horarios:</strong> <span t-esc="total_horarios"/></p>
+                            </div>
+
+                            <!-- Tabla de horarios -->
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Curso</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Aula</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Día</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Hora Inicio</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Hora Fin</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Turno</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Profesor</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Estado</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="docs" t-as="horario">
+                                        <tr>
+                                            <td><span t-esc="horario.curso_id.name or 'No asignado'"/></td>
+                                            <td class="text-center"><span t-esc="horario.aula_id.name or 'No asignada'"/></td>
+                                            <td class="text-center"><span t-esc="horario.dia_semana.title()"/></td>
+                                            <td class="text-center"><span t-esc="horario.hora_inicio_display"/></td>
+                                            <td class="text-center"><span t-esc="horario.hora_fin_display"/></td>
+                                            <td class="text-center">
+                                                <span t-if="horario.turno == 'matutino'" style="color: blue;">Matutino</span>
+                                                <span t-if="horario.turno == 'vespertino'" style="color: green;">Vespertino</span>
+                                            </td>
+                                            <td class="text-center"><span t-esc="horario.profesor or 'No asignado'"/></td>
+                                            <td class="text-center">
+                                                <span t-if="horario.activo" style="color: green;">Activo</span>
+                                                <span t-if="not horario.activo" style="color: red;">Inactivo</span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <!-- Resumen por turno y estado -->
+                            <div style="margin-top: 30px;">
+                                <h4>Resumen por Turno</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th style="background-color: #f0f0f0;"><strong>Turno</strong></th>
+                                            <th style="background-color: #f0f0f0;"><strong>Activos</strong></th>
+                                            <th style="background-color: #f0f0f0;"><strong>Inactivos</strong></th>
+                                            <th style="background-color: #f0f0f0;"><strong>Total</strong></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Matutino</td>
+                                            <td class="text-center"><span t-esc="len([h for h in docs if h.turno == 'matutino' and h.activo])"/></td>
+                                            <td class="text-center"><span t-esc="len([h for h in docs if h.turno == 'matutino' and not h.activo])"/></td>
+                                            <td class="text-center"><span t-esc="len([h for h in docs if h.turno == 'matutino'])"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vespertino</td>
+                                            <td class="text-center"><span t-esc="len([h for h in docs if h.turno == 'vespertino' and h.activo])"/></td>
+                                            <td class="text-center"><span t-esc="len([h for h in docs if h.turno == 'vespertino' and not h.activo])"/></td>
+                                            <td class="text-center"><span t-esc="len([h for h in docs if h.turno == 'vespertino'])"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>

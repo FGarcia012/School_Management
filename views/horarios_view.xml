@@ -39,6 +39,11 @@
                     <field name="turno"/>
                     <field name="profesor"/>
                     <field name="activo"/>
+                    <button name="%(school_management.reporte_horarios_pdf)d" 
+                            string="📄 Reporte PDF" 
+                            type="action" 
+                            class="oe_highlight"
+                            help="Generar reporte completo de horarios en formato PDF"/>
                 </tree>
             </field>
         </record>
