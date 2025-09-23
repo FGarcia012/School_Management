@@ -80,6 +80,7 @@ class Examen(models.Model):
             'res_model': 'examen.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_examen_wizard_agregar').id,
             'target': 'new',
             'context': {'default_mode': 'agregar'}
         }
@@ -92,6 +93,7 @@ class Examen(models.Model):
             'res_model': 'examen.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_examen_wizard_actualizar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'actualizar',
@@ -112,6 +114,7 @@ class Examen(models.Model):
             'res_model': 'examen.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_examen_wizard_eliminar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'eliminar',

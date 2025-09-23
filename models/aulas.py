@@ -62,6 +62,7 @@ class Aula(models.Model):
             'res_model': 'aula.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_aula_wizard_agregar').id,
             'target': 'new',
             'context': {'default_mode': 'agregar'}
         }
@@ -74,6 +75,7 @@ class Aula(models.Model):
             'res_model': 'aula.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_aula_wizard_actualizar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'actualizar',
@@ -91,6 +93,7 @@ class Aula(models.Model):
             'res_model': 'aula.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_aula_wizard_eliminar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'eliminar',

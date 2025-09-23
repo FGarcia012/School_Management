@@ -54,6 +54,7 @@ class Alumno(models.Model):
             'res_model': 'alumno.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_alumno_wizard_agregar').id,
             'target': 'new',
             'context': {'default_mode': 'agregar'}
         }
@@ -66,6 +67,7 @@ class Alumno(models.Model):
             'res_model': 'alumno.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_alumno_wizard_actualizar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'actualizar',
@@ -84,6 +86,7 @@ class Alumno(models.Model):
             'res_model': 'alumno.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_alumno_wizard_eliminar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'eliminar',

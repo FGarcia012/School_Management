@@ -79,6 +79,7 @@ class Curso(models.Model):
             'res_model': 'curso.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_curso_wizard_agregar').id,
             'target': 'new',
             'context': {'default_mode': 'agregar'}
         }
@@ -91,6 +92,7 @@ class Curso(models.Model):
             'res_model': 'curso.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_curso_wizard_actualizar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'actualizar',
@@ -108,6 +110,7 @@ class Curso(models.Model):
             'res_model': 'curso.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_curso_wizard_eliminar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'eliminar',
