@@ -53,6 +53,26 @@ class Aula(models.Model):
                     (aula.name, aula.capacidad, len(aula.alumno_ids))
                 )
 
+    @api.multi
+    def unlink(self):
+        """Override para manejar eliminación segura de aulas"""
+        for aula in self:
+            if aula.alumno_ids:
+                raise ValidationError(
+                    "No se puede eliminar el aula '%s' porque tiene %d estudiante(s) asignado(s). "
+                    "Primero reasigna los estudiantes a otra aula." % 
+                    (aula.name, len(aula.alumno_ids))
+                )
+            
+            if aula.curso_ids:
+                raise ValidationError(
+                    "No se puede eliminar el aula '%s' porque tiene %d curso(s) asignado(s). "
+                    "Primero reasigna los cursos a otra aula." % 
+                    (aula.name, len(aula.curso_ids))
+                )
+        
+        return super(Aula, self).unlink()
+
     # Métodos para los botones de acción
     @api.multi
     def abrir_wizard_agregar(self):

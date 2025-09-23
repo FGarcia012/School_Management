@@ -54,12 +54,31 @@ class Curso(models.Model):
     @api.constrains('examen_ids', 'alumno_ids')
     def _check_minimo_examenes(self):
         for curso in self:
-            # Solo validar si el curso tiene estudiantes inscritos
             if curso.alumno_ids and curso.total_examenes < 1:
                 raise ValidationError(
                     "El curso '%s' debe tener al menos un examen asignado antes de inscribir estudiantes." % curso.name
                 )
-    
+
+    @api.multi
+    def unlink(self):
+        """Override para manejar eliminación segura de cursos"""
+        for curso in self:
+            if curso.alumno_ids:
+                raise ValidationError(
+                    "No se puede eliminar el curso '%s' porque tiene %d estudiante(s) inscrito(s). "
+                    "Primero desinscribe a todos los estudiantes." % 
+                    (curso.name, len(curso.alumno_ids))
+                )
+            
+            if curso.examen_ids:
+                curso.examen_ids.unlink()
+            
+            if hasattr(curso, 'horario_ids') and curso.horario_ids:
+                curso.horario_ids.unlink()
+        
+        return super(Curso, self).unlink()
+
+    # Métodos para los botones de acción
     @api.constrains('alumno_ids', 'aula_id')
     def _check_capacidad_aula_curso(self):
         for curso in self:

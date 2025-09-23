@@ -36,7 +36,6 @@ class Alumno(models.Model):
     def _check_capacidad_aula(self):
         for alumno in self:
             if alumno.aula_id:
-                # Contar alumnos en el aula (incluyendo este alumno)
                 alumnos_en_aula = self.search([('aula_id', '=', alumno.aula_id.id)])
                 if len(alumnos_en_aula) > alumno.aula_id.capacidad:
                     raise ValidationError(
@@ -75,6 +74,18 @@ class Alumno(models.Model):
             next_sequence = 1
         # Formatear como año + 3 dígitos
         return '%s%03d' % (current_year, next_sequence)
+
+    @api.multi
+    def unlink(self):
+        """Override para manejar eliminación segura de alumnos"""
+        for alumno in self:
+            if alumno.calificacion_ids:
+                calificaciones_count = len(alumno.calificacion_ids)
+                self.env['school.calificacion'].search([
+                    ('alumno_id', '=', alumno.id)
+                ]).unlink()
+        
+        return super(Alumno, self).unlink()
 
     # Métodos para los botones de acción
     @api.multi

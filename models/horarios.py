@@ -8,11 +8,6 @@ class Horario(models.Model):
     _description = 'Horario Escolar'
     _order = 'dia_semana, hora_inicio'
 
-    # PERMISOS POR ROL:
-    # - Super Admin (Director): Crear, Leer, Escribir, Eliminar (Control total)
-    # - Maestros: Solo Leer (Consultar horarios)
-    # - Estudiantes: Solo Leer (Consultar su horario)
-    
     name = fields.Char('Nombre', compute='_compute_name', store=True)
     curso_id = fields.Many2one('school.curso', 'Curso', required=True)
     aula_id = fields.Many2one('school.aula', 'Aula', required=True)
@@ -71,7 +66,6 @@ class Horario(models.Model):
         hours = int(float_time)
         minutes = int((float_time - hours) * 60)
         
-        # Formato AM/PM
         if hours == 0:
             time_str = '12:%02d AM' % minutes
         elif hours < 12:
@@ -95,7 +89,6 @@ class Horario(models.Model):
     @api.constrains('curso_id', 'aula_id', 'dia_semana', 'hora_inicio', 'hora_fin')
     def _check_conflictos(self):
         for record in self:
-            # Verificar conflicto de aula
             conflicto_aula = self.search([
                 ('id', '!=', record.id),
                 ('aula_id', '=', record.aula_id.id),
@@ -121,10 +114,10 @@ class Horario(models.Model):
     def crear_plantilla_matutino(self):
         """Crea una plantilla de horario matutino básico"""
         plantilla = [
-            {'hora_inicio': 8.0, 'hora_fin': 9.0},    # 8:00 - 9:00
-            {'hora_inicio': 9.0, 'hora_fin': 10.0},   # 9:00 - 10:00
-            {'hora_inicio': 10.3, 'hora_fin': 11.3},  # 10:18 - 11:18 (después del receso)
-            {'hora_inicio': 11.3, 'hora_fin': 12.3},  # 11:18 - 12:18
+            {'hora_inicio': 8.0, 'hora_fin': 9.0}, 
+            {'hora_inicio': 9.0, 'hora_fin': 10.0}, 
+            {'hora_inicio': 10.3, 'hora_fin': 11.3},  
+            {'hora_inicio': 11.3, 'hora_fin': 12.3}, 
         ]
         return plantilla
 
@@ -132,10 +125,10 @@ class Horario(models.Model):
     def crear_plantilla_vespertino(self):
         """Crea una plantilla de horario vespertino básico"""
         plantilla = [
-            {'hora_inicio': 14.0, 'hora_fin': 15.0},  # 2:00 - 3:00 PM
-            {'hora_inicio': 15.0, 'hora_fin': 16.0},  # 3:00 - 4:00 PM
-            {'hora_inicio': 16.3, 'hora_fin': 17.3},  # 4:18 - 5:18 PM (después del receso)
-            {'hora_inicio': 17.3, 'hora_fin': 18.3},  # 5:18 - 6:18 PM
+            {'hora_inicio': 14.0, 'hora_fin': 15.0},  
+            {'hora_inicio': 15.0, 'hora_fin': 16.0},  
+            {'hora_inicio': 16.3, 'hora_fin': 17.3},  
+            {'hora_inicio': 17.3, 'hora_fin': 18.3},  
         ]
         return plantilla
 
@@ -165,10 +158,18 @@ class Horario(models.Model):
                         horario = self.create(vals)
                         horarios_creados.append(horario.id)
                     except ValidationError:
-                        # Si hay conflicto, continuamos con el siguiente
                         continue
         
         return horarios_creados
+
+    @api.multi
+    def unlink(self):
+        """Override para manejar eliminación segura de horarios"""
+        for horario in self:
+            if horario.activo:
+                horario.write({'activo': False})
+                continue
+        return super(Horario, self).unlink()
 
     # Métodos para los botones de acción
     @api.multi

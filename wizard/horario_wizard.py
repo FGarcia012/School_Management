@@ -13,7 +13,6 @@ class HorarioWizard(models.TransientModel):
         ('generar_plantilla', 'Generar Plantilla')
     ], 'Modo', required=True)
 
-    # Campos del horario
     curso_id = fields.Many2one('school.curso', 'Curso')
     aula_id = fields.Many2one('school.aula', 'Aula')
     dia_semana = fields.Selection([
@@ -32,7 +31,6 @@ class HorarioWizard(models.TransientModel):
     ], 'Turno')
     profesor = fields.Char('Profesor')
 
-    # Campos para generación de plantillas
     cursos_ids = fields.Many2many('school.curso', string='Cursos para Plantilla')
     aula_plantilla_id = fields.Many2one('school.aula', 'Aula para Plantilla')
     turno_plantilla = fields.Selection([

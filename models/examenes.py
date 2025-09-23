@@ -61,7 +61,6 @@ class Examen(models.Model):
         for examen in self:
             estudiantes = examen.curso_id.alumno_ids
             for estudiante in estudiantes:
-                # Verificar si ya existe calificación para este estudiante
                 existing = self.env['school.calificacion'].search([
                     ('examen_id', '=', examen.id),
                     ('alumno_id', '=', estudiante.id)
@@ -73,7 +72,25 @@ class Examen(models.Model):
                         'punteo': 0.0,
                         'estado': 'pendiente'
                     })
-        return True    # Métodos para los botones de acción
+        return True
+    
+    @api.multi
+    def unlink(self):
+        """Override para manejar eliminación segura de exámenes"""
+        for examen in self:
+            # Validar que el curso mantenga al menos un examen si tiene estudiantes
+            curso = examen.curso_id
+            otros_examenes = curso.examen_ids.filtered(lambda e: e.id != examen.id)
+            
+            if curso.alumno_ids and len(otros_examenes) == 0:
+                raise ValidationError(
+                    "No se puede eliminar el examen '%s' porque es el último examen del curso '%s' "
+                    "y hay %d estudiante(s) inscrito(s). Un curso con estudiantes debe tener al menos un examen." % 
+                    (examen.name, curso.name, len(curso.alumno_ids))
+                )        
+        return super(Examen, self).unlink()
+
+    # Métodos para los botones de acción
     @api.multi
     def abrir_wizard_agregar(self):
         return {
@@ -168,7 +185,7 @@ class Calificacion(models.Model):
     @api.depends('porcentaje_obtenido')
     def _compute_aprobado(self):
         for calificacion in self:
-            calificacion.aprobado = calificacion.porcentaje_obtenido >= 60.0  # 60% para aprobar
+            calificacion.aprobado = calificacion.porcentaje_obtenido >= 60.0 
     
     @api.constrains('punteo', 'punteo_maximo')
     def _check_punteos_validos(self):

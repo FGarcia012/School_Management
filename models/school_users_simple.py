@@ -6,7 +6,6 @@ _logger = logging.getLogger(__name__)
 class SchoolUser(models.Model):
     _inherit = 'res.users'
 
-    # Campos específicos para el sistema escolar (todos opcionales para evitar errores)
     school_role = fields.Selection([
         ('super_admin', 'Super Administrador'),
         ('teacher', 'Maestro/Administrador'),
@@ -86,7 +85,6 @@ class SchoolUserRegistration(models.TransientModel):
         self.ensure_one()
         
         try:
-            # Crear usuario básico
             user_vals = {
                 'name': self.name,
                 'login': self.login,
@@ -94,7 +92,6 @@ class SchoolUserRegistration(models.TransientModel):
                 'school_role': self.school_role,
             }
             
-            # Agregar campos opcionales si están presentes
             if self.student_number:
                 user_vals['student_number'] = self.student_number
             if self.teacher_code:
@@ -102,10 +99,8 @@ class SchoolUserRegistration(models.TransientModel):
             if self.phone_number:
                 user_vals['phone_number'] = self.phone_number
             
-            # Crear el usuario
             user = self.env['res.users'].create(user_vals)
             
-            # Si es estudiante y tiene curso, crear perfil de alumno
             if self.school_role == 'student' and self.curso_id:
                 try:
                     alumno = self.env['school.alumno'].create({
@@ -115,9 +110,8 @@ class SchoolUserRegistration(models.TransientModel):
                     })
                     user.write({'alumno_id': alumno.id})
                 except:
-                    pass  # No fallar si no se puede crear el alumno
+                    pass 
             
-            # Asignar grupos
             school_user = self.env['res.users'].browse(user.id)
             school_user._assign_groups_by_role(school_user, self.school_role)
             
