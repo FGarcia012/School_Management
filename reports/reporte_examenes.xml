@@ -15,9 +15,8 @@
         <!-- Template del reporte de Examenes -->
         <template id="reporte_examenes_template">
             <t t-call="report.html_container">
-                <t t-foreach="docs" t-as="o">
-                    <t t-call="report.external_layout">
-                        <div class="page">
+                <t t-call="report.external_layout">
+                    <div class="page">
                             <div class="oe_structure"/>
                             
                             <!-- Encabezado del reporte -->
@@ -91,9 +90,8 @@
                                 </ul>
                             </div>
 
-                            <div class="oe_structure"/>
-                        </div>
-                    </t>
+                        <div class="oe_structure"/>
+                    </div>
                 </t>
             </t>
         </template>

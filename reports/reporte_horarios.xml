@@ -15,9 +15,8 @@
         <!-- Template del reporte de Horarios -->
         <template id="reporte_horarios_template">
             <t t-call="report.html_container">
-                <t t-foreach="docs" t-as="o">
-                    <t t-call="report.external_layout">
-                        <div class="page">
+                <t t-call="report.external_layout">
+                    <div class="page">
                             <div class="oe_structure"/>
                             
                             <!-- Encabezado del reporte -->
@@ -93,8 +92,7 @@
                             </div>
 
                             <div class="oe_structure"/>
-                        </div>
-                    </t>
+                    </div>
                 </t>
             </t>
         </template>
