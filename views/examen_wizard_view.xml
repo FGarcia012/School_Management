@@ -12,7 +12,7 @@
                         <field name="curso_id"/>
                         <field name="pregunta"/>
                         <field name="respuesta"/>
-                        <field name="punteo"/>
+                        <field name="punteo_maximo"/>
                     </group>
                     <footer>
                         <button name="execute_action" string="Agregar" type="object" class="oe_highlight"/>
@@ -33,7 +33,7 @@
                         <field name="curso_id"/>
                         <field name="pregunta"/>
                         <field name="respuesta"/>
-                        <field name="punteo"/>
+                        <field name="punteo_maximo"/>
                     </group>
                     <footer>
                         <button name="execute_action" string="Actualizar" type="object" class="oe_highlight"/>
@@ -48,14 +48,14 @@
             <field name="name">examen.wizard.eliminar</field>
             <field name="model">examen.wizard</field>
             <field name="arch" type="xml">
-                <form string="¿Eliminar Examen?">
+                <form string="Eliminar Examen?">
                     <group>
-                        <label string="¿Está seguro que desea eliminar el siguiente examen?"/>
+                        <label string="Esta seguro que desea eliminar el siguiente examen?"/>
                         <field name="name" readonly="1"/>
                         <field name="curso_id" readonly="1"/>
                         <field name="pregunta" readonly="1"/>
                         <field name="respuesta" readonly="1"/>
-                        <field name="punteo" readonly="1"/>
+                        <field name="punteo_maximo" readonly="1"/>
                     </group>
                     <footer>
                         <button name="execute_action" string="Eliminar" type="object" class="oe_highlight"/>

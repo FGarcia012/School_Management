@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Vista Tree de Horarios (solo lectura para maestros/estudiantes) -->
+        <record id="view_horario_tree_readonly" model="ir.ui.view">
+            <field name="name">school.horario.tree.readonly</field>
+            <field name="model">school.horario</field>
+            <field name="arch" type="xml">
+                <tree string="Horarios" 
+                      colors="blue:turno=='matutino';green:turno=='vespertino'"
+                      delete="false"
+                      create="false"
+                      edit="false">
+                    <field name="dia_semana"/>
+                    <field name="curso_id"/>
+                    <field name="aula_id"/>
+                    <field name="hora_inicio_display"/>
+                    <field name="hora_fin_display"/>
+                    <field name="duracion"/>
+                    <field name="turno"/>
+                    <field name="profesor"/>
+                    <field name="activo"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Tree de Horarios (completa para super admin) -->
+        <record id="view_horario_tree" model="ir.ui.view">
+            <field name="name">school.horario.tree</field>
+            <field name="model">school.horario</field>
+            <field name="arch" type="xml">
+                <tree string="Horarios" colors="blue:turno=='matutino';green:turno=='vespertino'">
+                    <field name="dia_semana"/>
+                    <field name="curso_id"/>
+                    <field name="aula_id"/>
+                    <field name="hora_inicio_display"/>
+                    <field name="hora_fin_display"/>
+                    <field name="duracion"/>
+                    <field name="turno"/>
+                    <field name="profesor"/>
+                    <field name="activo"/>
+                    <button name="%(school_management.reporte_horarios_pdf)d" 
+                            string="📄 Reporte PDF" 
+                            type="action" 
+                            class="oe_highlight"
+                            help="Generar reporte completo de horarios en formato PDF"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Form de Horarios -->
+        <record id="view_horario_form" model="ir.ui.view">
+            <field name="name">school.horario.form</field>
+            <field name="model">school.horario</field>
+            <field name="arch" type="xml">
+                <form string="Horario">
+                    <header>
+                        <button name="abrir_wizard_agregar" string="Anadir Nuevo Horario" type="object" class="oe_highlight" groups="school_management.group_school_super_admin"/>
+                        <field name="activo" groups="school_management.group_school_super_admin"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Informacion del Curso">
+                                <field name="curso_id" options="{'no_create': True}"/>
+                                <field name="aula_id" options="{'no_create': True}"/>
+                                <field name="profesor"/>
+                            </group>
+                            <group string="Horario">
+                                <field name="dia_semana"/>
+                                <field name="turno"/>
+                                <field name="hora_inicio"/>
+                                <field name="hora_fin"/>
+                                <field name="duracion" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Visualizacion">
+                            <field name="hora_inicio_display" readonly="1"/>
+                            <field name="hora_fin_display" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Kanban de Horarios por dia -->
+        <record id="view_horario_kanban" model="ir.ui.view">
+            <field name="name">school.horario.kanban</field>
+            <field name="model">school.horario</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="dia_semana">
+                    <field name="curso_id"/>
+                    <field name="aula_id"/>
+                    <field name="hora_inicio_display"/>
+                    <field name="hora_fin_display"/>
+                    <field name="turno"/>
+                    <field name="profesor"/>
+                    <field name="activo"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card" style="background-color: #{turno=='matutino' ? 'lightblue' : 'lightgreen'};">
+                                <div class="oe_kanban_content">
+                                    <div>
+                                        <strong><field name="curso_id"/></strong>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-clock-o"/> <field name="hora_inicio_display"/> - <field name="hora_fin_display"/>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-building-o"/> <field name="aula_id"/>
+                                    </div>
+                                    <div t-if="record.profesor.raw_value">
+                                        <i class="fa fa-user"/> <field name="profesor"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <span class="label" t-att-class="record.turno.raw_value=='matutino' ? 'label-primary' : 'label-success'">
+                                            <field name="turno"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Vista Search de Horarios -->
+        <record id="view_horario_search" model="ir.ui.view">
+            <field name="name">school.horario.search</field>
+            <field name="model">school.horario</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Horarios">
+                    <field name="curso_id"/>
+                    <field name="aula_id"/>
+                    <field name="profesor"/>
+                    <filter string="Matutino" domain="[('turno', '=', 'matutino')]"/>
+                    <filter string="Vespertino" domain="[('turno', '=', 'vespertino')]"/>
+                    <filter string="Activos" domain="[('activo', '=', True)]"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Dia" context="{'group_by': 'dia_semana'}"/>
+                        <filter string="Turno" context="{'group_by': 'turno'}"/>
+                        <filter string="Curso" context="{'group_by': 'curso_id'}"/>
+                        <filter string="Aula" context="{'group_by': 'aula_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Accion de ventana para Horarios -->
+        <record id="action_horario" model="ir.actions.act_window">
+            <field name="name">Horarios</field>
+            <field name="res_model">school.horario</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban,graph</field>
+            <field name="search_view_id" ref="view_horario_search"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Haga clic para crear un nuevo horario escolar.
+                </p>
+                <p>
+                    Los horarios permiten organizar las clases por dia de la semana,
+                    asignando cursos a aulas especificas en franjas horarias definidas.
+                </p>
+            </field>
+        </record>
+
+        <!-- Vista Graph para analisis -->
+        <record id="view_horario_graph" model="ir.ui.view">
+            <field name="name">school.horario.graph</field>
+            <field name="model">school.horario</field>
+            <field name="arch" type="xml">
+                <graph string="Analisis de Horarios" type="bar">
+                    <field name="dia_semana"/>
+                    <field name="duracion" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Accion para generar plantilla de horarios -->
+        <record id="action_generar_plantilla_horario" model="ir.actions.act_window">
+            <field name="name">Generar Plantilla de Horarios</field>
+            <field name="res_model">horario.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_mode': 'generar_plantilla'}</field>
+        </record>
+
+    </data>
+</openerp>

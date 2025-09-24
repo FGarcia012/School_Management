@@ -1,13 +1,38 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_curso_user,access.curso.user,model_school_curso,base.group_user,1,1,1,0
-access_curso_manager,access.curso.manager,model_school_curso,base.group_system,1,1,1,1
-access_alumno_user,access.alumno.user,model_school_alumno,base.group_user,1,1,1,0
-access_alumno_manager,access.alumno.manager,model_school_alumno,base.group_system,1,1,1,1
-access_aula_user,access.aula.user,model_school_aula,base.group_user,1,1,1,0
-access_aula_manager,access.aula.manager,model_school_aula,base.group_system,1,1,1,1
-access_examen_user,access.examen.user,model_school_examen,base.group_user,1,1,1,0
-access_examen_manager,access.examen.manager,model_school_examen,base.group_system,1,1,1,1
-access_curso_wizard,access.curso.wizard,model_curso_wizard,base.group_user,1,1,1,1
-access_alumno_wizard,access.alumno.wizard,model_alumno_wizard,base.group_user,1,1,1,1
-access_aula_wizard,access.aula.wizard,model_aula_wizard,base.group_user,1,1,1,1
-access_examen_wizard,access.examen.wizard,model_examen_wizard,base.group_user,1,1,1,1
+access_curso_super_admin,Curso Super Admin,model_school_curso,school_management.group_school_super_admin,1,1,1,1
+access_alumno_super_admin,Alumno Super Admin,model_school_alumno,school_management.group_school_super_admin,1,1,1,1
+access_aula_super_admin,Aula Super Admin,model_school_aula,school_management.group_school_super_admin,1,1,1,1
+access_examen_super_admin,Examen Super Admin,model_school_examen,school_management.group_school_super_admin,1,1,1,1
+access_horario_super_admin,Horario Super Admin,model_school_horario,school_management.group_school_super_admin,1,1,1,1
+access_calificacion_super_admin,Calificacion Super Admin,model_school_calificacion,school_management.group_school_super_admin,1,1,1,1
+access_registration_super_admin,Registration Super Admin,model_school_user_registration,school_management.group_school_super_admin,1,1,1,1
+access_alumno_creation_super_admin,Alumno Creation Super Admin,model_school_alumno_creation_wizard,school_management.group_school_super_admin,1,1,1,1
+access_curso_teacher,Curso Teacher,model_school_curso,school_management.group_school_teacher,1,1,1,1
+access_alumno_teacher,Alumno Teacher,model_school_alumno,school_management.group_school_teacher,1,1,1,1
+access_aula_teacher,Aula Teacher,model_school_aula,school_management.group_school_teacher,1,1,1,1
+access_examen_teacher,Examen Teacher,model_school_examen,school_management.group_school_teacher,1,1,1,1
+access_horario_teacher,Horario Teacher,model_school_horario,school_management.group_school_teacher,1,1,1,1
+access_calificacion_teacher,Calificacion Teacher,model_school_calificacion,school_management.group_school_teacher,1,1,1,1
+access_alumno_creation_teacher,Alumno Creation Teacher,model_school_alumno_creation_wizard,school_management.group_school_teacher,1,1,1,1
+access_curso_student,Curso Student,model_school_curso,school_management.group_school_student,1,0,0,0
+access_alumno_student,Alumno Student,model_school_alumno,school_management.group_school_student,1,0,0,0
+access_aula_student,Aula Student,model_school_aula,school_management.group_school_student,1,0,0,0
+access_examen_student,Examen Student,model_school_examen,school_management.group_school_student,1,0,0,0
+access_horario_student,Horario Student,model_school_horario,school_management.group_school_student,1,0,0,0
+access_calificacion_student,Calificacion Student,model_school_calificacion,school_management.group_school_student,1,0,0,0
+access_curso_wizard_super_admin,Curso Wizard Super Admin,model_curso_wizard,school_management.group_school_super_admin,1,1,1,1
+access_alumno_wizard_super_admin,Alumno Wizard Super Admin,model_alumno_wizard,school_management.group_school_super_admin,1,1,1,1
+access_aula_wizard_super_admin,Aula Wizard Super Admin,model_aula_wizard,school_management.group_school_super_admin,1,1,1,1
+access_examen_wizard_super_admin,Examen Wizard Super Admin,model_examen_wizard,school_management.group_school_super_admin,1,1,1,1
+access_horario_wizard_super_admin,Horario Wizard Super Admin,model_horario_wizard,school_management.group_school_super_admin,1,1,1,1
+access_curso_wizard_teacher,Curso Wizard Teacher,model_curso_wizard,school_management.group_school_teacher,1,1,1,1
+access_alumno_wizard_teacher,Alumno Wizard Teacher,model_alumno_wizard,school_management.group_school_teacher,1,1,1,1
+access_aula_wizard_teacher,Aula Wizard Teacher,model_aula_wizard,school_management.group_school_teacher,1,1,1,1
+access_examen_wizard_teacher,Examen Wizard Teacher,model_examen_wizard,school_management.group_school_teacher,1,1,1,1
+access_horario_wizard_teacher,Horario Wizard Teacher,model_horario_wizard,school_management.group_school_teacher,1,1,1,1
+access_curso_user,Curso User,model_school_curso,base.group_user,1,0,0,0
+access_alumno_user,Alumno User,model_school_alumno,base.group_user,1,0,0,0
+access_aula_user,Aula User,model_school_aula,base.group_user,1,0,0,0
+access_examen_user,Examen User,model_school_examen,base.group_user,1,0,0,0
+access_horario_user,Horario User,model_school_horario,base.group_user,1,0,0,0
+access_calificacion_user,Calificacion User,model_school_calificacion,base.group_user,1,0,0,0

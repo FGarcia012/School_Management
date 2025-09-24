@@ -6,7 +6,7 @@ class CursoWizard(models.TransientModel):
     _description = 'Wizard para CRUD de Curso'
 
     name = fields.Char('Nombre del Curso', required=True)
-    description = fields.Text('Descripción')
+    description = fields.Text('Descripcion')
     mode = fields.Selection([
         ('agregar', 'Agregar'),
         ('actualizar', 'Actualizar'),

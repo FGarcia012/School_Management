@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Definicion del reporte de Aulas -->
+        <report 
+            id="reporte_aulas_pdf"
+            model="school.aula"
+            string="Reporte de Aulas"
+            report_type="qweb-pdf"
+            name="school_management.reporte_aulas_template"
+            file="school_management.reporte_aulas_template"
+            attachment_use="False"
+        />
+
+        <!-- Template del reporte de Aulas -->
+        <template id="reporte_aulas_template">
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        
+                        <!-- Encabezado del reporte -->
+                        <div class="text-center" style="margin-bottom: 30px;">
+                            <h2>REPORTE DE AULAS</h2>
+                            <p><strong>Fecha del Reporte:</strong> <span t-esc="fecha_reporte.strftime('%d/%m/%Y %H:%M')"/></p>
+                            <p><strong>Total de Aulas:</strong> <span t-esc="total_aulas"/></p>
+                        </div>
+
+                        <!-- Tabla de aulas -->
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Nombre del Aula</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Capacidad</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Ubicacion</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Estudiantes Asignados</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Ocupacion %</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Horarios</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="docs" t-as="aula">
+                                        <tr>
+                                            <td><span t-esc="aula.name"/></td>
+                                            <td class="text-center"><span t-esc="aula.capacidad"/></td>
+                                            <td><span t-esc="'No especificada'"/></td>
+                                            <td class="text-center"><span t-esc="aula.total_alumnos"/></td>
+                                            <td class="text-center">
+                                                <span t-esc="'%.1f' % aula.porcentaje_ocupacion"/>%
+                                            </td>
+                                            <td class="text-center"><span t-esc="len(aula.horario_ids)"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <!-- Resumen estadistico -->
+                            <div style="margin-top: 20px;">
+                                    <h3>Resumen Estadistico</h3>
+                                    <table class="table table-condensed table-bordered">
+                                        <thead>
+                                            <tr style="background-color: #f0f0f0;">
+                                                <th class="text-center"><strong>Metrica</strong></th>
+                                                <th class="text-center"><strong>Valor</strong></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Total de Aulas</strong></td>
+                                                <td class="text-center"><span t-esc="total_aulas"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Capacidad Total del Sistema</strong></td>
+                                                <td class="text-center">
+                                                    <t t-set="capacidad_total" t-value="sum([aula.capacidad for aula in docs])"/>
+                                                    <span t-esc="capacidad_total"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Total de Estudiantes Asignados</strong></td>
+                                                <td class="text-center">
+                                                    <t t-set="estudiantes_total" t-value="sum([aula.total_alumnos for aula in docs])"/>
+                                                    <span t-esc="estudiantes_total"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Ocupacion Promedio del Sistema</strong></td>
+                                                <td class="text-center">
+                                                    <t t-set="ocupacion_promedio" t-value="(estudiantes_total * 100.0 / capacidad_total) if capacidad_total > 0 else 0"/>
+                                                    <span t-esc="'%.1f' % ocupacion_promedio"/>%
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Espacios Disponibles</strong></td>
+                                                <td class="text-center">
+                                                    <span t-esc="capacidad_total - estudiantes_total"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Aulas con Mayor Ocupacion</strong></td>
+                                                <td class="text-center">
+                                                    <t t-set="aulas_llenas" t-value="len([aula for aula in docs if aula.porcentaje_ocupacion >= 80])"/>
+                                                    <span t-esc="aulas_llenas"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                        
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>

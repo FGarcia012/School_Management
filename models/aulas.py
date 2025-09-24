@@ -1,14 +1,79 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api
+from openerp.exceptions import Warning
 
 class Aula(models.Model):
     _name = 'school.aula'
     _description = 'Aula'
 
     name = fields.Char('Nombre', required=True)
-    capacidad = fields.Integer('Capacidad')
+    capacidad = fields.Integer('Capacidad', required=True, default=30)
+    
+    # Relaciones con otros modelos
+    alumno_ids = fields.One2many('school.alumno', 'aula_id', 'Alumnos Asignados')
+    curso_ids = fields.One2many('school.curso', 'aula_id', 'Cursos que se Imparten') 
+    horario_ids = fields.One2many('school.horario', 'aula_id', 'Horarios Programados')
+    
+    # Campos computados
+    total_alumnos = fields.Integer('Total de Alumnos', compute='_compute_total_alumnos', store=True)
+    capacidad_disponible = fields.Integer('Capacidad Disponible', compute='_compute_capacidad_disponible', store=True)
+    porcentaje_ocupacion = fields.Float('% Ocupacion', compute='_compute_porcentaje_ocupacion', store=True)
+    
+    @api.depends('alumno_ids')
+    def _compute_total_alumnos(self):
+        for aula in self:
+            aula.total_alumnos = len(aula.alumno_ids)
+    
+    @api.depends('capacidad', 'total_alumnos')
+    def _compute_capacidad_disponible(self):
+        for aula in self:
+            aula.capacidad_disponible = aula.capacidad - aula.total_alumnos
+    
+    @api.depends('capacidad', 'total_alumnos')
+    def _compute_porcentaje_ocupacion(self):
+        for aula in self:
+            if aula.capacidad > 0:
+                aula.porcentaje_ocupacion = (aula.total_alumnos * 100.0) / aula.capacidad
+            else:
+                aula.porcentaje_ocupacion = 0.0
+    
+    @api.constrains('capacidad')
+    def _check_capacidad_positiva(self):
+        for aula in self:
+            if aula.capacidad <= 0:
+                raise Warning("La capacidad del aula debe ser mayor a 0")
+    
+    @api.constrains('alumno_ids', 'capacidad')
+    def _check_capacidad_maxima(self):
+        for aula in self:
+            if len(aula.alumno_ids) > aula.capacidad:
+                raise Warning(
+                    "El aula '%s' ha excedido su capacidad maxima de %d estudiantes. "
+                    "Actualmente tiene %d estudiantes asignados." % 
+                    (aula.name, aula.capacidad, len(aula.alumno_ids))
+                )
 
-    # Métodos para los botones de acción
+    @api.multi
+    def unlink(self):
+        """Override para manejar eliminacion segura de aulas"""
+        for aula in self:
+            if aula.alumno_ids:
+                raise Warning(
+                    "No se puede eliminar el aula '%s' porque tiene %d estudiante(s) asignado(s). "
+                    "Primero reasigna los estudiantes a otra aula." % 
+                    (aula.name, len(aula.alumno_ids))
+                )
+            
+            if aula.curso_ids:
+                raise Warning(
+                    "No se puede eliminar el aula '%s' porque tiene %d curso(s) asignado(s). "
+                    "Primero reasigna los cursos a otra aula." % 
+                    (aula.name, len(aula.curso_ids))
+                )
+        
+        return super(Aula, self).unlink()
+
+    # Metodos para los botones de accion
     @api.multi
     def abrir_wizard_agregar(self):
         return {
@@ -17,6 +82,7 @@ class Aula(models.Model):
             'res_model': 'aula.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_aula_wizard_agregar').id,
             'target': 'new',
             'context': {'default_mode': 'agregar'}
         }
@@ -29,6 +95,7 @@ class Aula(models.Model):
             'res_model': 'aula.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_aula_wizard_actualizar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'actualizar',
@@ -46,6 +113,7 @@ class Aula(models.Model):
             'res_model': 'aula.wizard',
             'view_type': 'form',
             'view_mode': 'form',
+            'view_id': self.env.ref('school_management.view_aula_wizard_eliminar').id,
             'target': 'new',
             'context': {
                 'default_mode': 'eliminar',
@@ -53,3 +121,4 @@ class Aula(models.Model):
                 'default_name': self.name
             }
         }
+

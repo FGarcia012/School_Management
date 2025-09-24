@@ -6,8 +6,9 @@ class AlumnoWizard(models.TransientModel):
     _description = 'Wizard para CRUD de Alumno'
 
     name = fields.Char('Nombre', required=True)
-    numero = fields.Char('Número de estudiante')
-    curso_id = fields.Many2one('school.curso', 'Curso')
+    numero = fields.Char('Numero de estudiante')
+    aula_id = fields.Many2one('school.aula', 'Aula Asignada')
+    curso_ids = fields.Many2many('school.curso', string='Cursos Inscritos')
     mode = fields.Selection([
         ('agregar', 'Agregar'),
         ('actualizar', 'Actualizar'),
@@ -24,14 +25,16 @@ class AlumnoWizard(models.TransientModel):
             res.update({
                 'name': alumno.name,
                 'numero': alumno.numero,
-                'curso_id': alumno.curso_id.id,
+                'aula_id': alumno.aula_id.id if alumno.aula_id else False,
+                'curso_ids': [(6, 0, alumno.curso_ids.ids)],
             })
         elif context.get('active_id') and context.get('default_mode') == 'eliminar':
             alumno = self.env['school.alumno'].browse(context['active_id'])
             res.update({
                 'name': alumno.name,
                 'numero': alumno.numero,
-                'curso_id': alumno.curso_id.id,
+                'aula_id': alumno.aula_id.id if alumno.aula_id else False,
+                'curso_ids': [(6, 0, alumno.curso_ids.ids)],
             })
         return res
 
@@ -50,8 +53,8 @@ class AlumnoWizard(models.TransientModel):
         self.ensure_one()
         self.env['school.alumno'].create({
             'name': self.name,
-            'numero': self.numero,
-            'curso_id': self.curso_id.id,
+            'aula_id': self.aula_id.id if self.aula_id else False,
+            'curso_ids': [(6, 0, self.curso_ids.ids)],
         })
         return {'type': 'ir.actions.act_window_close'}
 
@@ -62,8 +65,8 @@ class AlumnoWizard(models.TransientModel):
         if alumno_id:
             self.env['school.alumno'].browse(alumno_id).write({
                 'name': self.name,
-                'numero': self.numero,
-                'curso_id': self.curso_id.id,
+                'aula_id': self.aula_id.id if self.aula_id else False,
+                'curso_ids': [(6, 0, self.curso_ids.ids)],
             })
         return {'type': 'ir.actions.act_window_close'}
 

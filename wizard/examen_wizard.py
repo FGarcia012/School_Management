@@ -9,7 +9,7 @@ class ExamenWizard(models.TransientModel):
     curso_id = fields.Many2one('school.curso', 'Curso')
     pregunta = fields.Text('Pregunta')
     respuesta = fields.Text('Respuesta')
-    punteo = fields.Float('Punteo')
+    punteo_maximo = fields.Float('Punteo Maximo', default=100.0)
     mode = fields.Selection([
         ('agregar', 'Agregar'),
         ('actualizar', 'Actualizar'),
@@ -28,7 +28,7 @@ class ExamenWizard(models.TransientModel):
                 'curso_id': examen.curso_id.id,
                 'pregunta': examen.pregunta,
                 'respuesta': examen.respuesta,
-                'punteo': examen.punteo,
+                'punteo_maximo': examen.punteo_maximo,
             })
         elif context.get('active_id') and context.get('default_mode') == 'eliminar':
             examen = self.env['school.examen'].browse(context['active_id'])
@@ -37,7 +37,7 @@ class ExamenWizard(models.TransientModel):
                 'curso_id': examen.curso_id.id,
                 'pregunta': examen.pregunta,
                 'respuesta': examen.respuesta,
-                'punteo': examen.punteo,
+                'punteo_maximo': examen.punteo_maximo,
             })
         return res
 
@@ -59,7 +59,7 @@ class ExamenWizard(models.TransientModel):
             'curso_id': self.curso_id.id,
             'pregunta': self.pregunta,
             'respuesta': self.respuesta,
-            'punteo': self.punteo,
+            'punteo_maximo': self.punteo_maximo,
         })
         return {'type': 'ir.actions.act_window_close'}
 
@@ -73,7 +73,7 @@ class ExamenWizard(models.TransientModel):
                 'curso_id': self.curso_id.id,
                 'pregunta': self.pregunta,
                 'respuesta': self.respuesta,
-                'punteo': self.punteo,
+                'punteo_maximo': self.punteo_maximo,
             })
         return {'type': 'ir.actions.act_window_close'}
 

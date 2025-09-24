@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Vista Form del Wizard de Horarios -->
+        <record id="view_horario_wizard_form" model="ir.ui.view">
+            <field name="name">horario.wizard.form</field>
+            <field name="model">horario.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Gestion de Horarios">
+                    <group>
+                        <field name="mode" invisible="1"/>
+                    </group>
+                    
+                    <!-- Formulario para Agregar/Actualizar -->
+                    <group attrs="{'invisible': [('mode', 'in', ['eliminar', 'generar_plantilla'])]}">
+                        <group string="Informacion del Curso">
+                            <field name="curso_id" required="1"/>
+                            <field name="aula_id" required="1"/>
+                            <field name="profesor"/>
+                        </group>
+                        <group string="Horario">
+                            <field name="dia_semana" required="1"/>
+                            <field name="turno" required="1"/>
+                            <field name="hora_inicio" required="1"/>
+                            <field name="hora_fin" required="1"/>
+                        </group>
+                    </group>
+
+                    <!-- Formulario para Generar Plantilla -->
+                    <group attrs="{'invisible': [('mode', '!=', 'generar_plantilla')]}">
+                        <separator string="Generar Plantilla de Horarios" colspan="2"/>
+                        <p colspan="2">
+                            Esta funcion creara automaticamente un horario semanal basico
+                            distribuyendo los cursos seleccionados a lo largo de la semana.
+                        </p>
+                        <group string="Configuracion de Plantilla">
+                            <field name="cursos_ids" widget="many2many_tags" required="1"/>
+                            <field name="aula_plantilla_id" required="1"/>
+                            <field name="turno_plantilla" required="1"/>
+                        </group>
+                        <group string="Informacion">
+                            <p colspan="2">
+                                - Turno Matutino: 8:00 AM - 12:18 PM<br/>
+                                - Turno Vespertino: 2:00 PM - 6:18 PM<br/>
+                                - Incluye recesos automaticos<br/>
+                                - Se validaran conflictos automaticamente
+                            </p>
+                        </group>
+                    </group>
+
+                    <!-- Confirmacion para Eliminar -->
+                    <group attrs="{'invisible': [('mode', '!=', 'eliminar')]}">
+                        <separator string="Confirmar Eliminacion" colspan="2"/>
+                        <p colspan="2">
+                            Esta seguro de que desea eliminar este horario?
+                            Esta accion no se puede deshacer.
+                        </p>
+                    </group>
+
+                    <footer>
+                        <button name="ejecutar_accion" type="object" string="Confirmar" class="oe_highlight"/>
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Accion del Wizard -->
+        <record id="action_horario_wizard" model="ir.actions.act_window">
+            <field name="name">Gestion de Horarios</field>
+            <field name="res_model">horario.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

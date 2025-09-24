@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Tree View con botones -->
+        <!-- Tree View -->
         <record id="view_examen_tree" model="ir.ui.view">
             <field name="name">school.examen.tree</field>
             <field name="model">school.examen</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree colors="green:total_estudiantes>0;orange:total_estudiantes==0;blue:promedio_examen>=80">
                     <field name="name"/>
                     <field name="curso_id"/>
-                    <field name="punteo"/>
+                    <field name="tipo_examen"/>
+                    <field name="fecha_examen"/>
+                    <field name="punteo_maximo"/>
+                    <field name="total_estudiantes"/>
+                    <field name="promedio_examen"/>
+                    <field name="aprobados"/>
+                    <field name="reprobados"/>
+                    <button name="generar_calificaciones" string="Generar Calificaciones" type="object" class="oe_highlight" attrs="{'invisible': [('total_estudiantes', '>', 0)]}"/>
                     <button name="abrir_wizard_actualizar" string="Actualizar" type="object" class="oe_highlight"/>
                     <button name="abrir_wizard_eliminar" string="Eliminar" type="object" class="oe_link"/>
+                    <button name="%(school_management.reporte_examenes_pdf)d" 
+                            string="📄 Reporte PDF" 
+                            type="action" 
+                            class="oe_highlight"
+                            help="Generar reporte completo de examenes en formato PDF"/>
                 </tree>
             </field>
         </record>
@@ -21,43 +33,126 @@
             <field name="name">school.examen.form</field>
             <field name="model">school.examen</field>
             <field name="arch" type="xml">
-                <form>
+                <form string="Examen">
+                    <header>
+                        <button name="abrir_wizard_agregar" string="Anadir Nuevo Examen" type="object" class="oe_highlight"/>
+                        <button name="generar_calificaciones" string="Generar Calificaciones" type="object" class="oe_highlight" attrs="{'invisible': [('total_estudiantes', '>', 0)]}"/>
+                    </header>
                     <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre del Examen"/>
+                            </h1>
+                        </div>
                         <group>
-                            <field name="name"/>
-                            <field name="curso_id"/>
-                            <field name="pregunta"/>
-                            <field name="respuesta"/>
-                            <field name="punteo"/>
+                            <group string="Informacion del Examen">
+                                <field name="curso_id"/>
+                                <field name="tipo_examen"/>
+                                <field name="fecha_examen"/>
+                                <field name="punteo_maximo"/>
+                            </group>
+                            <group string="Estadisticas">
+                                <field name="total_estudiantes" readonly="1"/>
+                                <field name="promedio_examen" readonly="1"/>
+                                <field name="aprobados" readonly="1"/>
+                                <field name="reprobados" readonly="1"/>
+                            </group>
                         </group>
+                        <notebook>
+                            <page string="Pregunta/Descripcion">
+                                <field name="pregunta" placeholder="Escriba la pregunta del examen o descripcion de la evaluacion..."/>
+                            </page>
+                            <page string="Respuesta Esperada">
+                                <field name="respuesta" placeholder="Escriba la respuesta esperada o criterios de evaluacion..."/>
+                            </page>
+                            <page string="Calificaciones de Estudiantes">
+                                <button name="generar_calificaciones" string="Generar Calificaciones para Todos los Estudiantes" type="object" class="oe_highlight"/>
+                                <field name="calificacion_ids">
+                                    <tree string="Calificaciones" colors="red:not aprobado;green:aprobado;blue:estado=='pendiente'">
+                                        <field name="alumno_id"/>
+                                        <field name="punteo"/>
+                                        <field name="punteo_maximo"/>
+                                        <field name="porcentaje_obtenido"/>
+                                        <field name="aprobado"/>
+                                        <field name="estado"/>
+                                        <field name="fecha_entrega"/>
+                                        <field name="comentarios"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
-                    <footer>
-                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Examen" type="object" class="oe_highlight"/>
-                        <button string="Cancelar" special="cancel" class="oe_link"/>
-                    </footer>
                 </form>
             </field>
         </record>
 
-        <!-- Search View -->
+        <!-- Graph View -->
+        <record id="view_examen_graph" model="ir.ui.view">
+            <field name="name">school.examen.graph</field>
+            <field name="model">school.examen</field>
+            <field name="type">graph</field>
+            <field name="arch" type="xml">
+                <graph string="Analisis de Examenes" type="bar">
+                    <field name="curso_id"/>
+                    <field name="promedio_examen"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Search View con filtros avanzados -->
         <record id="view_examen_search" model="ir.ui.view">
             <field name="name">school.examen.search</field>
             <field name="model">school.examen</field>
             <field name="arch" type="xml">
-                <search>
-                    <field name="name"/>
-                    <field name="curso_id"/>
-                    <filter string="Curso Matemáticas" domain="[('curso_id.name','=','Matemáticas')]"/>
+                <search string="Buscar Examenes">
+                    <!-- Campos de busqueda -->
+                    <field name="name" string="Nombre del Examen" filter_domain="[('name','ilike',self)]"/>
+                    <field name="curso_id" string="Curso"/>
+                    <field name="promedio_examen" string="Promedio"/>
+                    <field name="pregunta" string="Pregunta" filter_domain="[('pregunta','ilike',self)]"/>
+                    <field name="respuesta" string="Respuesta" filter_domain="[('respuesta','ilike',self)]"/>
+                    
+                    <!-- Filtros por promedio -->
+                    <filter string="Bajo Promedio (&lt; 60)" domain="[('promedio_examen','&lt;',60)]"/>
+                    <filter string="Promedio Regular (60-79)" domain="[('promedio_examen','&gt;=',60),('promedio_examen','&lt;',80)]"/>
+                    <filter string="Excelente Promedio (&gt;= 80)" domain="[('promedio_examen','&gt;=',80)]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtros por curso -->
+                    <filter string="Matematicas" domain="[('curso_id.name','=','Matematicas')]"/>
+                    <filter string="Fisica" domain="[('curso_id.name','=','Fisica')]"/>
+                    <filter string="Computacion" domain="[('curso_id.name','=','Computacion')]"/>
+                    <filter string="Ingles" domain="[('curso_id.name','=','Ingles')]"/>
+                    <filter string="Religion" domain="[('curso_id.name','=','Religion')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtros por fecha -->
+                    <filter string="Creados Hoy" domain="[('create_date','&gt;=',time.strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creados Esta Semana" domain="[('create_date','&gt;=', (datetime.date.today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
+                    <filter string="Creados Este Mes" domain="[('create_date','&gt;=', datetime.date.today().strftime('%%Y-%%m-01'))]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Agrupaciones -->
+                    <group expand="0" string="Agrupar Por">
+                        <filter string="Curso" context="{'group_by':'curso_id'}"/>
+                        <filter string="Rango de Punteo" context="{'group_by':'punteo'}"/>
+                        <filter string="Fecha de Creacion" context="{'group_by':'create_date:month'}"/>
+                        <filter string="Usuario Creador" context="{'group_by':'create_uid'}"/>
+                    </group>
                 </search>
             </field>
         </record>
 
-        <!-- Action para Exámenes -->
+        <!-- Action para Examenes con todas las vistas -->
         <record id="action_examenes" model="ir.actions.act_window">
-            <field name="name">Exámenes</field>
+            <field name="name">Examenes</field>
             <field name="res_model">school.examen</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="search_view_id" ref="view_examen_search"/>
             <field name="domain">[]</field>
             <field name="context">{}</field>
             <field name="limit">80</field>

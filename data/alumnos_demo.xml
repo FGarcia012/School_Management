@@ -1,14 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
         <record id="alumno_demo_1" model="school.alumno">
-            <field name="name">Juan Pérez</field>
-            <field name="numero">001</field>
-            <field name="curso_id" ref="curso_demo_1"/>
+            <field name="name">Juan Perez</field>
+            <field name="aula_id" ref="aula_demo_1"/>
         </record>
         <record id="alumno_demo_2" model="school.alumno">
-            <field name="name">Ana López</field>
-            <field name="numero">002</field>
-            <field name="curso_id" ref="curso_demo_2"/>
+            <field name="name">Ana Lopez</field>
+            <field name="aula_id" ref="aula_demo_1"/>
+        </record>
+        <record id="alumno_demo_3" model="school.alumno">
+            <field name="name">Carlos Garcia</field>
+            <field name="aula_id" ref="aula_demo_2"/>
+        </record>
+        <record id="alumno_demo_4" model="school.alumno">
+            <field name="name">Maria Rodriguez</field>
+            <field name="aula_id" ref="aula_demo_2"/>
         </record>
     </data>
 </openerp>

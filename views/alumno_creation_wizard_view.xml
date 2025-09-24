@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- Vista Form del Wizard de Creacion de Alumnos -->
+        <record id="view_alumno_creation_wizard_form" model="ir.ui.view">
+            <field name="name">school.alumno.creation.wizard.form</field>
+            <field name="model">school.alumno.creation.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Crear Nuevo Alumno">
+                    <header>
+                        <h1>🎓 Crear Nuevo Alumno</h1>
+                        <p><strong>Para Maestros y Super Admin:</strong> Agregar un nuevo estudiante al sistema</p>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="👤 Informacion del Alumno">
+                                <field name="name"/>
+                                <field name="grade_level"/>
+                                <field name="aula_id"/>
+                            </group>
+                        </group>
+                        
+                        <group string="📞 Informacion de Contacto">
+                            <group>
+                                <field name="parent_email"/>
+                                <field name="parent_phone"/>
+                            </group>
+                            <group>
+                                <field name="emergency_contact"/>
+                            </group>
+                        </group>
+                        
+                        <separator string="🔐 Perfil de Acceso al Sistema (Opcional)"/>
+                        <group>
+                            <field name="create_user_profile"/>
+                            <p class="text-muted" attrs="{'invisible': [('create_user_profile', '=', True)]}">
+                                Si no activa esta opcion, el alumno solo existira en los registros pero no podra acceder al sistema desde otros dispositivos.
+                            </p>
+                        </group>
+                        
+                        <group string="🌐 Credenciales de Acceso" attrs="{'invisible': [('create_user_profile', '=', False)]}">
+                            <group>
+                                <field name="login_email" attrs="{'required': [('create_user_profile', '=', True)]}"/>
+                                <field name="temp_password" attrs="{'required': [('create_user_profile', '=', True)]}" password="True"/>
+                            </group>
+                            <div class="alert alert-warning" attrs="{'invisible': [('create_user_profile', '=', False)]}">
+                                <p><strong>⚠️ Nota importante:</strong></p>
+                                <ul>
+                                    <li>Solo el <strong>Super Administrador</strong> puede crear perfiles de acceso</li>
+                                    <li>Si eres Maestro, puedes crear el alumno sin perfil y pedirle al Super Admin que cree el perfil despues</li>
+                                    <li>El perfil permite al alumno acceder desde cualquier dispositivo</li>
+                                </ul>
+                            </div>
+                        </group>
+                        
+                        <div class="alert alert-info">
+                            <h4><i class="fa fa-magic"></i> Que pasara automaticamente?</h4>
+                            <ul>
+                                <li><strong>Numero de estudiante:</strong> Se genera automaticamente (ej: 2025001)</li>
+                                <li><strong>Registro academico:</strong> Se crea en la base de datos</li>
+                                <li><strong>Asignacion a aula:</strong> Se asigna al aula seleccionada</li>
+                                <li><strong>Perfil de acceso:</strong> Solo si se activa la opcion (Solo Super Admin)</li>
+                            </ul>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button name="create_alumno" string="Crear Alumno" type="object" class="oe_highlight"/>
+                        <button string="Cancelar" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>

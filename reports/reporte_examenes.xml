@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Definicion del reporte de Examenes -->
+        <report 
+            id="reporte_examenes_pdf"
+            model="school.examen"
+            string="Reporte de Examenes"
+            report_type="qweb-pdf"
+            name="school_management.reporte_examenes_template"
+            file="school_management.reporte_examenes_template"
+            attachment_use="False"
+        />
+
+        <!-- Template del reporte de Examenes -->
+        <template id="reporte_examenes_template">
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                            <div class="oe_structure"/>
+                            
+                            <!-- Encabezado del reporte -->
+                            <div class="text-center" style="margin-bottom: 30px;">
+                                <h2>REPORTE DE EXAMENES</h2>
+                                <p><strong>Fecha del Reporte:</strong> <span t-esc="fecha_reporte.strftime('%d/%m/%Y %H:%M')"/></p>
+                                <p><strong>Total de Examenes:</strong> <span t-esc="total_examenes"/></p>
+                            </div>
+
+                            <!-- Tabla de examenes -->
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Nombre del Examen</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Curso</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Tipo</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Fecha</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Punteo Maximo</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Calificaciones</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="docs" t-as="examen">
+                                        <tr>
+                                            <td><span t-esc="examen.name"/></td>
+                                            <td class="text-center"><span t-esc="examen.curso_id.name or 'No asignado'"/></td>
+                                            <td class="text-center"><span t-esc="dict(examen._fields['tipo_examen'].selection).get(examen.tipo_examen, 'No especificado')"/></td>
+                                            <td class="text-center"><span t-esc="examen.fecha_examen"/></td>
+                                            <td class="text-center"><span t-esc="examen.punteo_maximo"/></td>
+                                            <td class="text-center"><span t-esc="examen.total_estudiantes"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <!-- Resumen por tipo -->
+                            <div style="margin-top: 30px;">
+                                <h4>Resumen por Tipo de Examen</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th style="background-color: #f0f0f0;"><strong>Tipo</strong></th>
+                                            <th style="background-color: #f0f0f0;"><strong>Cantidad</strong></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Parciales</td>
+                                            <td class="text-center"><span t-esc="len([e for e in docs if e.tipo_examen == 'parcial'])"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Finales</td>
+                                            <td class="text-center"><span t-esc="len([e for e in docs if e.tipo_examen == 'final'])"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tareas</td>
+                                            <td class="text-center"><span t-esc="len([e for e in docs if e.tipo_examen == 'tarea'])"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Estadisticas adicionales -->
+                            <div style="margin-top: 30px;">
+                                <h4>Estadisticas Generales</h4>
+                                <ul>
+                                    <li><strong>Total de Examenes Registrados:</strong> <span t-esc="total_examenes"/></li>
+                                    <li><strong>Examenes con Calificaciones:</strong> <span t-esc="len([e for e in docs if len(e.calificacion_ids) &gt; 0])"/></li>
+                                    <li><strong>Examenes sin Calificaciones:</strong> <span t-esc="len([e for e in docs if len(e.calificacion_ids) == 0])"/></li>
+                                    <li><strong>Promedio de Punteo Maximo:</strong> <span t-esc="'%.1f' % (sum([e.punteo_maximo for e in docs]) / len(docs) if docs else 0)"/></li>
+                                </ul>
+                            </div>
+
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>

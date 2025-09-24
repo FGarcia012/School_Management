@@ -1,10 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Menús en la BARRA SUPERIOR -->
-        <menuitem id="menu_cursos" name="Cursos" action="action_cursos" sequence="15"/>
-        <menuitem id="menu_alumnos" name="Alumnos" action="action_alumnos" sequence="25"/>
-        <menuitem id="menu_aulas" name="Aulas" action="action_aulas" sequence="35"/>
-        <menuitem id="menu_examenes" name="Exámenes" action="action_examenes" sequence="45"/>
+        
+        <!-- === DEFINICION DE ACCIONES === -->
+        <!-- Accion para abrir el wizard de registro de usuarios -->
+        <record id="action_school_user_registration" model="ir.actions.act_window">
+            <field name="name">Registrar Nuevo Usuario</field>
+            <field name="res_model">school.user.registration</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Accion para el wizard de creacion de alumnos -->
+        <record id="action_alumno_creation_wizard" model="ir.actions.act_window">
+            <field name="name">Crear Nuevo Alumno</field>
+            <field name="res_model">school.alumno.creation.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- === ACCIONES ESPECIFICAS PARA ESTUDIANTES (CON FILTROS) === -->
+        
+        <!-- Accion de Cursos para Estudiantes - Solo sus cursos inscritos -->
+        <record id="action_cursos_student" model="ir.actions.act_window">
+            <field name="name">Mis Cursos</field>
+            <field name="res_model">school.curso</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_curso_tree_student"/>
+            <field name="domain">[('alumno_ids.user_ids', 'in', [uid])]</field>
+            <field name="context">{'create': False, 'edit': False, 'delete': False, 'form_view_ref': 'school_management.view_curso_form_student'}</field>
+        </record>
+
+        <!-- Accion de Aula para Estudiantes - Solo su aula -->
+        <record id="action_aulas_student" model="ir.actions.act_window">
+            <field name="name">Mi Aula</field>
+            <field name="res_model">school.aula</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_aula_tree_student"/>
+            <field name="domain">[('alumno_ids.user_ids', 'in', [uid])]</field>
+            <field name="context">{'create': False, 'edit': False, 'delete': False, 'form_view_ref': 'school_management.view_aula_form_student'}</field>
+        </record>
+
+        <!-- Accion de Horarios para Estudiantes - Solo sus horarios -->
+        <record id="action_horarios_student" model="ir.actions.act_window">
+            <field name="name">Mis Horarios</field>
+            <field name="res_model">school.horario</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_horario_tree_student"/>
+            <field name="domain">[('aula_id.alumno_ids.user_ids', 'in', [uid])]</field>
+            <field name="context">{'create': False, 'edit': False, 'delete': False, 'form_view_ref': 'school_management.view_horario_form_student'}</field>
+        </record>
+
+        <!-- Accion de Examenes para Estudiantes - Solo sus examenes -->
+        <record id="action_examenes_student" model="ir.actions.act_window">
+            <field name="name">Mis Examenes</field>
+            <field name="res_model">school.examen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_examen_tree_student"/>
+            <field name="domain">[('curso_id.alumno_ids.user_ids', 'in', [uid])]</field>
+            <field name="context">{'create': False, 'edit': False, 'delete': False, 'form_view_ref': 'school_management.view_examen_form_student'}</field>
+        </record>
+
+        <!-- Accion de Calificaciones para Estudiantes - Solo sus calificaciones -->
+        <record id="action_calificaciones_student" model="ir.actions.act_window">
+            <field name="name">Mis Calificaciones</field>
+            <field name="res_model">school.calificacion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('alumno_id.user_ids', 'in', [uid])]</field>
+            <field name="context">{'create': False, 'edit': False, 'delete': False}</field>
+        </record>
+        
+        <!-- === MENUS DIRECTOS EN BARRA SUPERIOR PARA SUPER ADMIN === -->
+        <menuitem id="menu_cursos_top" 
+                  name="Cursos" 
+                  action="action_cursos" 
+                  groups="school_management.group_school_super_admin"
+                  sequence="10"/>
+        
+        <menuitem id="menu_alumnos_top" 
+                  name="Alumnos" 
+                  action="action_alumnos" 
+                  groups="school_management.group_school_super_admin"
+                  sequence="20"/>
+        
+        <menuitem id="menu_aulas_top" 
+                  name="Aulas" 
+                  action="action_aulas" 
+                  groups="school_management.group_school_super_admin"
+                  sequence="30"/>
+        
+        <menuitem id="menu_horarios_top" 
+                  name="Horarios" 
+                  action="action_horario" 
+                  groups="school_management.group_school_super_admin"
+                  sequence="40"/>
+        
+        <menuitem id="menu_examenes_top" 
+                  name="Examenes" 
+                  action="action_examenes" 
+                  groups="school_management.group_school_super_admin"
+                  sequence="50"/>
+
+        <menuitem id="menu_user_registration_admin_direct" 
+                  name="Crear Perfiles de Acceso" 
+                  action="action_school_user_registration"
+                  groups="school_management.group_school_super_admin"
+                  sequence="60"/>
+
+        <menuitem id="menu_quick_student_creation_direct" 
+                  name="Crear Nuevo Alumno" 
+                  action="action_alumno_creation_wizard"
+                  groups="school_management.group_school_super_admin"
+                  sequence="61"/>
+
+        <!-- === MENUS DIRECTOS EN BARRA SUPERIOR PARA MAESTROS === -->
+        <menuitem id="menu_cursos_teacher_top" 
+                  name="Cursos" 
+                  action="action_cursos" 
+                  groups="school_management.group_school_teacher"
+                  sequence="10"/>
+        
+        <menuitem id="menu_alumnos_teacher_top" 
+                  name="Alumnos" 
+                  action="action_alumnos" 
+                  groups="school_management.group_school_teacher"
+                  sequence="20"/>
+        
+        <menuitem id="menu_aulas_teacher_top" 
+                  name="Aulas" 
+                  action="action_aulas" 
+                  groups="school_management.group_school_teacher"
+                  sequence="30"/>
+        
+        <menuitem id="menu_horarios_teacher_top" 
+                  name="Horarios" 
+                  action="action_horario" 
+                  groups="school_management.group_school_teacher"
+                  sequence="40"/>
+        
+        <menuitem id="menu_examenes_teacher_top" 
+                  name="Examenes" 
+                  action="action_examenes" 
+                  groups="school_management.group_school_teacher"
+                  sequence="50"/>
+
+        <menuitem id="menu_crear_alumno_teacher" 
+                  name="Crear Alumno" 
+                  action="action_alumno_creation_wizard"
+                  groups="school_management.group_school_teacher"
+                  sequence="60"/>
+
+        <!-- === MENUS DIRECTOS EN BARRA SUPERIOR PARA ESTUDIANTES === -->
+        <menuitem id="menu_cursos_student_top" 
+                  name="Mis Cursos" 
+                  action="action_cursos_student" 
+                  groups="school_management.group_school_student"
+                  sequence="10"/>
+        
+        <menuitem id="menu_aulas_student_top" 
+                  name="Mi Aula" 
+                  action="action_aulas_student" 
+                  groups="school_management.group_school_student"
+                  sequence="20"/>
+        
+        <menuitem id="menu_horarios_student_top" 
+                  name="Mis Horarios" 
+                  action="action_horarios_student" 
+                  groups="school_management.group_school_student"
+                  sequence="30"/>
+        
+        <menuitem id="menu_examenes_student_top" 
+                  name="Mis Examenes" 
+                  action="action_examenes_student" 
+                  groups="school_management.group_school_student"
+                  sequence="40"/>
+
+        <menuitem id="menu_calificaciones_student_top" 
+                  name="Mis Calificaciones" 
+                  action="action_calificaciones_student" 
+                  groups="school_management.group_school_student"
+                  sequence="50"/>
+
     </data>
 </openerp>

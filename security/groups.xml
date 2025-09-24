@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        
+        <!-- Categoria principal para School Management -->
+        <record id="module_category_school" model="ir.module.category">
+            <field name="name">School Management</field>
+            <field name="description">Sistema de Gestion Escolar</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <!-- Super Admin - Control total del sistema -->
+        <record id="group_school_super_admin" model="res.groups">
+            <field name="name">Super Administrador Escolar</field>
+            <field name="category_id" ref="module_category_school"/>
+            <field name="comment">Control total del sistema escolar, puede crear, editar, eliminar y configurar todo</field>
+        </record>
+
+        <!-- Maestro/Administrador - Gestion de contenido educativo -->
+        <record id="group_school_teacher" model="res.groups">
+            <field name="name">Maestro/Administrador</field>
+            <field name="category_id" ref="module_category_school"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Puede gestionar cursos, alumnos, aulas y examenes</field>
+        </record>
+
+        <!-- Alumno - Solo lectura y algunas acciones especificas -->
+        <record id="group_school_student" model="res.groups">
+            <field name="name">Alumno</field>
+            <field name="category_id" ref="module_category_school"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="comment">Puede ver sus cursos, examenes y realizar acciones limitadas</field>
+        </record>
+
+        <!-- Usuario publico para registro -->
+        <record id="group_school_public" model="res.groups">
+            <field name="name">Usuario Publico Escolar</field>
+            <field name="category_id" ref="module_category_school"/>
+            <field name="comment">Acceso limitado para registro de nuevos usuarios</field>
+        </record>
+
+    </data>
+</openerp>

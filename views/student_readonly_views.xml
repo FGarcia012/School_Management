@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- === VISTAS ESPECIALES PARA ESTUDIANTES (SIN BOTONES DE ACCION) === -->
+        
+        <!-- Vista Tree de Cursos para Estudiantes (Solo Lectura) -->
+        <record id="view_curso_tree_student" model="ir.ui.view">
+            <field name="name">school.curso.tree.student</field>
+            <field name="model">school.curso</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="codigo"/>
+                    <field name="name"/>
+                    <field name="aula_id"/>
+                    <field name="profesor_id"/>
+                    <field name="total_estudiantes"/>
+                    <field name="total_examenes"/>
+                    <field name="promedio_examenes"/>
+                    <!-- SIN BOTONES DE ACCION -->
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Form de Cursos para Estudiantes (Solo Lectura) -->
+        <record id="view_curso_form_student" model="ir.ui.view">
+            <field name="name">school.curso.form.student</field>
+            <field name="model">school.curso</field>
+            <field name="arch" type="xml">
+                <form string="Curso" create="false" edit="false" delete="false">
+                    <!-- SIN HEADER CON BOTONES -->
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Informacion del Curso">
+                                <field name="codigo" readonly="1"/>
+                                <field name="aula_id" readonly="1"/>
+                                <field name="profesor_id" readonly="1"/>
+                            </group>
+                            <group string="Estadisticas">
+                                <field name="total_estudiantes" readonly="1"/>
+                                <field name="total_examenes" readonly="1"/>
+                                <field name="promedio_examenes" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Descripcion">
+                                <field name="description" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Tree de Aulas para Estudiantes (Solo Lectura) -->
+        <record id="view_aula_tree_student" model="ir.ui.view">
+            <field name="name">school.aula.tree.student</field>
+            <field name="model">school.aula</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="name"/>
+                    <field name="capacidad"/>
+                    <field name="total_alumnos"/>
+                    <field name="capacidad_disponible"/>
+                    <field name="porcentaje_ocupacion"/>
+                    <!-- SIN BOTONES DE ACCION -->
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Form de Aulas para Estudiantes (Solo Lectura) -->
+        <record id="view_aula_form_student" model="ir.ui.view">
+            <field name="name">school.aula.form.student</field>
+            <field name="model">school.aula</field>
+            <field name="arch" type="xml">
+                <form string="Aula" create="false" edit="false" delete="false">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Informacion del Aula">
+                                <field name="capacidad" readonly="1"/>
+                                <field name="total_alumnos" readonly="1"/>
+                                <field name="capacidad_disponible" readonly="1"/>
+                                <field name="porcentaje_ocupacion" readonly="1"/>
+                            </group>
+                        </group>
+                        <!-- Eliminamos notebook ya que no hay campo description -->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Tree de Horarios para Estudiantes (Solo Lectura) -->
+        <record id="view_horario_tree_student" model="ir.ui.view">
+            <field name="name">school.horario.tree.student</field>
+            <field name="model">school.horario</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="dia_semana"/>
+                    <field name="hora_inicio_display"/>
+                    <field name="hora_fin_display"/>
+                    <field name="curso_id"/>
+                    <field name="aula_id"/>
+                    <field name="profesor"/>
+                    <!-- SIN BOTONES DE ACCION -->
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Form de Horarios para Estudiantes (Solo Lectura) -->
+        <record id="view_horario_form_student" model="ir.ui.view">
+            <field name="name">school.horario.form.student</field>
+            <field name="model">school.horario</field>
+            <field name="arch" type="xml">
+                <form string="Horario" create="false" edit="false" delete="false">
+                    <sheet>
+                        <div class="oe_title">
+                            <h2>Horario de Clase</h2>
+                        </div>
+                        <group>
+                            <group string="Informacion del Horario">
+                                <field name="dia_semana" readonly="1"/>
+                                <field name="hora_inicio_display" readonly="1"/>
+                                <field name="hora_fin_display" readonly="1"/>
+                                <field name="duracion" readonly="1"/>
+                            </group>
+                            <group string="Detalles de la Clase">
+                                <field name="curso_id" readonly="1"/>
+                                <field name="aula_id" readonly="1"/>
+                                <field name="profesor" readonly="1"/>
+                                <field name="turno" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Tree de Examenes para Estudiantes (Solo Lectura) -->
+        <record id="view_examen_tree_student" model="ir.ui.view">
+            <field name="name">school.examen.tree.student</field>
+            <field name="model">school.examen</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false">
+                    <field name="name"/>
+                    <field name="curso_id"/>
+                    <field name="fecha_examen"/>
+                    <field name="punteo_maximo"/>
+                    <field name="promedio_examen"/>
+                    <!-- SIN BOTONES DE ACCION -->
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Form de Examenes para Estudiantes (Solo Lectura) -->
+        <record id="view_examen_form_student" model="ir.ui.view">
+            <field name="name">school.examen.form.student</field>
+            <field name="model">school.examen</field>
+            <field name="arch" type="xml">
+                <form string="Examen" create="false" edit="false" delete="false">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Informacion del Examen">
+                                <field name="curso_id" readonly="1"/>
+                                <field name="fecha_examen" readonly="1"/>
+                                <field name="punteo_maximo" readonly="1"/>
+                            </group>
+                            <group string="Estadisticas">
+                                <field name="total_estudiantes" readonly="1"/>
+                                <field name="promedio_examen" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Pregunta/Descripcion">
+                                <field name="pregunta" readonly="1"/>
+                            </page>
+                            <page string="Respuesta Esperada">
+                                <field name="respuesta" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Definicion del reporte de Alumnos -->
+        <report 
+            id="reporte_alumnos_pdf"
+            model="school.alumno"
+            string="Reporte de Alumnos"
+            report_type="qweb-pdf"
+            name="school_management.reporte_alumnos_template"
+            file="school_management.reporte_alumnos_template"
+            attachment_use="False"
+        />
+
+        <!-- Template del reporte de Alumnos -->
+        <template id="reporte_alumnos_template">
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                            <div class="oe_structure"/>
+                            
+                            <!-- Encabezado del reporte -->
+                            <div class="text-center" style="margin-bottom: 30px;">
+                                <h2>REPORTE DE ALUMNOS</h2>
+                                <p><strong>Fecha del Reporte:</strong> <span t-esc="fecha_reporte.strftime('%d/%m/%Y %H:%M')"/></p>
+                                <p><strong>Total de Alumnos:</strong> <span t-esc="total_alumnos"/></p>
+                            </div>
+
+                            <!-- Tabla de alumnos -->
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Numero</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Nombre Completo</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Email</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Telefono</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Aula Asignada</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Total Cursos</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="docs" t-as="alumno">
+                                        <tr>
+                                            <td class="text-center"><span t-esc="alumno.numero"/></td>
+                                            <td><span t-esc="alumno.name"/></td>
+                                            <td><span t-esc="'No registrado'"/></td>
+                                            <td class="text-center"><span t-esc="'No registrado'"/></td>
+                                            <td class="text-center"><span t-esc="alumno.aula_id.name or 'No asignada'"/></td>
+                                            <td class="text-center"><span t-esc="alumno.total_cursos"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <!-- Resumen -->
+                            <div style="margin-top: 30px;">
+                                <h4>Resumen del Sistema</h4>
+                                <ul>
+                                    <li><strong>Total de Alumnos Registrados:</strong> <span t-esc="total_alumnos"/></li>
+                                    <li><strong>Alumnos con Aula Asignada:</strong> <span t-esc="len([a for a in docs if a.aula_id])"/></li>
+                                    <li><strong>Alumnos sin Aula Asignada:</strong> <span t-esc="len([a for a in docs if not a.aula_id])"/></li>
+                                    <li><strong>Alumnos con Cursos Inscritos:</strong> <span t-esc="len([a for a in docs if a.total_cursos > 0])"/></li>
+                                </ul>
+                            </div>
+
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>
