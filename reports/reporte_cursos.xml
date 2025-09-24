@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Definición del reporte de Cursos -->
+        <!-- Definicion del reporte de Cursos -->
         <report 
             id="reporte_cursos_pdf"
             model="school.curso"
@@ -30,12 +30,12 @@
                             <table class="table table-condensed table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Código</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Codigo</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Nombre del Curso</strong></th>
-                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Descripción</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Descripcion</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Aula Asignada</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Total Estudiantes</strong></th>
-                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Total Exámenes</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Total Examenes</strong></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,7 +43,7 @@
                                         <tr>
                                             <td class="text-center"><span t-esc="curso.codigo"/></td>
                                             <td><span t-esc="curso.name"/></td>
-                                            <td><span t-esc="curso.description or 'Sin descripción'"/></td>
+                                            <td><span t-esc="curso.description or 'Sin descripcion'"/></td>
                                             <td class="text-center"><span t-esc="curso.aula_id.name or 'No asignada'"/></td>
                                             <td class="text-center"><span t-esc="curso.total_estudiantes"/></td>
                                             <td class="text-center"><span t-esc="curso.total_examenes"/></td>

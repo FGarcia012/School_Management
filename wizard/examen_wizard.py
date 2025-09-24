@@ -9,7 +9,7 @@ class ExamenWizard(models.TransientModel):
     curso_id = fields.Many2one('school.curso', 'Curso')
     pregunta = fields.Text('Pregunta')
     respuesta = fields.Text('Respuesta')
-    punteo_maximo = fields.Float('Punteo Máximo', default=100.0)
+    punteo_maximo = fields.Float('Punteo Maximo', default=100.0)
     mode = fields.Selection([
         ('agregar', 'Agregar'),
         ('actualizar', 'Actualizar'),

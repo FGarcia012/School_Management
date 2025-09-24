@@ -6,14 +6,14 @@
             <field name="name">school.calificacion.form</field>
             <field name="model">school.calificacion</field>
             <field name="arch" type="xml">
-                <form string="Calificación de Estudiante">
+                <form string="Calificacion de Estudiante">
                     <sheet>
                         <group>
-                            <group string="Información del Estudiante">
+                            <group string="Informacion del Estudiante">
                                 <field name="alumno_id" readonly="1"/>
                                 <field name="examen_id" readonly="1"/>
                             </group>
-                            <group string="Calificación">
+                            <group string="Calificacion">
                                 <field name="punteo"/>
                                 <field name="punteo_maximo" readonly="1"/>
                                 <field name="porcentaje_obtenido" readonly="1"/>
@@ -25,8 +25,8 @@
                             <group string="Respuesta del Estudiante">
                                 <field name="respuesta_estudiante" placeholder="Respuesta o trabajo entregado por el estudiante..."/>
                             </group>
-                            <group string="Evaluación del Profesor">
-                                <field name="comentarios" placeholder="Comentarios y retroalimentación del profesor..."/>
+                            <group string="Evaluacion del Profesor">
+                                <field name="comentarios" placeholder="Comentarios y retroalimentacion del profesor..."/>
                                 <field name="fecha_entrega" readonly="1"/>
                                 <field name="fecha_calificacion" readonly="1"/>
                             </group>
@@ -62,10 +62,10 @@
             <field name="view_id" ref="view_calificacion_tree"/>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
-                    Click para crear una nueva calificación.
+                    Click para crear una nueva calificacion.
                 </p>
                 <p>
-                    Las calificaciones representan el punteo obtenido por cada estudiante en un examen específico.
+                    Las calificaciones representan el punteo obtenido por cada estudiante en un examen especifico.
                 </p>
             </field>
         </record>

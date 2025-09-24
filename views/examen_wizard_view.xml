@@ -48,9 +48,9 @@
             <field name="name">examen.wizard.eliminar</field>
             <field name="model">examen.wizard</field>
             <field name="arch" type="xml">
-                <form string="¿Eliminar Examen?">
+                <form string="Eliminar Examen?">
                     <group>
-                        <label string="¿Está seguro que desea eliminar el siguiente examen?"/>
+                        <label string="Esta seguro que desea eliminar el siguiente examen?"/>
                         <field name="name" readonly="1"/>
                         <field name="curso_id" readonly="1"/>
                         <field name="pregunta" readonly="1"/>

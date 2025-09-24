@@ -55,12 +55,12 @@
             <field name="arch" type="xml">
                 <form string="Horario">
                     <header>
-                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Horario" type="object" class="oe_highlight" groups="school_management.group_school_super_admin"/>
+                        <button name="abrir_wizard_agregar" string="Anadir Nuevo Horario" type="object" class="oe_highlight" groups="school_management.group_school_super_admin"/>
                         <field name="activo" groups="school_management.group_school_super_admin"/>
                     </header>
                     <sheet>
                         <group>
-                            <group string="Información del Curso">
+                            <group string="Informacion del Curso">
                                 <field name="curso_id" options="{'no_create': True}"/>
                                 <field name="aula_id" options="{'no_create': True}"/>
                                 <field name="profesor"/>
@@ -73,7 +73,7 @@
                                 <field name="duracion" readonly="1"/>
                             </group>
                         </group>
-                        <group string="Visualización">
+                        <group string="Visualizacion">
                             <field name="hora_inicio_display" readonly="1"/>
                             <field name="hora_fin_display" readonly="1"/>
                         </group>
@@ -82,7 +82,7 @@
             </field>
         </record>
 
-        <!-- Vista Kanban de Horarios por día -->
+        <!-- Vista Kanban de Horarios por dia -->
         <record id="view_horario_kanban" model="ir.ui.view">
             <field name="name">school.horario.kanban</field>
             <field name="model">school.horario</field>
@@ -137,7 +137,7 @@
                     <filter string="Vespertino" domain="[('turno', '=', 'vespertino')]"/>
                     <filter string="Activos" domain="[('activo', '=', True)]"/>
                     <group expand="0" string="Agrupar por">
-                        <filter string="Día" context="{'group_by': 'dia_semana'}"/>
+                        <filter string="Dia" context="{'group_by': 'dia_semana'}"/>
                         <filter string="Turno" context="{'group_by': 'turno'}"/>
                         <filter string="Curso" context="{'group_by': 'curso_id'}"/>
                         <filter string="Aula" context="{'group_by': 'aula_id'}"/>
@@ -146,7 +146,7 @@
             </field>
         </record>
 
-        <!-- Acción de ventana para Horarios -->
+        <!-- Accion de ventana para Horarios -->
         <record id="action_horario" model="ir.actions.act_window">
             <field name="name">Horarios</field>
             <field name="res_model">school.horario</field>
@@ -158,25 +158,25 @@
                     Haga clic para crear un nuevo horario escolar.
                 </p>
                 <p>
-                    Los horarios permiten organizar las clases por día de la semana,
-                    asignando cursos a aulas específicas en franjas horarias definidas.
+                    Los horarios permiten organizar las clases por dia de la semana,
+                    asignando cursos a aulas especificas en franjas horarias definidas.
                 </p>
             </field>
         </record>
 
-        <!-- Vista Graph para análisis -->
+        <!-- Vista Graph para analisis -->
         <record id="view_horario_graph" model="ir.ui.view">
             <field name="name">school.horario.graph</field>
             <field name="model">school.horario</field>
             <field name="arch" type="xml">
-                <graph string="Análisis de Horarios" type="bar">
+                <graph string="Analisis de Horarios" type="bar">
                     <field name="dia_semana"/>
                     <field name="duracion" type="measure"/>
                 </graph>
             </field>
         </record>
 
-        <!-- Acción para generar plantilla de horarios -->
+        <!-- Accion para generar plantilla de horarios -->
         <record id="action_generar_plantilla_horario" model="ir.actions.act_window">
             <field name="name">Generar Plantilla de Horarios</field>
             <field name="res_model">horario.wizard</field>

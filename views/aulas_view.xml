@@ -31,7 +31,7 @@
             <field name="arch" type="xml">
                 <form string="Aula">
                     <header>
-                        <button name="abrir_wizard_agregar" string="Añadir Nueva Aula" type="object" class="oe_highlight"/>
+                        <button name="abrir_wizard_agregar" string="Anadir Nueva Aula" type="object" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -40,7 +40,7 @@
                             </h1>
                         </div>
                         <group>
-                            <group string="Información Básica">
+                            <group string="Informacion Basica">
                                 <field name="capacidad"/>
                                 <field name="total_alumnos" readonly="1"/>
                                 <field name="capacidad_disponible" readonly="1"/>
@@ -100,7 +100,7 @@
             <field name="model">school.aula</field>
             <field name="type">graph</field>
             <field name="arch" type="xml">
-                <graph string="Análisis de Aulas" type="bar">
+                <graph string="Analisis de Aulas" type="bar">
                     <field name="name"/>
                     <field name="capacidad"/>
                 </graph>
@@ -113,18 +113,18 @@
             <field name="model">school.aula</field>
             <field name="arch" type="xml">
                 <search string="Buscar Aulas">
-                    <!-- Campos de búsqueda -->
+                    <!-- Campos de busqueda -->
                     <field name="name" string="Nombre del Aula" filter_domain="[('name','ilike',self)]"/>
                     <field name="capacidad" string="Capacidad"/>
                     
                     <!-- Filtros por capacidad -->
-                    <filter string="Capacidad Pequeña (&lt; 20)" domain="[('capacidad','&lt;',20)]"/>
+                    <filter string="Capacidad Pequena (&lt; 20)" domain="[('capacidad','&lt;',20)]"/>
                     <filter string="Capacidad Media (20-29)" domain="[('capacidad','&gt;=',20),('capacidad','&lt;',30)]"/>
                     <filter string="Capacidad Grande (&gt;= 30)" domain="[('capacidad','&gt;=',30)]"/>
                     
                     <separator/>
                     
-                    <!-- Filtros específicos -->
+                    <!-- Filtros especificos -->
                     <filter string="Aula A1" domain="[('name','=','Aula A1')]"/>
                     <filter string="Aula A2" domain="[('name','=','Aula A2')]"/>
                     <filter string="Laboratorio" domain="[('name','ilike','Laboratorio')]"/>
@@ -141,7 +141,7 @@
                     <!-- Agrupaciones -->
                     <group expand="0" string="Agrupar Por">
                         <filter string="Rango de Capacidad" context="{'group_by':'capacidad'}"/>
-                        <filter string="Fecha de Creación" context="{'group_by':'create_date:month'}"/>
+                        <filter string="Fecha de Creacion" context="{'group_by':'create_date:month'}"/>
                         <filter string="Usuario Creador" context="{'group_by':'create_uid'}"/>
                     </group>
                 </search>

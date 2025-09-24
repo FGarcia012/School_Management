@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        
+        <!-- === REGLAS DE SEGURIDAD PARA ESTUDIANTES === -->
+        
+        <!-- Regla: Los estudiantes solo ven cursos donde estan inscritos -->
+        <record id="rule_curso_student_own" model="ir.rule">
+            <field name="name">Estudiantes ven solo sus cursos</field>
+            <field name="model_id" ref="model_school_curso"/>
+            <field name="domain_force">[('alumno_ids.user_ids', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('school_management.group_school_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Regla: Los estudiantes solo ven su aula -->
+        <record id="rule_aula_student_own" model="ir.rule">
+            <field name="name">Estudiantes ven solo su aula</field>
+            <field name="model_id" ref="model_school_aula"/>
+            <field name="domain_force">[('alumno_ids.user_ids', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('school_management.group_school_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Regla: Los estudiantes solo ven examenes de sus cursos -->
+        <record id="rule_examen_student_own" model="ir.rule">
+            <field name="name">Estudiantes ven solo examenes de sus cursos</field>
+            <field name="model_id" ref="model_school_examen"/>
+            <field name="domain_force">[('curso_id.alumno_ids.user_ids', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('school_management.group_school_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Regla: Los estudiantes solo ven sus calificaciones -->
+        <record id="rule_calificacion_student_own" model="ir.rule">
+            <field name="name">Estudiantes ven solo sus calificaciones</field>
+            <field name="model_id" ref="model_school_calificacion"/>
+            <field name="domain_force">[('alumno_id.user_ids', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('school_management.group_school_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Regla: Los estudiantes solo ven horarios de su aula -->
+        <record id="rule_horario_student_own" model="ir.rule">
+            <field name="name">Estudiantes ven solo horarios de su aula</field>
+            <field name="model_id" ref="model_school_horario"/>
+            <field name="domain_force">[('aula_id.alumno_ids.user_ids', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('school_management.group_school_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Regla: Los estudiantes solo ven su propio registro de alumno -->
+        <record id="rule_alumno_student_own" model="ir.rule">
+            <field name="name">Estudiantes ven solo su propio registro</field>
+            <field name="model_id" ref="model_school_alumno"/>
+            <field name="domain_force">[('user_ids', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('school_management.group_school_student'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- === REGLAS GLOBALES PARA SUPER ADMIN Y MAESTROS === -->
+        
+        <!-- Regla: Super Admins pueden ver todo -->
+        <record id="rule_global_super_admin" model="ir.rule">
+            <field name="name">Super Admin acceso completo</field>
+            <field name="model_id" ref="model_school_curso"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('school_management.group_school_super_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Regla: Maestros pueden ver y gestionar todo academico -->
+        <record id="rule_global_teacher" model="ir.rule">
+            <field name="name">Maestros acceso academico completo</field>
+            <field name="model_id" ref="model_school_curso"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('school_management.group_school_teacher'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+    </data>
+</openerp>

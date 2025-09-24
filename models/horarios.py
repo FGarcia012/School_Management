@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api
-from openerp.exceptions import ValidationError
+from openerp.exceptions import Warning
 from datetime import datetime, time
 
 class Horario(models.Model):
@@ -14,10 +14,10 @@ class Horario(models.Model):
     dia_semana = fields.Selection([
         ('lunes', 'Lunes'),
         ('martes', 'Martes'),
-        ('miercoles', 'Miércoles'),
+        ('miercoles', 'Miercoles'),
         ('jueves', 'Jueves'),
         ('viernes', 'Viernes'),
-    ], 'Día de la Semana', required=True)
+    ], 'Dia de la Semana', required=True)
     
     hora_inicio = fields.Float('Hora de Inicio', required=True, help='Formato 24 horas (ej: 8.0 para 8:00 AM)')
     hora_fin = fields.Float('Hora de Fin', required=True, help='Formato 24 horas (ej: 9.0 para 9:00 AM)')
@@ -30,10 +30,10 @@ class Horario(models.Model):
     profesor = fields.Char('Profesor')
     activo = fields.Boolean('Activo', default=True)
     
-    # Campos computados para mejor visualización
+    # Campos computados para mejor visualizacion
     hora_inicio_display = fields.Char('Hora Inicio', compute='_compute_hora_display', store=True)
     hora_fin_display = fields.Char('Hora Fin', compute='_compute_hora_display', store=True)
-    duracion = fields.Float('Duración (horas)', compute='_compute_duracion', store=True)
+    duracion = fields.Float('Duracion (horas)', compute='_compute_duracion', store=True)
 
     @api.depends('curso_id', 'dia_semana', 'hora_inicio_display')
     def _compute_name(self):
@@ -81,10 +81,10 @@ class Horario(models.Model):
     def _check_horas(self):
         for record in self:
             if record.hora_inicio >= record.hora_fin:
-                raise ValidationError('La hora de inicio debe ser menor que la hora de fin.')
+                raise Warning('La hora de inicio debe ser menor que la hora de fin.')
             
             if record.hora_inicio < 6.0 or record.hora_fin > 22.0:
-                raise ValidationError('Los horarios deben estar entre las 6:00 AM y 10:00 PM.')
+                raise Warning('Los horarios deben estar entre las 6:00 AM y 10:00 PM.')
 
     @api.constrains('curso_id', 'aula_id', 'dia_semana', 'hora_inicio', 'hora_fin')
     def _check_conflictos(self):
@@ -100,8 +100,8 @@ class Horario(models.Model):
             ])
             
             if conflicto_aula:
-                raise ValidationError(
-                    'Conflicto de horario: El aula "%s" ya está ocupada el %s de %s a %s por el curso "%s".' % (
+                raise Warning(
+                    'Conflicto de horario: El aula "%s" ya esta ocupada el %s de %s a %s por el curso "%s".' % (
                         record.aula_id.name,
                         record.dia_semana,
                         conflicto_aula[0].hora_inicio_display,
@@ -112,7 +112,7 @@ class Horario(models.Model):
 
     @api.model
     def crear_plantilla_matutino(self):
-        """Crea una plantilla de horario matutino básico"""
+        """Crea una plantilla de horario matutino basico"""
         plantilla = [
             {'hora_inicio': 8.0, 'hora_fin': 9.0}, 
             {'hora_inicio': 9.0, 'hora_fin': 10.0}, 
@@ -123,7 +123,7 @@ class Horario(models.Model):
 
     @api.model
     def crear_plantilla_vespertino(self):
-        """Crea una plantilla de horario vespertino básico"""
+        """Crea una plantilla de horario vespertino basico"""
         plantilla = [
             {'hora_inicio': 14.0, 'hora_fin': 15.0},  
             {'hora_inicio': 15.0, 'hora_fin': 16.0},  
@@ -134,7 +134,7 @@ class Horario(models.Model):
 
     @api.multi
     def generar_horario_semanal(self, cursos_ids, aula_id, turno):
-        """Genera un horario semanal básico para una lista de cursos"""
+        """Genera un horario semanal basico para una lista de cursos"""
         if turno == 'matutino':
             plantilla = self.crear_plantilla_matutino()
         else:
@@ -157,21 +157,21 @@ class Horario(models.Model):
                     try:
                         horario = self.create(vals)
                         horarios_creados.append(horario.id)
-                    except ValidationError:
+                    except Warning:
                         continue
         
         return horarios_creados
 
     @api.multi
     def unlink(self):
-        """Override para manejar eliminación segura de horarios"""
+        """Override para manejar eliminacion segura de horarios"""
         for horario in self:
             if horario.activo:
                 horario.write({'activo': False})
                 continue
         return super(Horario, self).unlink()
 
-    # Métodos para los botones de acción
+    # Metodos para los botones de accion
     @api.multi
     def abrir_wizard_agregar(self):
         return {

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api
-from openerp.exceptions import ValidationError
+from openerp.exceptions import Warning
 
 class Examen(models.Model):
     _name = 'school.examen'
@@ -9,7 +9,7 @@ class Examen(models.Model):
     name = fields.Char('Nombre del Examen', required=True)
     curso_id = fields.Many2one('school.curso', 'Curso', required=True)
     
-    # Información del examen
+    # Informacion del examen
     fecha_examen = fields.Date('Fecha del Examen')
     tipo_examen = fields.Selection([
         ('parcial', 'Examen Parcial'),
@@ -19,15 +19,12 @@ class Examen(models.Model):
         ('tarea', 'Tarea')
     ], 'Tipo de Examen', default='parcial')
     
-    # Contenido del examen
-    pregunta = fields.Text('Pregunta/Descripción')
+    pregunta = fields.Text('Pregunta/Descripcion')
     respuesta = fields.Text('Respuesta Esperada')
-    punteo_maximo = fields.Float('Punteo Máximo', default=100.0, required=True)
+    punteo_maximo = fields.Float('Punteo Maximo', default=100.0, required=True)
     
-    # Relación con calificaciones
     calificacion_ids = fields.One2many('school.calificacion', 'examen_id', 'Calificaciones')
     
-    # Campos computados para estadísticas
     total_estudiantes = fields.Integer('Total Estudiantes', compute='_compute_estadisticas', store=True)
     promedio_examen = fields.Float('Promedio del Examen', compute='_compute_estadisticas', store=True)
     aprobados = fields.Integer('Estudiantes Aprobados', compute='_compute_estadisticas', store=True)
@@ -53,7 +50,7 @@ class Examen(models.Model):
     def _check_punteo_maximo(self):
         for examen in self:
             if examen.punteo_maximo <= 0:
-                raise ValidationError("El punteo máximo debe ser mayor a 0.")
+                raise Warning("El punteo maximo debe ser mayor a 0.")
     
     @api.multi
     def generar_calificaciones(self):
@@ -76,21 +73,20 @@ class Examen(models.Model):
     
     @api.multi
     def unlink(self):
-        """Override para manejar eliminación segura de exámenes"""
+        """Override para manejar eliminacion segura de examenes"""
         for examen in self:
-            # Validar que el curso mantenga al menos un examen si tiene estudiantes
             curso = examen.curso_id
             otros_examenes = curso.examen_ids.filtered(lambda e: e.id != examen.id)
             
             if curso.alumno_ids and len(otros_examenes) == 0:
-                raise ValidationError(
-                    "No se puede eliminar el examen '%s' porque es el último examen del curso '%s' "
+                raise Warning(
+                    "No se puede eliminar el examen '%s' porque es el ultimo examen del curso '%s' "
                     "y hay %d estudiante(s) inscrito(s). Un curso con estudiantes debe tener al menos un examen." % 
                     (examen.name, curso.name, len(curso.alumno_ids))
                 )        
         return super(Examen, self).unlink()
 
-    # Métodos para los botones de acción
+    # Metodos para los botones de accion
     @api.multi
     def abrir_wizard_agregar(self):
         return {
@@ -150,12 +146,12 @@ class Calificacion(models.Model):
     examen_id = fields.Many2one('school.examen', 'Examen', required=True, ondelete='cascade')
     alumno_id = fields.Many2one('school.alumno', 'Estudiante', required=True)
     
-    # Calificación
+    # Calificacion
     punteo = fields.Float('Punteo Obtenido', default=0.0)
     respuesta_estudiante = fields.Text('Respuesta del Estudiante')
     
     # Campos computados
-    punteo_maximo = fields.Float('Punteo Máximo', related='examen_id.punteo_maximo', readonly=True)
+    punteo_maximo = fields.Float('Punteo Maximo', related='examen_id.punteo_maximo', readonly=True)
     porcentaje_obtenido = fields.Float('% Obtenido', compute='_compute_porcentaje', store=True)
     aprobado = fields.Boolean('Aprobado', compute='_compute_aprobado', store=True)
     
@@ -166,7 +162,6 @@ class Calificacion(models.Model):
         ('calificado', 'Calificado')
     ], 'Estado', default='pendiente')
     
-    # Información adicional
     fecha_entrega = fields.Datetime('Fecha de Entrega')
     fecha_calificacion = fields.Datetime('Fecha de Calificacion')
     comentarios = fields.Text('Comentarios del Profesor')
@@ -191,20 +186,20 @@ class Calificacion(models.Model):
     def _check_punteos_validos(self):
         for calificacion in self:
             if calificacion.punteo < 0:
-                raise ValidationError("El punteo obtenido no puede ser negativo.")
+                raise Warning("El punteo obtenido no puede ser negativo.")
             if calificacion.punteo > calificacion.punteo_maximo:
-                raise ValidationError("El punteo obtenido no puede ser mayor al punteo máximo.")
+                raise Warning("El punteo obtenido no puede ser mayor al punteo maximo.")
     
     @api.constrains('alumno_id', 'examen_id')
     def _check_alumno_en_curso(self):
         for calificacion in self:
             if calificacion.examen_id.curso_id not in calificacion.alumno_id.curso_ids:
-                raise ValidationError(
-                    "El estudiante '%s' no está inscrito en el curso '%s'." % 
+                raise Warning(
+                    "El estudiante '%s' no esta inscrito en el curso '%s'." % 
                     (calificacion.alumno_id.name, calificacion.examen_id.curso_id.name)
                 )
     
     _sql_constraints = [
         ('unique_alumno_examen', 'unique(alumno_id, examen_id)', 
-         'Un estudiante no puede tener múltiples calificaciones para el mismo examen.')
+         'Un estudiante no puede tener multiples calificaciones para el mismo examen.')
     ]

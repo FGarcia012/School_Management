@@ -6,7 +6,7 @@ class AlumnoWizard(models.TransientModel):
     _description = 'Wizard para CRUD de Alumno'
 
     name = fields.Char('Nombre', required=True)
-    numero = fields.Char('Número de estudiante')
+    numero = fields.Char('Numero de estudiante')
     aula_id = fields.Many2one('school.aula', 'Aula Asignada')
     curso_ids = fields.Many2many('school.curso', string='Cursos Inscritos')
     mode = fields.Selection([

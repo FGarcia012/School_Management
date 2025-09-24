@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Definición del reporte de Alumnos -->
+        <!-- Definicion del reporte de Alumnos -->
         <report 
             id="reporte_alumnos_pdf"
             model="school.alumno"
@@ -30,10 +30,10 @@
                             <table class="table table-condensed table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Número</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Numero</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Nombre Completo</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Email</strong></th>
-                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Teléfono</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Telefono</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Aula Asignada</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Total Cursos</strong></th>
                                     </tr>

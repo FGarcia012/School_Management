@@ -9,7 +9,7 @@
                 <form string="Agregar Nuevo Alumno">
                     <group>
                         <field name="name"/>
-                        <label string="El número de carnet se generará automáticamente"/>
+                        <label string="El numero de carnet se generara automaticamente"/>
                         <field name="aula_id"/>
                         <field name="curso_ids"/>
                     </group>
@@ -46,9 +46,9 @@
             <field name="name">alumno.wizard.eliminar</field>
             <field name="model">alumno.wizard</field>
             <field name="arch" type="xml">
-                <form string="¿Eliminar Alumno?">
+                <form string="Eliminar Alumno?">
                     <group>
-                        <label string="¿Está seguro que desea eliminar el siguiente alumno?"/>
+                        <label string="Esta seguro que desea eliminar el siguiente alumno?"/>
                         <field name="name" readonly="1"/>
                         <field name="numero" readonly="1"/>
                         <field name="aula_id" readonly="1"/>

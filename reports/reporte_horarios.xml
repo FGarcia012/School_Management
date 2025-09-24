@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Definición del reporte de Horarios -->
+        <!-- Definicion del reporte de Horarios -->
         <report 
             id="reporte_horarios_pdf"
             model="school.horario"
@@ -32,7 +32,7 @@
                                     <tr>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Curso</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Aula</strong></th>
-                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Día</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Dia</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Hora Inicio</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Hora Fin</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Turno</strong></th>

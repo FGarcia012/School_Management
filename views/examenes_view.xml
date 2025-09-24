@@ -23,7 +23,7 @@
                             string="📄 Reporte PDF" 
                             type="action" 
                             class="oe_highlight"
-                            help="Generar reporte completo de exámenes en formato PDF"/>
+                            help="Generar reporte completo de examenes en formato PDF"/>
                 </tree>
             </field>
         </record>
@@ -35,7 +35,7 @@
             <field name="arch" type="xml">
                 <form string="Examen">
                     <header>
-                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Examen" type="object" class="oe_highlight"/>
+                        <button name="abrir_wizard_agregar" string="Anadir Nuevo Examen" type="object" class="oe_highlight"/>
                         <button name="generar_calificaciones" string="Generar Calificaciones" type="object" class="oe_highlight" attrs="{'invisible': [('total_estudiantes', '>', 0)]}"/>
                     </header>
                     <sheet>
@@ -45,13 +45,13 @@
                             </h1>
                         </div>
                         <group>
-                            <group string="Información del Examen">
+                            <group string="Informacion del Examen">
                                 <field name="curso_id"/>
                                 <field name="tipo_examen"/>
                                 <field name="fecha_examen"/>
                                 <field name="punteo_maximo"/>
                             </group>
-                            <group string="Estadísticas">
+                            <group string="Estadisticas">
                                 <field name="total_estudiantes" readonly="1"/>
                                 <field name="promedio_examen" readonly="1"/>
                                 <field name="aprobados" readonly="1"/>
@@ -59,11 +59,11 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Pregunta/Descripción">
-                                <field name="pregunta" placeholder="Escriba la pregunta del examen o descripción de la evaluación..."/>
+                            <page string="Pregunta/Descripcion">
+                                <field name="pregunta" placeholder="Escriba la pregunta del examen o descripcion de la evaluacion..."/>
                             </page>
                             <page string="Respuesta Esperada">
-                                <field name="respuesta" placeholder="Escriba la respuesta esperada o criterios de evaluación..."/>
+                                <field name="respuesta" placeholder="Escriba la respuesta esperada o criterios de evaluacion..."/>
                             </page>
                             <page string="Calificaciones de Estudiantes">
                                 <button name="generar_calificaciones" string="Generar Calificaciones para Todos los Estudiantes" type="object" class="oe_highlight"/>
@@ -92,7 +92,7 @@
             <field name="model">school.examen</field>
             <field name="type">graph</field>
             <field name="arch" type="xml">
-                <graph string="Análisis de Exámenes" type="bar">
+                <graph string="Analisis de Examenes" type="bar">
                     <field name="curso_id"/>
                     <field name="promedio_examen"/>
                 </graph>
@@ -104,8 +104,8 @@
             <field name="name">school.examen.search</field>
             <field name="model">school.examen</field>
             <field name="arch" type="xml">
-                <search string="Buscar Exámenes">
-                    <!-- Campos de búsqueda -->
+                <search string="Buscar Examenes">
+                    <!-- Campos de busqueda -->
                     <field name="name" string="Nombre del Examen" filter_domain="[('name','ilike',self)]"/>
                     <field name="curso_id" string="Curso"/>
                     <field name="promedio_examen" string="Promedio"/>
@@ -120,11 +120,11 @@
                     <separator/>
                     
                     <!-- Filtros por curso -->
-                    <filter string="Matemáticas" domain="[('curso_id.name','=','Matemáticas')]"/>
-                    <filter string="Física" domain="[('curso_id.name','=','Física')]"/>
-                    <filter string="Computación" domain="[('curso_id.name','=','Computación')]"/>
-                    <filter string="Inglés" domain="[('curso_id.name','=','Inglés')]"/>
-                    <filter string="Religión" domain="[('curso_id.name','=','Religión')]"/>
+                    <filter string="Matematicas" domain="[('curso_id.name','=','Matematicas')]"/>
+                    <filter string="Fisica" domain="[('curso_id.name','=','Fisica')]"/>
+                    <filter string="Computacion" domain="[('curso_id.name','=','Computacion')]"/>
+                    <filter string="Ingles" domain="[('curso_id.name','=','Ingles')]"/>
+                    <filter string="Religion" domain="[('curso_id.name','=','Religion')]"/>
                     
                     <separator/>
                     
@@ -139,16 +139,16 @@
                     <group expand="0" string="Agrupar Por">
                         <filter string="Curso" context="{'group_by':'curso_id'}"/>
                         <filter string="Rango de Punteo" context="{'group_by':'punteo'}"/>
-                        <filter string="Fecha de Creación" context="{'group_by':'create_date:month'}"/>
+                        <filter string="Fecha de Creacion" context="{'group_by':'create_date:month'}"/>
                         <filter string="Usuario Creador" context="{'group_by':'create_uid'}"/>
                     </group>
                 </search>
             </field>
         </record>
 
-        <!-- Action para Exámenes con todas las vistas -->
+        <!-- Action para Examenes con todas las vistas -->
         <record id="action_examenes" model="ir.actions.act_window">
-            <field name="name">Exámenes</field>
+            <field name="name">Examenes</field>
             <field name="res_model">school.examen</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,graph</field>

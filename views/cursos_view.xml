@@ -32,7 +32,7 @@
             <field name="arch" type="xml">
                 <form string="Curso">
                     <header>
-                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Curso" type="object" class="oe_highlight"/>
+                        <button name="abrir_wizard_agregar" string="Anadir Nuevo Curso" type="object" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -41,13 +41,13 @@
                             </h1>
                         </div>
                         <group>
-                            <group string="Información del Curso">
+                            <group string="Informacion del Curso">
                                 <field name="codigo"/>
                                 <field name="description"/>
                                 <field name="aula_id"/>
                                 <field name="profesor_id"/>
                             </group>
-                            <group string="Estadísticas">
+                            <group string="Estadisticas">
                                 <field name="total_estudiantes" readonly="1"/>
                                 <field name="total_examenes" readonly="1"/>
                                 <field name="promedio_examenes" readonly="1"/>
@@ -67,9 +67,9 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Exámenes del Curso">
+                            <page string="Examenes del Curso">
                                 <field name="examen_ids">
-                                    <tree string="Exámenes">
+                                    <tree string="Examenes">
                                         <field name="name"/>
                                         <field name="tipo_examen"/>
                                         <field name="fecha_examen"/>
@@ -107,7 +107,7 @@
             <field name="model">school.curso</field>
             <field name="type">graph</field>
             <field name="arch" type="xml">
-                <graph string="Análisis de Cursos" type="bar">
+                <graph string="Analisis de Cursos" type="bar">
                     <field name="name"/>
                     <field name="create_date" interval="month"/>
                 </graph>
@@ -120,16 +120,16 @@
             <field name="model">school.curso</field>
             <field name="arch" type="xml">
                 <search string="Buscar Cursos">
-                    <!-- Campos de búsqueda -->
+                    <!-- Campos de busqueda -->
                     <field name="name" string="Nombre del Curso" filter_domain="[('name','ilike',self)]"/>
-                    <field name="description" string="Descripción" filter_domain="[('description','ilike',self)]"/>
+                    <field name="description" string="Descripcion" filter_domain="[('description','ilike',self)]"/>
                     
                     <!-- Filtros predefinidos -->
-                    <filter string="Matemáticas" domain="[('name','=','Matemáticas')]"/>
-                    <filter string="Física" domain="[('name','=','Física')]"/>
-                    <filter string="Computación" domain="[('name','=','Computación')]"/>
-                    <filter string="Inglés" domain="[('name','=','Inglés')]"/>
-                    <filter string="Religión" domain="[('name','=','Religión')]"/>
+                    <filter string="Matematicas" domain="[('name','=','Matematicas')]"/>
+                    <filter string="Fisica" domain="[('name','=','Fisica')]"/>
+                    <filter string="Computacion" domain="[('name','=','Computacion')]"/>
+                    <filter string="Ingles" domain="[('name','=','Ingles')]"/>
+                    <filter string="Religion" domain="[('name','=','Religion')]"/>
                     
                     <separator/>
                     
@@ -143,7 +143,7 @@
                     <!-- Agrupaciones -->
                     <group expand="0" string="Agrupar Por">
                         <filter string="Nombre del Curso" context="{'group_by':'name'}"/>
-                        <filter string="Fecha de Creación" context="{'group_by':'create_date:month'}"/>
+                        <filter string="Fecha de Creacion" context="{'group_by':'create_date:month'}"/>
                         <filter string="Usuario Creador" context="{'group_by':'create_uid'}"/>
                     </group>
                 </search>

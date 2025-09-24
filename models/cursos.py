@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api
-from openerp.exceptions import ValidationError
+from openerp.exceptions import Warning
 
 class Curso(models.Model):
     _name = 'school.curso'
     _description = 'Curso'
 
     name = fields.Char('Nombre del Curso', required=True)
-    description = fields.Text('Descripción')
-    codigo = fields.Char('Código del Curso', required=True)
+    description = fields.Text('Descripcion')
+    codigo = fields.Char('Codigo del Curso', required=True)
     
     # Relaciones principales
     aula_id = fields.Many2one('school.aula', 'Aula Principal')
@@ -16,13 +16,13 @@ class Curso(models.Model):
     
     # Relaciones con estudiantes y evaluaciones
     alumno_ids = fields.Many2many('school.alumno', 'alumno_curso_rel', 'curso_id', 'alumno_id', 'Estudiantes Inscritos')
-    examen_ids = fields.One2many('school.examen', 'curso_id', 'Exámenes del Curso')
+    examen_ids = fields.One2many('school.examen', 'curso_id', 'Examenes del Curso')
     horario_ids = fields.One2many('school.horario', 'curso_id', 'Horarios Programados')
     
     # Campos computados
     total_estudiantes = fields.Integer('Total de Estudiantes', compute='_compute_total_estudiantes', store=True)
-    total_examenes = fields.Integer('Total de Exámenes', compute='_compute_total_examenes', store=True)
-    promedio_examenes = fields.Float('Promedio de Exámenes', compute='_compute_promedio_examenes', store=True)
+    total_examenes = fields.Integer('Total de Examenes', compute='_compute_total_examenes', store=True)
+    promedio_examenes = fields.Float('Promedio de Examenes', compute='_compute_promedio_examenes', store=True)
     
     @api.depends('alumno_ids')
     def _compute_total_estudiantes(self):
@@ -49,22 +49,22 @@ class Curso(models.Model):
             if curso.codigo:
                 existing = self.search([('codigo', '=', curso.codigo), ('id', '!=', curso.id)])
                 if existing:
-                    raise ValidationError("El código de curso '%s' ya está asignado a otro curso." % curso.codigo)
+                    raise Warning("El codigo de curso '%s' ya esta asignado a otro curso." % curso.codigo)
     
     @api.constrains('examen_ids', 'alumno_ids')
     def _check_minimo_examenes(self):
         for curso in self:
             if curso.alumno_ids and curso.total_examenes < 1:
-                raise ValidationError(
+                raise Warning(
                     "El curso '%s' debe tener al menos un examen asignado antes de inscribir estudiantes." % curso.name
                 )
 
     @api.multi
     def unlink(self):
-        """Override para manejar eliminación segura de cursos"""
+        """Override para manejar eliminacion segura de cursos"""
         for curso in self:
             if curso.alumno_ids:
-                raise ValidationError(
+                raise Warning(
                     "No se puede eliminar el curso '%s' porque tiene %d estudiante(s) inscrito(s). "
                     "Primero desinscribe a todos los estudiantes." % 
                     (curso.name, len(curso.alumno_ids))
@@ -78,19 +78,18 @@ class Curso(models.Model):
         
         return super(Curso, self).unlink()
 
-    # Métodos para los botones de acción
+    # Metodos para los botones de accion
     @api.constrains('alumno_ids', 'aula_id')
     def _check_capacidad_aula_curso(self):
         for curso in self:
             if curso.aula_id and curso.alumno_ids:
                 if len(curso.alumno_ids) > curso.aula_id.capacidad:
-                    raise ValidationError(
+                    raise Warning(
                         "El curso '%s' tiene %d estudiantes inscritos, "
                         "pero el aula '%s' solo tiene capacidad para %d estudiantes." % 
                         (curso.name, len(curso.alumno_ids), curso.aula_id.name, curso.aula_id.capacidad)
                     )
 
-    # Métodos para los botones de acción
     @api.multi
     def abrir_wizard_agregar(self):
         return {
@@ -138,3 +137,4 @@ class Curso(models.Model):
                 'default_name': self.name
             }
         }
+

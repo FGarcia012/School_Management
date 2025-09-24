@@ -42,9 +42,9 @@
             <field name="name">aula.wizard.eliminar</field>
             <field name="model">aula.wizard</field>
             <field name="arch" type="xml">
-                <form string="¿Eliminar Aula?">
+                <form string="Eliminar Aula?">
                     <group>
-                        <label string="¿Está seguro que desea eliminar la siguiente aula?"/>
+                        <label string="Esta seguro que desea eliminar la siguiente aula?"/>
                         <field name="name" readonly="1"/>
                         <field name="capacidad" readonly="1"/>
                     </group>

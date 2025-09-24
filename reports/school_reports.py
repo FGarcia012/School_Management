@@ -44,7 +44,7 @@ class ReporteExamenes(models.AbstractModel):
     
     @api.multi
     def render_html(self, data=None):
-        """Renderiza el reporte de exámenes"""
+        """Renderiza el reporte de examenes"""
         examenes = self.env['school.examen'].search([])
         
         docargs = {

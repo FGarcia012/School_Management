@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api
-from openerp.exceptions import ValidationError
+from openerp.exceptions import Warning
 
 class Aula(models.Model):
     _name = 'school.aula'
@@ -17,7 +17,7 @@ class Aula(models.Model):
     # Campos computados
     total_alumnos = fields.Integer('Total de Alumnos', compute='_compute_total_alumnos', store=True)
     capacidad_disponible = fields.Integer('Capacidad Disponible', compute='_compute_capacidad_disponible', store=True)
-    porcentaje_ocupacion = fields.Float('% Ocupación', compute='_compute_porcentaje_ocupacion', store=True)
+    porcentaje_ocupacion = fields.Float('% Ocupacion', compute='_compute_porcentaje_ocupacion', store=True)
     
     @api.depends('alumno_ids')
     def _compute_total_alumnos(self):
@@ -41,31 +41,31 @@ class Aula(models.Model):
     def _check_capacidad_positiva(self):
         for aula in self:
             if aula.capacidad <= 0:
-                raise ValidationError("La capacidad del aula debe ser mayor a 0")
+                raise Warning("La capacidad del aula debe ser mayor a 0")
     
     @api.constrains('alumno_ids', 'capacidad')
     def _check_capacidad_maxima(self):
         for aula in self:
             if len(aula.alumno_ids) > aula.capacidad:
-                raise ValidationError(
-                    "El aula '%s' ha excedido su capacidad máxima de %d estudiantes. "
+                raise Warning(
+                    "El aula '%s' ha excedido su capacidad maxima de %d estudiantes. "
                     "Actualmente tiene %d estudiantes asignados." % 
                     (aula.name, aula.capacidad, len(aula.alumno_ids))
                 )
 
     @api.multi
     def unlink(self):
-        """Override para manejar eliminación segura de aulas"""
+        """Override para manejar eliminacion segura de aulas"""
         for aula in self:
             if aula.alumno_ids:
-                raise ValidationError(
+                raise Warning(
                     "No se puede eliminar el aula '%s' porque tiene %d estudiante(s) asignado(s). "
                     "Primero reasigna los estudiantes a otra aula." % 
                     (aula.name, len(aula.alumno_ids))
                 )
             
             if aula.curso_ids:
-                raise ValidationError(
+                raise Warning(
                     "No se puede eliminar el aula '%s' porque tiene %d curso(s) asignado(s). "
                     "Primero reasigna los cursos a otra aula." % 
                     (aula.name, len(aula.curso_ids))
@@ -73,7 +73,7 @@ class Aula(models.Model):
         
         return super(Aula, self).unlink()
 
-    # Métodos para los botones de acción
+    # Metodos para los botones de accion
     @api.multi
     def abrir_wizard_agregar(self):
         return {
@@ -121,3 +121,4 @@ class Aula(models.Model):
                 'default_name': self.name
             }
         }
+

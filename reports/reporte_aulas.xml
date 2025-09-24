@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Definición del reporte de Aulas -->
+        <!-- Definicion del reporte de Aulas -->
         <report 
             id="reporte_aulas_pdf"
             model="school.aula"
@@ -32,9 +32,9 @@
                                     <tr>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Nombre del Aula</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Capacidad</strong></th>
-                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Ubicación</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Ubicacion</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Estudiantes Asignados</strong></th>
-                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Ocupación %</strong></th>
+                                        <th class="text-center" style="background-color: #f0f0f0;"><strong>Ocupacion %</strong></th>
                                         <th class="text-center" style="background-color: #f0f0f0;"><strong>Horarios</strong></th>
                                     </tr>
                                 </thead>
@@ -54,13 +54,13 @@
                                 </tbody>
                             </table>
 
-                            <!-- Resumen estadístico -->
+                            <!-- Resumen estadistico -->
                             <div style="margin-top: 20px;">
-                                    <h3>Resumen Estadístico</h3>
+                                    <h3>Resumen Estadistico</h3>
                                     <table class="table table-condensed table-bordered">
                                         <thead>
                                             <tr style="background-color: #f0f0f0;">
-                                                <th class="text-center"><strong>Métrica</strong></th>
+                                                <th class="text-center"><strong>Metrica</strong></th>
                                                 <th class="text-center"><strong>Valor</strong></th>
                                             </tr>
                                         </thead>
@@ -84,7 +84,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Ocupación Promedio del Sistema</strong></td>
+                                                <td><strong>Ocupacion Promedio del Sistema</strong></td>
                                                 <td class="text-center">
                                                     <t t-set="ocupacion_promedio" t-value="(estudiantes_total * 100.0 / capacidad_total) if capacidad_total > 0 else 0"/>
                                                     <span t-esc="'%.1f' % ocupacion_promedio"/>%
@@ -97,7 +97,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Aulas con Mayor Ocupación</strong></td>
+                                                <td><strong>Aulas con Mayor Ocupacion</strong></td>
                                                 <td class="text-center">
                                                     <t t-set="aulas_llenas" t-value="len([aula for aula in docs if aula.porcentaje_ocupacion >= 80])"/>
                                                     <span t-esc="aulas_llenas"/>

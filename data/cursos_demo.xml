@@ -2,21 +2,21 @@
 <openerp>
     <data>
         <record id="curso_demo_1" model="school.curso">
-            <field name="name">Matemáticas</field>
+            <field name="name">Matematicas</field>
             <field name="codigo">MAT101</field>
-            <field name="description">Curso básico de matemáticas</field>
+            <field name="description">Curso basico de matematicas</field>
             <field name="aula_id" ref="aula_demo_1"/>
         </record>
         <record id="curso_demo_2" model="school.curso">
-            <field name="name">Física</field>
+            <field name="name">Fisica</field>
             <field name="codigo">FIS101</field>
-            <field name="description">Curso básico de física</field>
+            <field name="description">Curso basico de fisica</field>
             <field name="aula_id" ref="aula_demo_2"/>
         </record>
         <record id="curso_demo_3" model="school.curso">
-            <field name="name">Química</field>
+            <field name="name">Quimica</field>
             <field name="codigo">QUI101</field>
-            <field name="description">Curso básico de química</field>
+            <field name="description">Curso basico de quimica</field>
             <field name="aula_id" ref="aula_demo_1"/>
         </record>
     </data>

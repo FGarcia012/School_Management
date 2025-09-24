@@ -2,25 +2,25 @@
 <openerp>
     <data>
         <record id="examen_demo_1" model="school.examen">
-            <field name="name">Examen Parcial Matemáticas</field>
+            <field name="name">Examen Parcial Matematicas</field>
             <field name="curso_id" ref="curso_demo_1"/>
             <field name="alumno_id" ref="alumno_demo_1"/>
             <field name="tipo_examen">parcial</field>
             <field name="fecha_examen" eval="time.strftime('%Y-%m-%d')"/>
-            <field name="pregunta">¿Cuánto es 2+2? Explique el proceso</field>
-            <field name="respuesta">4. Suma básica de números enteros</field>
+            <field name="pregunta">Cuanto es 2+2? Explique el proceso</field>
+            <field name="respuesta">4. Suma basica de numeros enteros</field>
             <field name="punteo">95</field>
             <field name="punteo_maximo">100</field>
             <field name="estado">calificado</field>
         </record>
         
         <record id="examen_demo_2" model="school.examen">
-            <field name="name">Quiz Física</field>
+            <field name="name">Quiz Fisica</field>
             <field name="curso_id" ref="curso_demo_2"/>
             <field name="alumno_id" ref="alumno_demo_2"/>
             <field name="tipo_examen">quiz</field>
             <field name="fecha_examen" eval="time.strftime('%Y-%m-%d')"/>
-            <field name="pregunta">¿Qué es la velocidad?</field>
+            <field name="pregunta">Que es la velocidad?</field>
             <field name="respuesta">Distancia dividida por tiempo</field>
             <field name="punteo">85</field>
             <field name="punteo_maximo">100</field>
@@ -28,13 +28,13 @@
         </record>
         
         <record id="examen_demo_3" model="school.examen">
-            <field name="name">Proyecto Final Química</field>
+            <field name="name">Proyecto Final Quimica</field>
             <field name="curso_id" ref="curso_demo_3"/>
             <field name="alumno_id" ref="alumno_demo_4"/>
             <field name="tipo_examen">proyecto</field>
             <field name="fecha_examen" eval="time.strftime('%Y-%m-%d')"/>
-            <field name="pregunta">Investigar sobre elementos químicos</field>
-            <field name="respuesta">Presentación completa sobre la tabla periódica</field>
+            <field name="pregunta">Investigar sobre elementos quimicos</field>
+            <field name="respuesta">Presentacion completa sobre la tabla periodica</field>
             <field name="punteo">90</field>
             <field name="punteo_maximo">100</field>
             <field name="estado">calificado</field>

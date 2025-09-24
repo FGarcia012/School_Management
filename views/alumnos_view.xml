@@ -30,7 +30,7 @@
             <field name="arch" type="xml">
                 <form string="Alumno">
                     <header>
-                        <button name="abrir_wizard_agregar" string="Añadir Nuevo Alumno" type="object" class="oe_highlight"/>
+                        <button name="abrir_wizard_agregar" string="Anadir Nuevo Alumno" type="object" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -39,7 +39,7 @@
                             </h1>
                         </div>
                         <group>
-                            <group string="Información Personal">
+                            <group string="Informacion Personal">
                                 <field name="numero" readonly="1"/>
                                 <field name="aula_id"/>
                                 <field name="total_cursos" readonly="1"/>
@@ -89,7 +89,7 @@
             <field name="model">school.alumno</field>
             <field name="type">graph</field>
             <field name="arch" type="xml">
-                <graph string="Análisis de Alumnos" type="bar">
+                <graph string="Analisis de Alumnos" type="bar">
                     <field name="aula_id"/>
                     <field name="create_date" interval="month"/>
                 </graph>
@@ -102,9 +102,9 @@
             <field name="model">school.alumno</field>
             <field name="arch" type="xml">
                 <search string="Buscar Alumnos">
-                    <!-- Campos de búsqueda -->
+                    <!-- Campos de busqueda -->
                     <field name="name" string="Nombre del Alumno" filter_domain="[('name','ilike',self)]"/>
-                    <field name="numero" string="Número de Estudiante" filter_domain="[('numero','ilike',self)]"/>
+                    <field name="numero" string="Numero de Estudiante" filter_domain="[('numero','ilike',self)]"/>
                     <field name="aula_id" string="Aula"/>
                     <field name="curso_ids" string="Cursos"/>
                     
@@ -123,9 +123,9 @@
                     <separator/>
                     
                     <!-- Filtros por cursos -->
-                    <filter string="Matemáticas" domain="[('curso_ids.name','ilike','Matemáticas')]"/>
-                    <filter string="Física" domain="[('curso_ids.name','ilike','Física')]"/>
-                    <filter string="Computación" domain="[('curso_ids.name','ilike','Computación')]"/>
+                    <filter string="Matematicas" domain="[('curso_ids.name','ilike','Matematicas')]"/>
+                    <filter string="Fisica" domain="[('curso_ids.name','ilike','Fisica')]"/>
+                    <filter string="Computacion" domain="[('curso_ids.name','ilike','Computacion')]"/>
                     
                     <separator/>
                     

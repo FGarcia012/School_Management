@@ -4,17 +4,18 @@
     'author': 'Alexander',
     'category': 'Education',
     'description': """
-Sistema de Gestión Escolar Completo.
-Incluye gestión de Cursos, Alumnos, Aulas, Exámenes y Horarios.
+Sistema de Gestion Escolar Completo.
+Incluye gestion de Cursos, Alumnos, Aulas, Examenes y Horarios.
 Sistema de usuarios con roles: Super Admin, Maestro y Alumno.
 Reportes, filtros y vistas tree, form y graph.
-Registro y login de usuarios con asignación automática de permisos.
-Sistema de horarios híbrido con validaciones automáticas y generación de plantillas.
+Registro y login de usuarios con asignacion automatica de permisos.
+Sistema de horarios hibrido con validaciones automaticas y generacion de plantillas.
 """,
     'depends': ['base', 'web'],
     'data': [
         'security/groups.xml',
         'security/ir.model.access.csv',
+        'security/record_rules.xml',
         'reports/reporte_cursos.xml',
         'reports/reporte_alumnos.xml',
         'reports/reporte_examenes.xml',
@@ -32,6 +33,7 @@ Sistema de horarios híbrido con validaciones automáticas y generación de plan
         'views/aula_wizard_view.xml',
         'views/examen_wizard_view.xml',
         'views/horario_wizard_view.xml',
+        'views/alumno_creation_wizard_view.xml',
         'views/school_menu.xml',
         'data/aulas_demo.xml',
         'data/cursos_demo.xml',

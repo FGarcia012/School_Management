@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api
-from openerp.exceptions import ValidationError
+from openerp.exceptions import Warning
 
 class HorarioWizard(models.TransientModel):
     _name = 'horario.wizard'
@@ -18,10 +18,10 @@ class HorarioWizard(models.TransientModel):
     dia_semana = fields.Selection([
         ('lunes', 'Lunes'),
         ('martes', 'Martes'),
-        ('miercoles', 'Miércoles'),
+        ('miercoles', 'Miercoles'),
         ('jueves', 'Jueves'),
         ('viernes', 'Viernes'),
-    ], 'Día de la Semana')
+    ], 'Dia de la Semana')
     
     hora_inicio = fields.Float('Hora de Inicio')
     hora_fin = fields.Float('Hora de Fin')
@@ -112,7 +112,7 @@ class HorarioWizard(models.TransientModel):
 
     def _generar_plantilla(self):
         if not self.cursos_ids or not self.aula_plantilla_id or not self.turno_plantilla:
-            raise ValidationError('Debe seleccionar cursos, aula y turno para generar la plantilla.')
+            raise Warning('Debe seleccionar cursos, aula y turno para generar la plantilla.')
         
         horario_model = self.env['school.horario']
         cursos_ids = [curso.id for curso in self.cursos_ids]
@@ -134,11 +134,11 @@ class HorarioWizard(models.TransientModel):
                 'target': 'current',
             }
         else:
-            raise ValidationError('No se pudieron crear horarios. Verifique conflictos existentes.')
+            raise Warning('No se pudieron crear horarios. Verifique conflictos existentes.')
 
     @api.onchange('turno')
     def _onchange_turno(self):
-        """Sugiere horarios según el turno seleccionado"""
+        """Sugiere horarios segun el turno seleccionado"""
         if self.turno == 'matutino':
             self.hora_inicio = 8.0
             self.hora_fin = 9.0

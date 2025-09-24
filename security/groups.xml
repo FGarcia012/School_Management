@@ -2,10 +2,10 @@
 <openerp>
     <data noupdate="1">
         
-        <!-- Categoría principal para School Management -->
+        <!-- Categoria principal para School Management -->
         <record id="module_category_school" model="ir.module.category">
             <field name="name">School Management</field>
-            <field name="description">Sistema de Gestión Escolar</field>
+            <field name="description">Sistema de Gestion Escolar</field>
             <field name="sequence">30</field>
         </record>
 
@@ -16,25 +16,25 @@
             <field name="comment">Control total del sistema escolar, puede crear, editar, eliminar y configurar todo</field>
         </record>
 
-        <!-- Maestro/Administrador - Gestión de contenido educativo -->
+        <!-- Maestro/Administrador - Gestion de contenido educativo -->
         <record id="group_school_teacher" model="res.groups">
             <field name="name">Maestro/Administrador</field>
             <field name="category_id" ref="module_category_school"/>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-            <field name="comment">Puede gestionar cursos, alumnos, aulas y exámenes</field>
+            <field name="comment">Puede gestionar cursos, alumnos, aulas y examenes</field>
         </record>
 
-        <!-- Alumno - Solo lectura y algunas acciones específicas -->
+        <!-- Alumno - Solo lectura y algunas acciones especificas -->
         <record id="group_school_student" model="res.groups">
             <field name="name">Alumno</field>
             <field name="category_id" ref="module_category_school"/>
             <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
-            <field name="comment">Puede ver sus cursos, exámenes y realizar acciones limitadas</field>
+            <field name="comment">Puede ver sus cursos, examenes y realizar acciones limitadas</field>
         </record>
 
-        <!-- Usuario público para registro -->
+        <!-- Usuario publico para registro -->
         <record id="group_school_public" model="res.groups">
-            <field name="name">Usuario Público Escolar</field>
+            <field name="name">Usuario Publico Escolar</field>
             <field name="category_id" ref="module_category_school"/>
             <field name="comment">Acceso limitado para registro de nuevos usuarios</field>
         </record>

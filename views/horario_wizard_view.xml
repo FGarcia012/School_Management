@@ -6,14 +6,14 @@
             <field name="name">horario.wizard.form</field>
             <field name="model">horario.wizard</field>
             <field name="arch" type="xml">
-                <form string="Gestión de Horarios">
+                <form string="Gestion de Horarios">
                     <group>
                         <field name="mode" invisible="1"/>
                     </group>
                     
                     <!-- Formulario para Agregar/Actualizar -->
                     <group attrs="{'invisible': [('mode', 'in', ['eliminar', 'generar_plantilla'])]}">
-                        <group string="Información del Curso">
+                        <group string="Informacion del Curso">
                             <field name="curso_id" required="1"/>
                             <field name="aula_id" required="1"/>
                             <field name="profesor"/>
@@ -30,30 +30,30 @@
                     <group attrs="{'invisible': [('mode', '!=', 'generar_plantilla')]}">
                         <separator string="Generar Plantilla de Horarios" colspan="2"/>
                         <p colspan="2">
-                            Esta función creará automáticamente un horario semanal básico
+                            Esta funcion creara automaticamente un horario semanal basico
                             distribuyendo los cursos seleccionados a lo largo de la semana.
                         </p>
-                        <group string="Configuración de Plantilla">
+                        <group string="Configuracion de Plantilla">
                             <field name="cursos_ids" widget="many2many_tags" required="1"/>
                             <field name="aula_plantilla_id" required="1"/>
                             <field name="turno_plantilla" required="1"/>
                         </group>
-                        <group string="Información">
+                        <group string="Informacion">
                             <p colspan="2">
-                                • Turno Matutino: 8:00 AM - 12:18 PM<br/>
-                                • Turno Vespertino: 2:00 PM - 6:18 PM<br/>
-                                • Incluye recesos automáticos<br/>
-                                • Se validarán conflictos automáticamente
+                                - Turno Matutino: 8:00 AM - 12:18 PM<br/>
+                                - Turno Vespertino: 2:00 PM - 6:18 PM<br/>
+                                - Incluye recesos automaticos<br/>
+                                - Se validaran conflictos automaticamente
                             </p>
                         </group>
                     </group>
 
-                    <!-- Confirmación para Eliminar -->
+                    <!-- Confirmacion para Eliminar -->
                     <group attrs="{'invisible': [('mode', '!=', 'eliminar')]}">
-                        <separator string="Confirmar Eliminación" colspan="2"/>
+                        <separator string="Confirmar Eliminacion" colspan="2"/>
                         <p colspan="2">
-                            ¿Está seguro de que desea eliminar este horario?
-                            Esta acción no se puede deshacer.
+                            Esta seguro de que desea eliminar este horario?
+                            Esta accion no se puede deshacer.
                         </p>
                     </group>
 
@@ -65,9 +65,9 @@
             </field>
         </record>
 
-        <!-- Acción del Wizard -->
+        <!-- Accion del Wizard -->
         <record id="action_horario_wizard" model="ir.actions.act_window">
-            <field name="name">Gestión de Horarios</field>
+            <field name="name">Gestion de Horarios</field>
             <field name="res_model">horario.wizard</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>

@@ -9,19 +9,19 @@
             <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//sheet" position="inside">
-                    <group string="Información Escolar">
+                    <group string="Informacion Escolar">
                         <group string="Rol en el Sistema">
                             <field name="school_role"/>
                             <field name="registration_date" readonly="1"/>
                             <field name="is_active_student" attrs="{'invisible': [('school_role', '!=', 'student')]}"/>
                         </group>
-                        <group string="Códigos y Números">
+                        <group string="Codigos y Numeros">
                             <field name="student_number" attrs="{'invisible': [('school_role', '!=', 'student')]}"/>
                             <field name="teacher_code" attrs="{'invisible': [('school_role', '!=', 'teacher')]}"/>
                             <field name="grade_level"/>
                         </group>
                     </group>
-                    <group string="Información de Contacto">
+                    <group string="Informacion de Contacto">
                         <group>
                             <field name="phone_number"/>
                             <field name="emergency_contact"/>
@@ -35,7 +35,7 @@
             </field>
         </record>
 
-        <!-- Vista Tree de Usuarios con información escolar -->
+        <!-- Vista Tree de Usuarios con informacion escolar -->
         <record id="view_users_tree_school" model="ir.ui.view">
             <field name="name">res.users.tree.school</field>
             <field name="model">res.users</field>
@@ -52,7 +52,7 @@
             </field>
         </record>
 
-        <!-- Vista de búsqueda para usuarios escolares -->
+        <!-- Vista de busqueda para usuarios escolares -->
         <record id="view_users_search_school" model="ir.ui.view">
             <field name="name">res.users.search.school</field>
             <field name="model">res.users</field>
@@ -61,8 +61,8 @@
                     <field name="name" string="Nombre"/>
                     <field name="login" string="Usuario"/>
                     <field name="school_role" string="Rol Escolar"/>
-                    <field name="student_number" string="Número de Estudiante"/>
-                    <field name="teacher_code" string="Código de Maestro"/>
+                    <field name="student_number" string="Numero de Estudiante"/>
+                    <field name="teacher_code" string="Codigo de Maestro"/>
                     <separator/>
                     <filter string="Super Administradores" domain="[('school_role','=','super_admin')]"/>
                     <filter string="Maestros" domain="[('school_role','=','teacher')]"/>
@@ -77,7 +77,7 @@
             </field>
         </record>
 
-        <!-- Acción para gestión de usuarios escolares -->
+        <!-- Accion para gestion de usuarios escolares -->
         <record id="action_school_users" model="ir.actions.act_window">
             <field name="name">Usuarios del Sistema Escolar</field>
             <field name="res_model">res.users</field>
@@ -96,51 +96,76 @@
             <field name="name">school.user.registration.form</field>
             <field name="model">school.user.registration</field>
             <field name="arch" type="xml">
-                <form string="Registro de Nuevo Usuario">
+                <form string="Crear Perfil de Acceso">
                     <header>
-                        <h1>Registro en el Sistema Escolar</h1>
+                        <h1>Crear Perfil de Acceso al Sistema</h1>
+                        <p><strong>Solo Super Admin:</strong> Crear perfiles para que personas accedan desde otros dispositivos</p>
                     </header>
                     <sheet>
                         <group>
-                            <group string="Información Básica">
-                                <field name="name" placeholder="Nombre completo del usuario"/>
-                                <field name="login" placeholder="usuario@email.com"/>
-                                <field name="school_role"/>
+                            <group string="� Datos de la Persona">
+                                <field name="name"/>
+                                <field name="login"/>
+                                <field name="school_role" widget="radio"/>
                             </group>
-                            <group string="Contraseña">
+                            <group string="Credenciales de Acceso">
                                 <field name="password" password="True"/>
+                                <p class="text-muted">La persona podra cambiar esta contrasena despues</p>
                             </group>
                         </group>
                         
-                        <group string="Información Específica del Rol" attrs="{'invisible': [('school_role', '=', False)]}">
-                            <group attrs="{'invisible': [('school_role', '!=', 'student')]}">
-                                <field name="student_number" attrs="{'required': [('school_role', '=', 'student')]}"/>
-                                <field name="curso_id"/>
+                        <!-- Informacion especifica para ESTUDIANTES -->
+                        <group string="Configuracion del Estudiante" 
+                               attrs="{'invisible': [('school_role', '!=', 'student')]}">
+                            <group>
+                                <field name="grade_level"/>
+                                <field name="aula_id" attrs="{'required': [('school_role', '=', 'student')]}"/>
                             </group>
-                            <group attrs="{'invisible': [('school_role', '!=', 'teacher')]}">
-                                <field name="teacher_code" attrs="{'required': [('school_role', '=', 'teacher')]}"/>
+                            <group>
+                                <field name="parent_email"/>
+                                <field name="emergency_contact"/>
                             </group>
                         </group>
                         
-                        <group string="Información de Contacto">
+                        <!-- Informacion especifica para MAESTROS -->
+                        <group string="Configuracion del Maestro" 
+                               attrs="{'invisible': [('school_role', '!=', 'teacher')]}">
+                            <group>
+                                <field name="specialization"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Informacion de contacto general -->
+                        <group string="Informacion de Contacto">
                             <field name="phone_number"/>
                         </group>
+                        
+                        <group string="Informacion Adicional">
+                            <field name="notes" nolabel="1"/>
+                        </group>
+                        
+                        <div class="alert alert-success">
+                            <h4>Que pasara automaticamente?</h4>
+                            <ul attrs="{'invisible': [('school_role', '!=', 'student')]}">
+                                <li><strong>Numero de estudiante:</strong> Se genera automaticamente (ej: 2025001)</li>
+                                <li><strong>Perfil de alumno:</strong> Se crea en la base de datos</li>
+                                <li><strong>Permisos:</strong> Solo lectura de cursos, horarios y examenes</li>
+                                <li><strong>Acceso:</strong> Puede entrar desde cualquier dispositivo</li>
+                            </ul>
+                            <ul attrs="{'invisible': [('school_role', '!=', 'teacher')]}">
+                                <li><strong>Codigo de maestro:</strong> Se genera automaticamente (ej: PROF001)</li>
+                                <li><strong>Permisos:</strong> Gestionar cursos, alumnos, aulas y examenes</li>
+                                <li><strong>Acceso:</strong> Puede entrar desde cualquier dispositivo</li>
+                                <li><strong>Limitacion:</strong> NO puede crear otros usuarios</li>
+                            </ul>
+                        </div>
                     </sheet>
                     <footer>
-                        <button name="register_user" string="Registrar Usuario" type="object" class="oe_highlight"/>
+                        <button name="register_user" string="Crear Perfil de Acceso" type="object" class="oe_highlight"/>
                         <button string="Cancelar" special="cancel" class="oe_link"/>
                     </footer>
                 </form>
             </field>
-        </record>
-
-        <!-- Acción para abrir el wizard de registro -->
-        <record id="action_school_user_registration" model="ir.actions.act_window">
-            <field name="name">Registrar Nuevo Usuario</field>
-            <field name="res_model">school.user.registration</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
         </record>
 
         <!-- Vista de login personalizada (hereda de la base) -->
@@ -150,13 +175,42 @@
             <field name="arch" type="xml">
                 <form string="Login Sistema Escolar">
                     <div class="oe_login_form">
-                        <h2>Sistema de Gestión Escolar</h2>
+                        <h2>Sistema de Gestion Escolar</h2>
                         <div class="oe_login_buttons">
                             <button type="button" class="btn btn-primary" onclick="window.location.href='/web/signup'">
                                 Registrarse como Nuevo Usuario
                             </button>
                         </div>
                     </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Form del Wizard de Resultado -->
+        <record id="view_school_user_registration_result_form" model="ir.ui.view">
+            <field name="name">school.user.registration.result.form</field>
+            <field name="model">school.user.registration.result</field>
+            <field name="arch" type="xml">
+                <form string="Perfil de Acceso Creado">
+                    <header>
+                        <h1 style="color: green;">✅ Perfil Creado Exitosamente</h1>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h2>Credenciales de Acceso Generadas</h2>
+                        </div>
+                        <group>
+                            <field name="message" widget="text" nolabel="1" readonly="1" 
+                                   style="white-space: pre-line; font-family: monospace; background-color: #f0f0f0; padding: 10px; border: 1px solid #ccc;"/>
+                        </group>
+                        <div style="margin-top: 20px; padding: 10px; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 5px;">
+                            <strong>📱 Acceso desde otros dispositivos:</strong><br/>
+                            La persona puede ingresar desde cualquier navegador web usando las credenciales mostradas arriba.
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button string="Cerrar" type="object" name="action_close" class="oe_highlight"/>
+                    </footer>
                 </form>
             </field>
         </record>
