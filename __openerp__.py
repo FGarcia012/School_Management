@@ -34,6 +34,7 @@ Sistema de horarios hibrido con validaciones automaticas y generacion de plantil
         'views/examen_wizard_view.xml',
         'views/horario_wizard_view.xml',
         'views/alumno_creation_wizard_view.xml',
+        'views/student_readonly_views.xml',
         'views/school_menu.xml',
         'data/aulas_demo.xml',
         'data/cursos_demo.xml',

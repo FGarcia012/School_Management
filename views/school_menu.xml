@@ -29,8 +29,9 @@
             <field name="res_model">school.curso</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_curso_tree_student"/>
             <field name="domain">[('alumno_ids.user_ids', 'in', [uid])]</field>
-            <field name="context">{'create': False, 'edit': False, 'delete': False}</field>
+            <field name="context">{'create': False, 'edit': False, 'delete': False, 'form_view_ref': 'school_management.view_curso_form_student'}</field>
         </record>
 
         <!-- Accion de Aula para Estudiantes - Solo su aula -->
@@ -39,8 +40,9 @@
             <field name="res_model">school.aula</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_aula_tree_student"/>
             <field name="domain">[('alumno_ids.user_ids', 'in', [uid])]</field>
-            <field name="context">{'create': False, 'edit': False, 'delete': False}</field>
+            <field name="context">{'create': False, 'edit': False, 'delete': False, 'form_view_ref': 'school_management.view_aula_form_student'}</field>
         </record>
 
         <!-- Accion de Horarios para Estudiantes - Solo sus horarios -->
@@ -49,8 +51,9 @@
             <field name="res_model">school.horario</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_horario_tree_student"/>
             <field name="domain">[('aula_id.alumno_ids.user_ids', 'in', [uid])]</field>
-            <field name="context">{'create': False, 'edit': False, 'delete': False}</field>
+            <field name="context">{'create': False, 'edit': False, 'delete': False, 'form_view_ref': 'school_management.view_horario_form_student'}</field>
         </record>
 
         <!-- Accion de Examenes para Estudiantes - Solo sus examenes -->
@@ -59,8 +62,9 @@
             <field name="res_model">school.examen</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_examen_tree_student"/>
             <field name="domain">[('curso_id.alumno_ids.user_ids', 'in', [uid])]</field>
-            <field name="context">{'create': False, 'edit': False, 'delete': False}</field>
+            <field name="context">{'create': False, 'edit': False, 'delete': False, 'form_view_ref': 'school_management.view_examen_form_student'}</field>
         </record>
 
         <!-- Accion de Calificaciones para Estudiantes - Solo sus calificaciones -->
