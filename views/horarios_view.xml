@@ -176,6 +176,18 @@
             </field>
         </record>
 
+        <!-- Action para Horarios -->
+        <record id="action_horarios" model="ir.actions.act_window">
+            <field name="name">Horarios</field>
+            <field name="res_model">school.horario</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="view_id" ref="view_horario_tree"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="limit">80</field>
+        </record>
+
         <!-- Accion para generar plantilla de horarios -->
         <record id="action_generar_plantilla_horario" model="ir.actions.act_window">
             <field name="name">Generar Plantilla de Horarios</field>

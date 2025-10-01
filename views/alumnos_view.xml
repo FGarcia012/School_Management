@@ -66,8 +66,9 @@
                                 </field>
                             </page>
                             <page string="Calificaciones">
-                                <field name="calificacion_ids">
+                                <field name="calificacion_ids" widget="many2many">
                                     <tree string="Calificaciones" colors="red:not aprobado;green:aprobado">
+                                        <field name="alumno_id"/>
                                         <field name="examen_id"/>
                                         <field name="punteo"/>
                                         <field name="punteo_maximo"/>

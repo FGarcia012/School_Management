@@ -68,9 +68,10 @@
                                 </field>
                             </page>
                             <page string="Examenes del Curso">
-                                <field name="examen_ids">
+                                <field name="examen_ids" widget="many2many">
                                     <tree string="Examenes">
                                         <field name="name"/>
+                                        <field name="curso_id"/>
                                         <field name="tipo_examen"/>
                                         <field name="fecha_examen"/>
                                         <field name="punteo_maximo"/>
@@ -83,8 +84,9 @@
                                 </field>
                             </page>
                             <page string="Horarios Programados">
-                                <field name="horario_ids">
+                                <field name="horario_ids" widget="many2many">
                                     <tree string="Horarios">
+                                        <field name="curso_id"/>
                                         <field name="dia_semana"/>
                                         <field name="turno"/>
                                         <field name="hora_inicio_display"/>

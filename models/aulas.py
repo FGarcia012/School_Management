@@ -53,6 +53,48 @@ class Aula(models.Model):
                     (aula.name, aula.capacidad, len(aula.alumno_ids))
                 )
 
+    @api.constrains('alumno_ids')
+    def _check_alumnos_aula(self):
+        """Validar que los alumnos asignados tengan esta aula como aula principal"""
+        for aula in self:
+            for alumno in aula.alumno_ids:
+                if alumno.aula_id and alumno.aula_id.id != aula.id:
+                    raise Warning(
+                        "El alumno '%s' ya está asignado al aula '%s'. "
+                        "Un alumno solo puede estar en un aula principal." % 
+                        (alumno.name, alumno.aula_id.name)
+                    )
+
+    @api.constrains('curso_ids')
+    def _check_cursos_aula(self):
+        """Validar que los cursos asignados tengan esta aula como aula principal"""
+        for aula in self:
+            for curso in aula.curso_ids:
+                if curso.aula_id and curso.aula_id.id != aula.id:
+                    raise Warning(
+                        "El curso '%s' ya está asignado al aula '%s'. "
+                        "Un curso solo puede tener un aula principal." % 
+                        (curso.name, curso.aula_id.name)
+                    )
+
+    @api.constrains('horario_ids')
+    def _check_horarios_aula(self):
+        """Validar que no haya conflictos de horarios en la misma aula"""
+        for aula in self:
+            horarios_activos = aula.horario_ids.filtered('activo')
+            for horario in horarios_activos:
+                conflictos = horarios_activos.filtered(
+                    lambda h: h.id != horario.id and 
+                             h.dia_semana == horario.dia_semana and
+                             h.turno == horario.turno
+                )
+                if conflictos:
+                    raise Warning(
+                        "Conflicto de horarios en el aula '%s': "
+                        "Ya existe un horario para %s en turno %s." % 
+                        (aula.name, horario.dia_semana, horario.turno)
+                    )
+
     @api.multi
     def unlink(self):
         """Override para manejar eliminacion segura de aulas"""

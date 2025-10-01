@@ -51,6 +51,24 @@ class Examen(models.Model):
         for examen in self:
             if examen.punteo_maximo <= 0:
                 raise Warning("El punteo maximo debe ser mayor a 0.")
+
+    @api.constrains('calificacion_ids')
+    def _check_calificaciones_examen(self):
+        """Validar que las calificaciones asignadas pertenezcan al examen correcto"""
+        for examen in self:
+            for calificacion in examen.calificacion_ids:
+                if calificacion.examen_id and calificacion.examen_id.id != examen.id:
+                    raise Warning(
+                        "La calificación del alumno '%s' ya está asignada al examen '%s'. "
+                        "No se puede asignar a múltiples exámenes." % 
+                        (calificacion.alumno_id.name, calificacion.examen_id.name)
+                    )
+                # Validar que el alumno esté inscrito en el curso del examen
+                if calificacion.alumno_id not in examen.curso_id.alumno_ids:
+                    raise Warning(
+                        "El alumno '%s' no está inscrito en el curso '%s' al que pertenece este examen." % 
+                        (calificacion.alumno_id.name, examen.curso_id.name)
+                    )
     
     @api.multi
     def generar_calificaciones(self):

@@ -67,9 +67,10 @@
                             </page>
                             <page string="Calificaciones de Estudiantes">
                                 <button name="generar_calificaciones" string="Generar Calificaciones para Todos los Estudiantes" type="object" class="oe_highlight"/>
-                                <field name="calificacion_ids">
+                                <field name="calificacion_ids" widget="many2many">
                                     <tree string="Calificaciones" colors="red:not aprobado;green:aprobado;blue:estado=='pendiente'">
                                         <field name="alumno_id"/>
+                                        <field name="examen_id"/>
                                         <field name="punteo"/>
                                         <field name="punteo_maximo"/>
                                         <field name="porcentaje_obtenido"/>

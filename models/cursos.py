@@ -90,6 +90,30 @@ class Curso(models.Model):
                         (curso.name, len(curso.alumno_ids), curso.aula_id.name, curso.aula_id.capacidad)
                     )
 
+    @api.constrains('examen_ids')
+    def _check_examenes_curso(self):
+        """Validar que los exámenes asignados pertenezcan al curso correcto"""
+        for curso in self:
+            for examen in curso.examen_ids:
+                if examen.curso_id and examen.curso_id.id != curso.id:
+                    raise Warning(
+                        "El examen '%s' ya está asignado al curso '%s'. "
+                        "No se puede asignar a múltiples cursos." % 
+                        (examen.name, examen.curso_id.name)
+                    )
+
+    @api.constrains('horario_ids')
+    def _check_horarios_curso(self):
+        """Validar que los horarios asignados pertenezcan al curso correcto"""
+        for curso in self:
+            for horario in curso.horario_ids:
+                if horario.curso_id and horario.curso_id.id != curso.id:
+                    raise Warning(
+                        "El horario del %s a las %s ya está asignado al curso '%s'. "
+                        "No se puede asignar a múltiples cursos." % 
+                        (horario.dia_semana, horario.hora_inicio_display, horario.curso_id.name)
+                    )
+
     @api.multi
     def abrir_wizard_agregar(self):
         return {
