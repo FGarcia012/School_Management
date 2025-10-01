@@ -45,6 +45,18 @@ class Alumno(models.Model):
                         (alumno.aula_id.name, alumno.aula_id.capacidad)
                     )
 
+    @api.constrains('calificacion_ids')
+    def _check_calificaciones_alumno(self):
+        """Validar que las calificaciones asignadas pertenezcan al alumno correcto"""
+        for alumno in self:
+            for calificacion in alumno.calificacion_ids:
+                if calificacion.alumno_id and calificacion.alumno_id.id != alumno.id:
+                    raise Warning(
+                        "La calificación del examen '%s' ya está asignada al alumno '%s'. "
+                        "No se puede asignar a múltiples alumnos." % 
+                        (calificacion.examen_id.name, calificacion.alumno_id.name)
+                    )
+
     # Generacion automatica del carnet
     @api.model
     def create(self, vals):

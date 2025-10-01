@@ -56,19 +56,21 @@
                         
                         <notebook>
                             <page string="Estudiantes Asignados">
-                                <field name="alumno_ids">
+                                <field name="alumno_ids" widget="many2many">
                                     <tree string="Estudiantes">
                                         <field name="numero"/>
                                         <field name="name"/>
+                                        <field name="aula_id"/>
                                         <field name="total_cursos"/>
                                     </tree>
                                 </field>
                             </page>
                             <page string="Cursos que se Imparten">
-                                <field name="curso_ids">
+                                <field name="curso_ids" widget="many2many">
                                     <tree string="Cursos">
                                         <field name="codigo"/>
                                         <field name="name"/>
+                                        <field name="aula_id"/>
                                         <field name="total_estudiantes"/>
                                         <field name="total_examenes"/>
                                         <field name="profesor_id"/>
@@ -76,13 +78,14 @@
                                 </field>
                             </page>
                             <page string="Horarios Programados">
-                                <field name="horario_ids">
+                                <field name="horario_ids" widget="many2many">
                                     <tree string="Horarios">
+                                        <field name="curso_id"/>
+                                        <field name="aula_id"/>
                                         <field name="dia_semana"/>
                                         <field name="turno"/>
                                         <field name="hora_inicio_display"/>
                                         <field name="hora_fin_display"/>
-                                        <field name="curso_id"/>
                                         <field name="profesor"/>
                                         <field name="activo"/>
                                     </tree>
